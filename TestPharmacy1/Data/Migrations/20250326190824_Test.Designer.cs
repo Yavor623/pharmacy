@@ -12,8 +12,8 @@ using TestPharmacy1.Data;
 namespace TestPharmacy1.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250326102005_Initial")]
-    partial class Initial
+    [Migration("20250326190824_Test")]
+    partial class Test
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -239,10 +239,7 @@ namespace TestPharmacy1.Data.Migrations
             modelBuilder.Entity("TestPharmacy1.Models.ConsistencyOfMedication", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -254,13 +251,25 @@ namespace TestPharmacy1.Data.Migrations
                     b.ToTable("ConsistencyOfMedication");
                 });
 
+            modelBuilder.Entity("TestPharmacy1.Models.Image", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Image");
+                });
+
             modelBuilder.Entity("TestPharmacy1.Models.Medication", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("Amount")
                         .HasColumnType("int");
@@ -275,6 +284,9 @@ namespace TestPharmacy1.Data.Migrations
 
                     b.Property<DateOnly>("ExpirationDate")
                         .HasColumnType("date");
+
+                    b.Property<int>("ImageId")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsPrescriptionNeeded")
                         .HasColumnType("bit");
@@ -297,6 +309,9 @@ namespace TestPharmacy1.Data.Migrations
                     b.HasIndex("ConsistencyOfMedicationId")
                         .IsUnique();
 
+                    b.HasIndex("ImageId")
+                        .IsUnique();
+
                     b.HasIndex("TypeOfMedicationId")
                         .IsUnique();
 
@@ -306,10 +321,7 @@ namespace TestPharmacy1.Data.Migrations
             modelBuilder.Entity("TestPharmacy1.Models.OwnedMedication", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("MedId")
                         .HasColumnType("int");
@@ -332,10 +344,7 @@ namespace TestPharmacy1.Data.Migrations
             modelBuilder.Entity("TestPharmacy1.Models.Prescription", b =>
                 {
                     b.Property<int>("PrescriptionId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PrescriptionId"));
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -362,10 +371,7 @@ namespace TestPharmacy1.Data.Migrations
             modelBuilder.Entity("TestPharmacy1.Models.TypeOfMedication", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -436,6 +442,12 @@ namespace TestPharmacy1.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("TestPharmacy1.Models.Image", "Image")
+                        .WithOne("Medication")
+                        .HasForeignKey("TestPharmacy1.Models.Medication", "ImageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("TestPharmacy1.Models.TypeOfMedication", "TypeOfMedication")
                         .WithOne("Medication")
                         .HasForeignKey("TestPharmacy1.Models.Medication", "TypeOfMedicationId")
@@ -443,6 +455,8 @@ namespace TestPharmacy1.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("ConsistencyOfMedication");
+
+                    b.Navigation("Image");
 
                     b.Navigation("TypeOfMedication");
                 });
@@ -486,6 +500,12 @@ namespace TestPharmacy1.Data.Migrations
                 });
 
             modelBuilder.Entity("TestPharmacy1.Models.ConsistencyOfMedication", b =>
+                {
+                    b.Navigation("Medication")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("TestPharmacy1.Models.Image", b =>
                 {
                     b.Navigation("Medication")
                         .IsRequired();

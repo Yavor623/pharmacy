@@ -15,6 +15,7 @@ namespace TestPharmacy1.Data
         public DbSet<Prescription> Prescription { get; set; }
         public DbSet<TypeOfMedication> TypeOfMedication { get; set; }
         public DbSet<OwnedMedication> OwnedMedication { get; set; }
+        public DbSet<Image> Image { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -30,6 +31,11 @@ namespace TestPharmacy1.Data
                 .WithOne(o => o.Medication)
                 .HasPrincipalKey<ConsistencyOfMedication>(o => o.Id)
                 .HasForeignKey<Medication>(o => o.ConsistencyOfMedicationId);
+            builder.Entity<Medication>()
+                .HasOne(o => o.Image)
+                .WithOne(o => o.Medication)
+                .HasPrincipalKey<Image>(o => o.Id)
+                .HasForeignKey<Medication>(o => o.ImageId);
             builder.Entity<OwnedMedication>()
                 .HasOne(o => o.Medication)
                 .WithOne(o => o.OwnedMedication)

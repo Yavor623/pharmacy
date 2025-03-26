@@ -7,6 +7,7 @@ namespace TestPharmacy1.Models
     public class Medication
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
         [StringLength(30)]
         public string Name { get; set; }
@@ -29,7 +30,9 @@ namespace TestPharmacy1.Models
         public int ConsistencyOfMedicationId { get; set; }
         public ConsistencyOfMedication ConsistencyOfMedication { get; set; }
         public OwnedMedication OwnedMedication { get; set; }
-        public byte[] Picture { get; set; }
+        [ForeignKey("ImageId")]
+        public int ImageId { get; set; }
+        public Image Image { get; set; }
 
     }
 }

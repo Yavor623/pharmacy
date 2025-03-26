@@ -37,7 +37,7 @@
     </div>
     <div class="form-group">
         <label asp-for="DateOfBirth">Дата на раждане</label>
-        <input asp-for="DateOfBirth" class="form-control" type="file" />
+        <input asp-for="DateOfBirth" type="file" accept="image/*" />
         <span asp-validation-for="DateOfBirth" class="text-danger"></span>
     </div>
     <button type="submit" class="btn btn-primary">Регистрация</button>

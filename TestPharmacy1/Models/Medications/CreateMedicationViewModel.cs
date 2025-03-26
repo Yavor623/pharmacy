@@ -23,6 +23,6 @@ namespace TestPharmacy1.Models.Medications
         public int TypeOfMedicationId { get; set; }
 
         public int ConsistencyOfMedicationId { get; set; }
-        public byte[] Picture { get; set; }
+        public int ImageId { get; set; }
     }
 }

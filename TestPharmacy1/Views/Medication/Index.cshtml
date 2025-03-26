@@ -9,12 +9,12 @@
         @foreach (var medication in Model)
         {
             <div>
-                <img src="@medication.Picture."/>
                 <h1>@medication.Name</h1>
                 <h3>@medication.Manufacturer</h3>
                 <h5>@medication.Description</h5>
             </div>
         }
     </div>
+    <a asp-action="Create" class="btn btn-primary">Create</a>
 </div>
 

@@ -7,6 +7,7 @@ namespace TestPharmacy1.Models
     public class OwnedMedication
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
         [ForeignKey("MedId")]
         public int MedId { get; set; }

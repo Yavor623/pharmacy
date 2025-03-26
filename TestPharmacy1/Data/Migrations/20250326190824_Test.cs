@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TestPharmacy1.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class Test : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -74,8 +74,7 @@ namespace TestPharmacy1.Data.Migrations
                 name: "ConsistencyOfMedication",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false)
                 },
                 constraints: table =>
@@ -84,11 +83,22 @@ namespace TestPharmacy1.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Image",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Image", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Prescription",
                 columns: table => new
                 {
-                    PrescriptionId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PrescriptionId = table.Column<int>(type: "int", nullable: false),
                     MedId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     PrescribedDate = table.Column<DateOnly>(type: "date", nullable: false),
@@ -109,8 +119,7 @@ namespace TestPharmacy1.Data.Migrations
                 name: "TypeOfMedication",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false)
                 },
                 constraints: table =>
@@ -122,8 +131,7 @@ namespace TestPharmacy1.Data.Migrations
                 name: "Medication",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     Manufacturer = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     ExpirationDate = table.Column<DateOnly>(type: "date", nullable: false),
@@ -131,7 +139,8 @@ namespace TestPharmacy1.Data.Migrations
                     Amount = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     TypeOfMedicationId = table.Column<int>(type: "int", nullable: false),
-                    ConsistencyOfMedicationId = table.Column<int>(type: "int", nullable: false)
+                    ConsistencyOfMedicationId = table.Column<int>(type: "int", nullable: false),
+                    ImageId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -140,6 +149,12 @@ namespace TestPharmacy1.Data.Migrations
                         name: "FK_Medication_ConsistencyOfMedication_ConsistencyOfMedicationId",
                         column: x => x.ConsistencyOfMedicationId,
                         principalTable: "ConsistencyOfMedication",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Medication_Image_ImageId",
+                        column: x => x.ImageId,
+                        principalTable: "Image",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -154,8 +169,7 @@ namespace TestPharmacy1.Data.Migrations
                 name: "OwnedMedication",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     MedId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
@@ -180,6 +194,12 @@ namespace TestPharmacy1.Data.Migrations
                 name: "IX_Medication_ConsistencyOfMedicationId",
                 table: "Medication",
                 column: "ConsistencyOfMedicationId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Medication_ImageId",
+                table: "Medication",
+                column: "ImageId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -220,6 +240,9 @@ namespace TestPharmacy1.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "ConsistencyOfMedication");
+
+            migrationBuilder.DropTable(
+                name: "Image");
 
             migrationBuilder.DropTable(
                 name: "TypeOfMedication");
