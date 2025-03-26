@@ -1,0 +1,45 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+.everything{
+    height:100vh;
+    width:100vw;
+    padding:3%;
+    text-align:center;
+}
+.medications {
+    margin-right: 3vw;
+    margin-left: 3vw;
+    width: 94vw;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    overflow-x: hidden;
+    div{
+           height:90%;
+           width:90%;
+           padding:20%;
+           border:1px solid black;
+           border-radius:4px;
+
+       }
+}

@@ -1,0 +1,20 @@
+﻿@model IEnumerable<Medication>
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<div class="everyting">
+    <h2>Index</h2>
+    <div class="medications">
+        @foreach (var medication in Model)
+        {
+            <div>
+                <img src="@medication.Picture."/>
+                <h1>@medication.Name</h1>
+                <h3>@medication.Manufacturer</h3>
+                <h5>@medication.Description</h5>
+            </div>
+        }
+    </div>
+</div>
+
