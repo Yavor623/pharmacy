@@ -12,7 +12,7 @@ using TestPharmacy1.Data;
 namespace TestPharmacy1.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250326190824_Test")]
+    [Migration("20250327093432_Test")]
     partial class Test
     {
         /// <inheritdoc />
@@ -239,37 +239,130 @@ namespace TestPharmacy1.Data.Migrations
             modelBuilder.Entity("TestPharmacy1.Models.ConsistencyOfMedication", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasMaxLength(80)
+                        .HasColumnType("nvarchar(80)");
 
                     b.HasKey("Id");
 
                     b.ToTable("ConsistencyOfMedication");
-                });
 
-            modelBuilder.Entity("TestPharmacy1.Models.Image", b =>
-                {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Image");
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "таблетки"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "капсули"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "прах"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "гранули"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "разтвор"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "емулсия"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "суспензия"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "сироп"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Name = "капки"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Name = "запарка, отвара"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Name = "тинктура"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Name = "инжекционни форми"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Name = "крем"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Name = "гел, желе"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            Name = "паста"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            Name = "маз, мехлем"
+                        },
+                        new
+                        {
+                            Id = 17,
+                            Name = "свещичка"
+                        },
+                        new
+                        {
+                            Id = 18,
+                            Name = "пяна"
+                        },
+                        new
+                        {
+                            Id = 19,
+                            Name = "пластир, трансдермални терапевтични системи"
+                        },
+                        new
+                        {
+                            Id = 20,
+                            Name = "спрей"
+                        });
                 });
 
             modelBuilder.Entity("TestPharmacy1.Models.Medication", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("Amount")
                         .HasColumnType("int");
@@ -285,8 +378,9 @@ namespace TestPharmacy1.Data.Migrations
                     b.Property<DateOnly>("ExpirationDate")
                         .HasColumnType("date");
 
-                    b.Property<int>("ImageId")
-                        .HasColumnType("int");
+                    b.Property<byte[]>("Image")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<bool>("IsPrescriptionNeeded")
                         .HasColumnType("bit");
@@ -301,15 +395,15 @@ namespace TestPharmacy1.Data.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<int>("TypeOfMedicationId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ConsistencyOfMedicationId")
-                        .IsUnique();
-
-                    b.HasIndex("ImageId")
                         .IsUnique();
 
                     b.HasIndex("TypeOfMedicationId")
@@ -321,7 +415,10 @@ namespace TestPharmacy1.Data.Migrations
             modelBuilder.Entity("TestPharmacy1.Models.OwnedMedication", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("MedId")
                         .HasColumnType("int");
@@ -344,7 +441,10 @@ namespace TestPharmacy1.Data.Migrations
             modelBuilder.Entity("TestPharmacy1.Models.Prescription", b =>
                 {
                     b.Property<int>("PrescriptionId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PrescriptionId"));
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -371,16 +471,191 @@ namespace TestPharmacy1.Data.Migrations
             modelBuilder.Entity("TestPharmacy1.Models.TypeOfMedication", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasMaxLength(80)
+                        .HasColumnType("nvarchar(80)");
 
                     b.HasKey("Id");
 
                     b.ToTable("TypeOfMedication");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Адренокортикоактивни средства"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Адренолитици"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Адреномиметици"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Анксиолитици (транквилизатори)"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Антиаритмични средства"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Антибактериалните средства"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "Антидепресанти"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "Антидиабетични средства"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Name = "Антидиарични средства"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Name = "Антиеметични средства"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Name = "Антиепилептични средства"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Name = "Антимикотични средства"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Name = "Антисекреторни средства"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Name = "Антиулкусни средства"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            Name = "Антихипогликемични средства"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            Name = "Гонадоактивни средства"
+                        },
+                        new
+                        {
+                            Id = 17,
+                            Name = "Диуретици"
+                        },
+                        new
+                        {
+                            Id = 18,
+                            Name = "Ензимни панкреатични средства"
+                        },
+                        new
+                        {
+                            Id = 19,
+                            Name = "Калциеви антагонисти"
+                        },
+                        new
+                        {
+                            Id = 20,
+                            Name = "М-холинолитици"
+                        },
+                        new
+                        {
+                            Id = 21,
+                            Name = "Муколитици"
+                        },
+                        new
+                        {
+                            Id = 22,
+                            Name = "Невролептици (антипсихотици)"
+                        },
+                        new
+                        {
+                            Id = 23,
+                            Name = "Неопиоидни (антипиретични) аналгетици"
+                        },
+                        new
+                        {
+                            Id = 24,
+                            Name = "Нестероидни противовъзпалителни средства (Сох-инхибитори)"
+                        },
+                        new
+                        {
+                            Id = 25,
+                            Name = "Орални антидиабетични средства"
+                        },
+                        new
+                        {
+                            Id = 26,
+                            Name = "Очистителни (лаксативни) средства"
+                        },
+                        new
+                        {
+                            Id = 27,
+                            Name = "Противовирусни средства"
+                        },
+                        new
+                        {
+                            Id = 28,
+                            Name = "Средства, повлияващи растежния хормон"
+                        },
+                        new
+                        {
+                            Id = 29,
+                            Name = "Средства, прилагани при суха кашлица"
+                        },
+                        new
+                        {
+                            Id = 30,
+                            Name = "Тиреоактивни средства"
+                        },
+                        new
+                        {
+                            Id = 31,
+                            Name = "Хепатопротектори"
+                        },
+                        new
+                        {
+                            Id = 32,
+                            Name = "Холеретични (жлъчетворни) и холекинетични (жлъчегонни) средства"
+                        },
+                        new
+                        {
+                            Id = 33,
+                            Name = "Холиномиметици"
+                        },
+                        new
+                        {
+                            Id = 34,
+                            Name = "Хормонални контрацептиви"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -442,12 +717,6 @@ namespace TestPharmacy1.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TestPharmacy1.Models.Image", "Image")
-                        .WithOne("Medication")
-                        .HasForeignKey("TestPharmacy1.Models.Medication", "ImageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("TestPharmacy1.Models.TypeOfMedication", "TypeOfMedication")
                         .WithOne("Medication")
                         .HasForeignKey("TestPharmacy1.Models.Medication", "TypeOfMedicationId")
@@ -455,8 +724,6 @@ namespace TestPharmacy1.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("ConsistencyOfMedication");
-
-                    b.Navigation("Image");
 
                     b.Navigation("TypeOfMedication");
                 });
@@ -500,12 +767,6 @@ namespace TestPharmacy1.Data.Migrations
                 });
 
             modelBuilder.Entity("TestPharmacy1.Models.ConsistencyOfMedication", b =>
-                {
-                    b.Navigation("Medication")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("TestPharmacy1.Models.Image", b =>
                 {
                     b.Navigation("Medication")
                         .IsRequired();

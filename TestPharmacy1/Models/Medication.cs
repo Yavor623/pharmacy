@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 
@@ -7,7 +8,6 @@ namespace TestPharmacy1.Models
     public class Medication
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
         [StringLength(30)]
         public string Name { get; set; }
@@ -20,19 +20,21 @@ namespace TestPharmacy1.Models
         [StringLength(150)]
         [AllowNull]
         public string Description { get; set; }
-
-        [ForeignKey("TypeOfMedicationId")]
         public int TypeOfMedicationId { get; set; }
-        
-        public TypeOfMedication TypeOfMedication { get; set; }
+        [ValidateNever]
+        [ForeignKey("TypeOfMedicationId")]
 
-        [ForeignKey("ConsistencyOfMedicationId")]
+        public TypeOfMedication TypeOfMedication { get; set; }
+        
         public int ConsistencyOfMedicationId { get; set; }
+        [ValidateNever]
+        [ForeignKey("ConsistencyOfMedicationId")]
         public ConsistencyOfMedication ConsistencyOfMedication { get; set; }
         public OwnedMedication OwnedMedication { get; set; }
         [ForeignKey("ImageId")]
-        public int ImageId { get; set; }
-        public Image Image { get; set; }
+        public byte[] Image { get; set; }
+        [DisplayFormat(DataFormatString = "{0:C0}")]
+        public decimal Price { get; set; }
 
     }
 }

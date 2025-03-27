@@ -1,7 +1,7 @@
 ﻿
 @model TestPharmacy1.Models.Medications.CreateMedicationViewModel
 
-<form asp-action="Create" method="post">
+<form asp-action="Create" method="post" enctype="multipart/form-data">
 	<div class="form-group">
 		<label asp-for="Name" class=""></label>
 		<input asp-for="Name" class="form-control"/>
@@ -24,7 +24,7 @@
 	</div>
 	<div class="form-group">
 		<label asp-for="Amount" class=""></label>
-		<input asp-for="Amount" class="form-control" type="number" />
+		<input asp-for="Amount" class="form-control" type="number" min="0"/>
 		<span asp-validation-for="Amount" class="text-danger"></span>
 	</div>
 	<div class="form-group">
@@ -45,8 +45,13 @@
 		</select>
 	</div>
 	<div class="form-group">
-		<label asp-for="ImageId" class=""></label>
-		<input asp-for="ImageId" class="form-control" accept="image/*" type="file"/>
-		<span asp-validation-for="ImageId" class="text-danger"></span>
+		<label asp-for="ImageFile" class=""></label>
+		<input asp-for="ImageFile" class="form-control" accept="image/*" type="file"/>
 	</div>
+	<div class="form-group">
+		<label asp-for="Price" class=""></label>
+		<input asp-for="Price" class="form-control" type="number" min="0"/>
+		<span asp-validation-for="Price" class="text-danger"></span>
+	</div>
+	<button type="submit" class="btn btn-success">Запази</button>
 </form>

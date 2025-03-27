@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
+using Humanizer.Bytes;
 
 namespace TestPharmacy1.Models.Medications
 {
@@ -23,6 +24,9 @@ namespace TestPharmacy1.Models.Medications
         public int TypeOfMedicationId { get; set; }
 
         public int ConsistencyOfMedicationId { get; set; }
-        public int ImageId { get; set; }
+        [Display(Name = "Upload Image")]
+        public IFormFile ImageFile { get; set; }
+        [DisplayFormat(DataFormatString = "{0:C0}")]
+        public decimal Price { get; set; }
     }
 }

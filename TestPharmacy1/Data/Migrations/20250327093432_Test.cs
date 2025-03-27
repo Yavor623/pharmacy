@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace TestPharmacy1.Data.Migrations
 {
     /// <inheritdoc />
@@ -74,8 +76,9 @@ namespace TestPharmacy1.Data.Migrations
                 name: "ConsistencyOfMedication",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -83,22 +86,11 @@ namespace TestPharmacy1.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Image",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Image", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Prescription",
                 columns: table => new
                 {
-                    PrescriptionId = table.Column<int>(type: "int", nullable: false),
+                    PrescriptionId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     MedId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     PrescribedDate = table.Column<DateOnly>(type: "date", nullable: false),
@@ -119,8 +111,9 @@ namespace TestPharmacy1.Data.Migrations
                 name: "TypeOfMedication",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -131,7 +124,8 @@ namespace TestPharmacy1.Data.Migrations
                 name: "Medication",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     Manufacturer = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     ExpirationDate = table.Column<DateOnly>(type: "date", nullable: false),
@@ -140,7 +134,8 @@ namespace TestPharmacy1.Data.Migrations
                     Description = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     TypeOfMedicationId = table.Column<int>(type: "int", nullable: false),
                     ConsistencyOfMedicationId = table.Column<int>(type: "int", nullable: false),
-                    ImageId = table.Column<int>(type: "int", nullable: false)
+                    Image = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -149,12 +144,6 @@ namespace TestPharmacy1.Data.Migrations
                         name: "FK_Medication_ConsistencyOfMedication_ConsistencyOfMedicationId",
                         column: x => x.ConsistencyOfMedicationId,
                         principalTable: "ConsistencyOfMedication",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Medication_Image_ImageId",
-                        column: x => x.ImageId,
-                        principalTable: "Image",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -169,7 +158,8 @@ namespace TestPharmacy1.Data.Migrations
                 name: "OwnedMedication",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     MedId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
@@ -190,16 +180,78 @@ namespace TestPharmacy1.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "ConsistencyOfMedication",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "таблетки" },
+                    { 2, "капсули" },
+                    { 3, "прах" },
+                    { 4, "гранули" },
+                    { 5, "разтвор" },
+                    { 6, "емулсия" },
+                    { 7, "суспензия" },
+                    { 8, "сироп" },
+                    { 9, "капки" },
+                    { 10, "запарка, отвара" },
+                    { 11, "тинктура" },
+                    { 12, "инжекционни форми" },
+                    { 13, "крем" },
+                    { 14, "гел, желе" },
+                    { 15, "паста" },
+                    { 16, "маз, мехлем" },
+                    { 17, "свещичка" },
+                    { 18, "пяна" },
+                    { 19, "пластир, трансдермални терапевтични системи" },
+                    { 20, "спрей" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "TypeOfMedication",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Адренокортикоактивни средства" },
+                    { 2, "Адренолитици" },
+                    { 3, "Адреномиметици" },
+                    { 4, "Анксиолитици (транквилизатори)" },
+                    { 5, "Антиаритмични средства" },
+                    { 6, "Антибактериалните средства" },
+                    { 7, "Антидепресанти" },
+                    { 8, "Антидиабетични средства" },
+                    { 9, "Антидиарични средства" },
+                    { 10, "Антиеметични средства" },
+                    { 11, "Антиепилептични средства" },
+                    { 12, "Антимикотични средства" },
+                    { 13, "Антисекреторни средства" },
+                    { 14, "Антиулкусни средства" },
+                    { 15, "Антихипогликемични средства" },
+                    { 16, "Гонадоактивни средства" },
+                    { 17, "Диуретици" },
+                    { 18, "Ензимни панкреатични средства" },
+                    { 19, "Калциеви антагонисти" },
+                    { 20, "М-холинолитици" },
+                    { 21, "Муколитици" },
+                    { 22, "Невролептици (антипсихотици)" },
+                    { 23, "Неопиоидни (антипиретични) аналгетици" },
+                    { 24, "Нестероидни противовъзпалителни средства (Сох-инхибитори)" },
+                    { 25, "Орални антидиабетични средства" },
+                    { 26, "Очистителни (лаксативни) средства" },
+                    { 27, "Противовирусни средства" },
+                    { 28, "Средства, повлияващи растежния хормон" },
+                    { 29, "Средства, прилагани при суха кашлица" },
+                    { 30, "Тиреоактивни средства" },
+                    { 31, "Хепатопротектори" },
+                    { 32, "Холеретични (жлъчетворни) и холекинетични (жлъчегонни) средства" },
+                    { 33, "Холиномиметици" },
+                    { 34, "Хормонални контрацептиви" }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Medication_ConsistencyOfMedicationId",
                 table: "Medication",
                 column: "ConsistencyOfMedicationId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Medication_ImageId",
-                table: "Medication",
-                column: "ImageId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -240,9 +292,6 @@ namespace TestPharmacy1.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "ConsistencyOfMedication");
-
-            migrationBuilder.DropTable(
-                name: "Image");
 
             migrationBuilder.DropTable(
                 name: "TypeOfMedication");

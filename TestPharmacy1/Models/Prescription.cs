@@ -6,7 +6,6 @@ namespace TestPharmacy1.Models
     public class Prescription
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int PrescriptionId { get; set; }
         public int MedId { get; set; }
         public string UserId { get; set; }

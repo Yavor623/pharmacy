@@ -4,28 +4,30 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using TestPharmacy1.Models.Medications;
 using TestPharmacy1.Models;
+using static System.Net.Mime.MediaTypeNames;
+using System.IO;
+using System.Formats.Tar;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace TestPharmacy1.Controllers
 {
     public class MedicationController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly Image image;
-        private readonly IHostEnvironment _hostEnvironment;
-        public MedicationController(ApplicationDbContext context,IHostEnvironment hostEnvironment,Image image)
+        public MedicationController(ApplicationDbContext context)
         {
             _context = context;
-            _hostEnvironment = hostEnvironment;
-            this.image = image;
         }
         public IActionResult Index()
         {
-            var medications = _context.Medication.Include(o => o.TypeOfMedication).Include(o => o.ConsistencyOfMedication).Include(o => o.Image).ToList();
+            var medications = _context.Medication.Include(o => o.TypeOfMedication).Include(o => o.ConsistencyOfMedication).ToList();
             return View(medications);
         }
         [HttpGet]
         public IActionResult Create()
         {
+            ViewData["TypeOfMedicationId"] = new SelectList(_context.TypeOfMedication, "Id", "Name");
+            ViewData["ConsistencyOfMedicationId"] = new SelectList(_context.ConsistencyOfMedication, "Id", "Name");
             return View();
         }
         [HttpPost]
@@ -33,24 +35,33 @@ namespace TestPharmacy1.Controllers
         {
             if (ModelState.IsValid)
             {
-                string wwwRoot = _hostEnvironment.ContentRootPath;
-                string fileName = Path.GetFileNameWithoutExtension(image.ImageFile.FileName);
-                string extension = Path.GetExtension(image.ImageFile.FileName);
-                image.Name = fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
-                string path = Path.Combine(wwwRoot + "/Image/", fileName);
-                using (var fileStream = new FileStream(path,FileMode.Create))
-                {
-                    await image.ImageFile.CopyToAsync(fileStream);
-                }
                 var medication = new Medication
                 {
-
+                    Name = model.Name,
+                    Manufacturer = model.Manufacturer,
+                    ExpirationDate = model.ExpirationDate,
+                    IsPrescriptionNeeded = model.IsPrescriptionNeeded,
+                    Amount = model.Amount,
+                    Description = model.Description,
+                    TypeOfMedicationId = model.TypeOfMedicationId,
+                    ConsistencyOfMedicationId = model.ConsistencyOfMedicationId,
+                    Price = model.Price
                 };
-                _context.Image.Add(image);
-
-                _context.SaveChanges();
+                if (model.ImageFile != null)
+                {
+                    using (var ms = new MemoryStream())
+                    {
+                        await model.ImageFile.CopyToAsync(ms);
+                        medication.Image = ms.ToArray();
+                    }
+                }
+                    _context.Medication.Add(medication);
+                    _context.SaveChanges();
+                return RedirectToAction("Index");
             }
-            return RedirectToAction("Index");
+            ViewBag.TypesOfMedication = new SelectList(_context.TypeOfMedication, "Id", "Name",model.TypeOfMedicationId);
+            ViewBag.ConsistencyOfMedication = new SelectList(_context.ConsistencyOfMedication, "Id", "Name", model.ConsistencyOfMedicationId);
+            return View(model);
         }
     }
 }

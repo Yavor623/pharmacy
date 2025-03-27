@@ -19,27 +19,37 @@ html {
 
 body {
   margin-bottom: 60px;
+  scroll-behavior:smooth;
 }
 .everything{
     height:100vh;
     width:100vw;
     padding:3%;
-    text-align:center;
+   
+}
+#title {
+    margin-left: 25vw;
+    margin-top:10vh;
 }
 .medications {
-    margin-right: 3vw;
-    margin-left: 3vw;
-    width: 94vw;
-    height: 100vh;
+    margin-right: 5vw;
+    margin-left: 25vw;
+    margin-top: 5vh;
+    width: 70vw;
+    height: 80vh;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    overflow-x: hidden;
-    div{
-           height:90%;
-           width:90%;
-           padding:20%;
-           border:1px solid black;
-           border-radius:4px;
-
+    grid-template-rows: 1fr 1fr 1fr;
+    overflow-x:hidden;
+    .items{
+           height:95%;
+           width:85%;
+           padding:5%;
        }
+.items:hover  {
+    border: 1px solid black;
+    border-radius: 7px;
+}
+
+     
 }

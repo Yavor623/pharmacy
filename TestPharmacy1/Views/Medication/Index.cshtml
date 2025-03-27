@@ -4,14 +4,15 @@
 @inject UserManager<ApplicationUser> UserManager
 
 <div class="everyting">
-    <h2>Index</h2>
+    <h2 id="title">Продукти</h2>
     <div class="medications">
+        
         @foreach (var medication in Model)
         {
-            <div>
-                <h1>@medication.Name</h1>
-                <h3>@medication.Manufacturer</h3>
-                <h5>@medication.Description</h5>
+            <div class="items">
+                <img src="data:image;base64,@(Convert.ToBase64String(@medication.Image))" width="100%" height="65%" style="border-radius:inherit" />
+                <h5 style ="font-weight:300">@medication.Name @medication.Description</h5>
+                <h3 style="font-weight:650;color:greenyellow">@medication.Price лв.</h3>
             </div>
         }
     </div>
