@@ -18,9 +18,39 @@ namespace TestPharmacy1.Controllers
         {
             _context = context;
         }
-        public IActionResult Index()
+        public IActionResult Index(string SearchString,string SelectedOption)
         {
             var medications = _context.Medication.Include(o => o.TypeOfMedication).Include(o => o.ConsistencyOfMedication).ToList();
+            
+            if (!String.IsNullOrEmpty(SearchString))
+            {
+                var queryLowNums =
+                 from med in medications
+                 where med.Name.ToLower().Contains(SearchString.ToLower())
+                 select med;
+                return View(queryLowNums);
+            }
+            if (!String.IsNullOrEmpty(SelectedOption))
+            {
+                switch (SelectedOption) 
+                {
+                    case "Price":
+                        var queryPrice = medications.OrderByDescending(o => o.Price);
+                        return View(queryPrice);
+                        break;
+                    case "Alphabetical order":
+                        var queryName = medications.OrderByDescending(o => o.Name);
+                        return View(queryName);
+                        break;
+                     default : return View(medications);
+
+                }
+
+            }
+            return View(medications);
+        }
+        public IActionResult FilteredIndex(List<Medication>medications)
+        {
             return View(medications);
         }
         [HttpGet]
@@ -30,6 +60,7 @@ namespace TestPharmacy1.Controllers
             ViewData["ConsistencyOfMedicationId"] = new SelectList(_context.ConsistencyOfMedication, "Id", "Name");
             return View();
         }
+       
         [HttpPost]
         public async Task<IActionResult> Create(CreateMedicationViewModel model)
         {
