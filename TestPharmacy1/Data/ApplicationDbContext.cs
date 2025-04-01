@@ -22,14 +22,12 @@ namespace TestPharmacy1.Data
 
             builder.Entity<Medication>()
                 .HasOne(o => o.TypeOfMedication)
-                .WithOne(o => o.Medication)
-                .HasPrincipalKey<TypeOfMedication>(o => o.Id)
-                .HasForeignKey<Medication>(o => o.TypeOfMedicationId);
+                .WithMany(o => o.Medication)
+                .HasForeignKey(o => o.TypeOfMedicationId);
             builder.Entity<Medication>()
                 .HasOne(o => o.ConsistencyOfMedication)
-                .WithOne(o => o.Medication)
-                .HasPrincipalKey<ConsistencyOfMedication>(o => o.Id)
-                .HasForeignKey<Medication>(o => o.ConsistencyOfMedicationId);
+                .WithMany(o => o.Medication)
+                .HasForeignKey(o => o.ConsistencyOfMedicationId);
             builder.Entity<OwnedMedication>()
                 .HasOne(o => o.Medication)
                 .WithOne(o => o.OwnedMedication)

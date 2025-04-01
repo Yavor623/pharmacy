@@ -251,14 +251,12 @@ namespace TestPharmacy1.Data.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Medication_ConsistencyOfMedicationId",
                 table: "Medication",
-                column: "ConsistencyOfMedicationId",
-                unique: true);
+                column: "ConsistencyOfMedicationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Medication_TypeOfMedicationId",
                 table: "Medication",
-                column: "TypeOfMedicationId",
-                unique: true);
+                column: "TypeOfMedicationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OwnedMedication_MedId",

@@ -38,7 +38,7 @@ namespace TestPharmacy1.Controllers
                         var queryPrice = medications.OrderByDescending(o => o.Price);
                         return View(queryPrice);
                         break;
-                    case "Alphabetical order":
+                    case "Name":
                         var queryName = medications.OrderByDescending(o => o.Name);
                         return View(queryName);
                         break;

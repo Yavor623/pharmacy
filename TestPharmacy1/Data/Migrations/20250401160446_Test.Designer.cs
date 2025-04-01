@@ -12,7 +12,7 @@ using TestPharmacy1.Data;
 namespace TestPharmacy1.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250327093432_Test")]
+    [Migration("20250401160446_Test")]
     partial class Test
     {
         /// <inheritdoc />
@@ -403,11 +403,9 @@ namespace TestPharmacy1.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ConsistencyOfMedicationId")
-                        .IsUnique();
+                    b.HasIndex("ConsistencyOfMedicationId");
 
-                    b.HasIndex("TypeOfMedicationId")
-                        .IsUnique();
+                    b.HasIndex("TypeOfMedicationId");
 
                     b.ToTable("Medication");
                 });
@@ -712,14 +710,14 @@ namespace TestPharmacy1.Data.Migrations
             modelBuilder.Entity("TestPharmacy1.Models.Medication", b =>
                 {
                     b.HasOne("TestPharmacy1.Models.ConsistencyOfMedication", "ConsistencyOfMedication")
-                        .WithOne("Medication")
-                        .HasForeignKey("TestPharmacy1.Models.Medication", "ConsistencyOfMedicationId")
+                        .WithMany("Medication")
+                        .HasForeignKey("ConsistencyOfMedicationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("TestPharmacy1.Models.TypeOfMedication", "TypeOfMedication")
-                        .WithOne("Medication")
-                        .HasForeignKey("TestPharmacy1.Models.Medication", "TypeOfMedicationId")
+                        .WithMany("Medication")
+                        .HasForeignKey("TypeOfMedicationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -768,8 +766,7 @@ namespace TestPharmacy1.Data.Migrations
 
             modelBuilder.Entity("TestPharmacy1.Models.ConsistencyOfMedication", b =>
                 {
-                    b.Navigation("Medication")
-                        .IsRequired();
+                    b.Navigation("Medication");
                 });
 
             modelBuilder.Entity("TestPharmacy1.Models.Medication", b =>
@@ -780,8 +777,7 @@ namespace TestPharmacy1.Data.Migrations
 
             modelBuilder.Entity("TestPharmacy1.Models.TypeOfMedication", b =>
                 {
-                    b.Navigation("Medication")
-                        .IsRequired();
+                    b.Navigation("Medication");
                 });
 #pragma warning restore 612, 618
         }

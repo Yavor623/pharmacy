@@ -2,21 +2,7 @@
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
-@{
-    List<SelectListItem> list = new List<SelectListItem>()
-    {
-        new SelectListItem()
-                   {
-                       Text ="Price",
-                       Value ="Price"
-                   },
-                   new SelectListItem()
-                   {
-                       Text = "Alphabetical order",
-                       Value = "Alphabetical order"
-                   }
-    };
-}
+
 <head>
     <link rel="stylesheet" href="~/css/Main.css"><link />    
 </head>
@@ -30,20 +16,12 @@
         <select name="SelectedOption">
             <option></option>
             <option>Price</option>
-            <option>Alphabetical order</option>
+            <option>Name</option>
         </select>
         
         <input type="submit" value="Order"  /> 
     </form>   
-    @* @using (Html.BeginForm("Index", "Medication"))
-    {
-        <div class="form-group">
-            <label class="control-label">Search by:</label>
-            @Html.DropDownList("myDropDownList", list)
-        </div>
-        <button type="submit">Find</button>
-    } *@
-    @* <a asp-action="Create" class="btn btn-primary">Create</a> *@
+    <a asp-action="Create" class="btn btn-primary">Create</a>
 </aside>
 <main>
         <h2 id="title">Продукти</h2>
@@ -52,14 +30,33 @@
             @foreach (var medication in Model)
             {
                 <div class="items">
+                    
+                <div class="pop-up" style="display:none">
+                    <ul>
+                        <li><a asp-action="Delete">Delete</a></li>
+                        <li><a asp-action="Edit">Edit</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <input onchange="ShowMenu()" type="checkbox" id="toggle" style="display:none" class="check">
+                    <label for="toggle" class="three-dots">&#8230;</label>
                     <img src="data:image;base64,@(Convert.ToBase64String(@medication.Image))" width="100%" height="65%" style="border-radius:inherit" />
                     <h5 style="font-weight:300">@medication.Name @medication.Description</h5>
                     <h3 style="font-weight:650;color:greenyellow">@medication.Price лв.</h3>
                 </div>
+                </div>
             }
         
         </div>
-    
+    <script type="text/javascript">
+        const checkBox = document.getElementById('toggle');
+        const popUp = document.getElementsByClassName('pop-up')[0];
+        function ShowMenu(){
+            if(checkBox.ariaChecked){
+                popUp.style.display = 'block';
+            }
+        }
+    </script>
 </main>
 
 
