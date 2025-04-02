@@ -10,8 +10,8 @@
 .searchId{
     width:100%;
     margin:0;
-    height:10%;
-    align-content:center;
+    height:70%;
+    padding:5%;
 }
 #pop-up{
     width:100%;
@@ -41,19 +41,22 @@ a{
 
 .searchBar {
     border-radius: 7px;
+    border:1px solid gray;
     margin: 0;
-    height: 70%;
+    height: 10%;
     width: 70%;
-    font-size: 1.5em;
+    padding:3%;
+    font-size: 1.3em;
 }
 .searchBtn{
     border-radius:7px;
     border:1px solid transparent;
     color:white;
     margin:0;
-    font-size:1.2em;
-    background-color:blue;
-    height:70%;
+    font-size:1em;
+    font-weight:400;
+    background-color:dodgerblue;
+    height:10%;
     width:25%;
 }
 .left-aside {

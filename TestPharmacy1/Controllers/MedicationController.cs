@@ -8,15 +8,18 @@ using static System.Net.Mime.MediaTypeNames;
 using System.IO;
 using System.Formats.Tar;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Identity;
 
 namespace TestPharmacy1.Controllers
 {
     public class MedicationController : Controller
     {
         private readonly ApplicationDbContext _context;
-        public MedicationController(ApplicationDbContext context)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public MedicationController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
         public IActionResult Index(string searchString,string selectedOption)
         {
@@ -39,7 +42,7 @@ namespace TestPharmacy1.Controllers
                         return View(queryPrice);
                         break;
                     case "Name":
-                        var queryName = medications.OrderByDescending(o => o.Name);
+                        var queryName = medications.OrderBy(o => o.Name);
                         return View(queryName);
                         break;
                      default : return View(medications);
@@ -94,5 +97,19 @@ namespace TestPharmacy1.Controllers
             ViewBag.ConsistencyOfMedication = new SelectList(_context.ConsistencyOfMedication, "Id", "Name", model.ConsistencyOfMedicationId);
             return View(model);
         }
+        [HttpPost]
+        public  async Task<IActionResult> AddToCart(int medId)
+        {
+            var ownedMedication = _context.OwnedMedication.ToList();
+            OwnedMedication ownedMedication1 = new OwnedMedication()
+            {
+                MedId = medId,
+                // Find the UserId
+                //UserId = 
+            };
+            ownedMedication.Add(ownedMedication1);
+            return View();
+        }
+
     }
 }
