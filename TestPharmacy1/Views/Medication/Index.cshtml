@@ -4,16 +4,17 @@
 @inject UserManager<ApplicationUser> UserManager
 
 <head>
-    <link rel="stylesheet" href="~/css/Main.css"><link />    
+    <link rel="stylesheet" href="~/css/Main.css"><link /> 
+    
 </head>
 <aside class="left-aside">
     <h2>Страни</h2>
     <form asp-action="Index" method="get" class="searchId">
-        <input name="SearchString" value="" type="text" class="searchBar"/>
+        <input name="searchString" value="" type="text" class="searchBar"/>
         <input type="submit" value="Search" class="searchBtn"/>
         <br />
         <label>Sort by:</label>
-        <select name="SelectedOption">
+        <select name="selectedOption">
             <option></option>
             <option>Price</option>
             <option>Name</option>
@@ -21,42 +22,63 @@
         
         <input type="submit" value="Order"  /> 
     </form>   
+    <br />
     <a asp-action="Create" class="btn btn-primary">Create</a>
 </aside>
 <main>
         <h2 id="title">Продукти</h2>
-        <div class="medications">
+        <div class="medications" style="margin-left:3%">
 
             @foreach (var medication in Model)
             {
                 <div class="items">
                     
-                <div class="pop-up" style="display:none">
-                    <ul>
-                        <li><a asp-action="Delete">Delete</a></li>
-                        <li><a asp-action="Edit">Edit</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <input onchange="ShowMenu()" type="checkbox" id="toggle" style="display:none" class="check">
-                    <label for="toggle" class="three-dots">&#8230;</label>
-                    <img src="data:image;base64,@(Convert.ToBase64String(@medication.Image))" width="100%" height="65%" style="border-radius:inherit" />
-                    <h5 style="font-weight:300">@medication.Name @medication.Description</h5>
-                    <h3 style="font-weight:650;color:greenyellow">@medication.Price лв.</h3>
-                </div>
+                    <div id="pop-up" style="display:none">
+                        <ul>
+                            <li><a asp-action="Delete">Delete</a></li>
+                            <li><a asp-action="Edit">Edit</a></li>
+                        </ul>
+                    </div>
+                    <div style="width:100%">
+
+                    <label class="three-dots" >&#8230;<input type="checkbox" onclick="" name="toggle" id="toggle" /></label>
+                        <div id="pic-frame">
+                            <img src="data:image;base64,@(Convert.ToBase64String(@medication.Image))" style="border-radius:1rem;" />
+                        </div>
+                        <div style="min-height:50px"><h5 style="font-weight:350">@medication.Name @medication.Description</h5></div>
+                        <div style="min-height:50px"><h5 style="font-weight:650;color:lawngreen">@medication.Price лв.</h5></div>
+                    </div>
                 </div>
             }
         
         </div>
-    <script type="text/javascript">
-        const checkBox = document.getElementById('toggle');
-        const popUp = document.getElementsByClassName('pop-up')[0];
-        function ShowMenu(){
-            if(checkBox.ariaChecked){
-                popUp.style.display = 'block';
+        <style>
+            #pic-frame{
+                width:100%;
+                object-fit:cover;
+                margin-bottom:3%;
+                img{
+                    width:100%;
+                    min-height:140px;
+                    max-height: 140px;
+                }
             }
+            #toggle{
+                display:none;
+            }
+        #toggle:checked #pop-up {
+            display: block;
         }
-    </script>
+        </style>
+        <script type="text/javascript">
+            const checkBox = document.getElementById('toggle');
+            const popUp = document.getElementsByClassName('pop-up')[0];
+            function ShowMenu() {
+                if(checkBox.ariaChecked
+                    
+                
+            }
+        </script>
 </main>
 
 

@@ -18,21 +18,21 @@ namespace TestPharmacy1.Controllers
         {
             _context = context;
         }
-        public IActionResult Index(string SearchString,string SelectedOption)
+        public IActionResult Index(string searchString,string selectedOption)
         {
             var medications = _context.Medication.Include(o => o.TypeOfMedication).Include(o => o.ConsistencyOfMedication).ToList();
             
-            if (!String.IsNullOrEmpty(SearchString))
+            if (!String.IsNullOrEmpty(searchString))
             {
                 var queryLowNums =
                  from med in medications
-                 where med.Name.ToLower().Contains(SearchString.ToLower())
+                 where med.Name.ToLower().Contains(searchString.ToLower())
                  select med;
                 return View(queryLowNums);
             }
-            if (!String.IsNullOrEmpty(SelectedOption))
+            if (!String.IsNullOrEmpty(selectedOption))
             {
-                switch (SelectedOption) 
+                switch (selectedOption) 
                 {
                     case "Price":
                         var queryPrice = medications.OrderByDescending(o => o.Price);
