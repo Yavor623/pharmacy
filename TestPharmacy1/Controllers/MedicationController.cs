@@ -98,17 +98,33 @@ namespace TestPharmacy1.Controllers
             return View(model);
         }
         [HttpPost]
-        public  async Task<IActionResult> AddToCart(int medId,string username)
+        public  async Task<IActionResult> AddToCart(int medId,string userId)
         {
-            //var ownedMedication = _context.OwnedMedication.ToList();
-            //OwnedMedication ownedMedication1 = new OwnedMedication()
-            //{
-            //    //MedId = medId,
-            //    // Find the UserId
-            //    //UserId = 
-            //};
-            //ownedMedication.Add(ownedMedication1);
-            return View();
+            var look = _context.OwnedMedication.ToList();
+            var filteredLook =
+                from med in look
+                where med.UserId == userId
+                select med.MedicationId;
+            if (!String.IsNullOrEmpty(userId))
+            {
+                if (!filteredLook.Contains(medId))
+                {
+
+                    OwnedMedication ownedMedication = new OwnedMedication()
+                    {
+                        MedicationId = medId,
+                        UserId = userId
+                    };
+                    _context.OwnedMedication.Add(ownedMedication);
+                    _context.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+            return RedirectToAction("Login","Account",new object { });
         }
 
     }

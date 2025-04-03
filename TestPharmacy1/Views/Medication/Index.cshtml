@@ -49,8 +49,11 @@
                     <label class="three-dots" >&#8230;<input type="checkbox" onclick="" name="toggle" id="toggle" /></label>
                         <div id="pic-frame">
                             <img src="data:image;base64,@(Convert.ToBase64String(@medication.Image))" style="border-radius:1rem;" />
-                            <input type="hidden" asp-action="AddToCart" value="@User.Identity.Name" name="username" asp-controller="Medication" />
-                            <input  asp-action="AddToCart" asp-route-id="@medication.Id" type="submit" value="Click" asp-controller="Medication">
+                        <form asp-action="AddToCart" method="post">
+                            <input type="hidden" name="medId" value="@medication.Id" />
+                            <input type="hidden" name="userId" value="@SignInManager.UserManager.GetUserId(User)"/>
+                            <input type="submit" value="Add"/>
+                        </form>
                         </div>
                         <div style="min-height:50px"><h5 style="font-weight:350">@medication.Name @medication.Description</h5></div>
                         <div style="min-height:50px"><h5 style="font-weight:650;color:lawngreen">@medication.Price лв.</h5></div>

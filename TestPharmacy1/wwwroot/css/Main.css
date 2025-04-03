@@ -25,6 +25,27 @@
 a{
     text-decoration:none;
 }
+#pic-frame {
+    width: 100%;
+    object-fit: cover;
+    margin-bottom: 3%;
+    img
+
+{
+    width: 100%;
+    min-height: 140px;
+    max-height: 140px;
+}
+
+}
+
+#toggle {
+    display: none;
+}
+
+    #toggle:checked #pop-up {
+        display: block;
+    }
 .three-dots {
     float: right;
     border: none;
