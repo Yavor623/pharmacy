@@ -14,6 +14,7 @@ namespace TestPharmacy1.Data
         public DbSet<ConsistencyOfMedication> ConsistencyOfMedication { get; set; }
         public DbSet<Prescription> Prescription { get; set; }
         public DbSet<TypeOfMedication> TypeOfMedication { get; set; }
+
         public DbSet<OwnedMedication> OwnedMedication { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -29,15 +30,17 @@ namespace TestPharmacy1.Data
                 .WithMany(o => o.Medication)
                 .HasForeignKey(o => o.ConsistencyOfMedicationId);
             builder.Entity<OwnedMedication>()
-                .HasOne(o => o.Medication)
-                .WithOne(o => o.OwnedMedication)
-                .HasPrincipalKey<Medication>(o => o.Id)
-                .HasForeignKey<OwnedMedication>(o =>o.MedId);
-            builder.Entity<OwnedMedication>()
                 .HasOne(o => o.User)
-                .WithOne(o => o.OwnedMedication)
-                .HasPrincipalKey<ApplicationUser>(o=>o.Id)
-                .HasForeignKey<OwnedMedication>(o => o.UserId);
+                .WithMany(o => o.OwnedMedications);
+            builder.Entity<OwnedMedication>()
+                .HasOne(o => o.Medication)
+                .WithMany(o => o.OwnedMedications);
+            //builder.Entity<OwnedMedication>()
+            //    .HasOne(o => o.Medication)
+            //    .WithMany(o => o.OwnedMedication);
+            //builder.Entity<OwnedMedication>()
+            //    .HasOne(o => o.User)
+            //    .WithMany(o => o.OwnedMedication);
             builder.Entity<Prescription>()
                 .HasOne(o => o.User)
                 .WithMany(o => o.Prescriptions)

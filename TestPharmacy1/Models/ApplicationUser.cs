@@ -12,6 +12,7 @@ namespace TestPharmacy1.Models
         [DataType(DataType.Date)]
         public DateOnly DateOfBirth { get; set; }
         public ICollection<Prescription> Prescriptions { get; set; }
-        public OwnedMedication OwnedMedication { get; set; }
+        //public ICollection<OwnedMedication> OwnedMedication { get; set; }
+        public ICollection<OwnedMedication> OwnedMedications { get; set; }
     }
 }

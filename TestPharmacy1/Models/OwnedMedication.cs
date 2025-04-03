@@ -8,11 +8,9 @@ namespace TestPharmacy1.Models
     {
         [Key]
         public int Id { get; set; }
-        [ForeignKey("MedId")]
-        public int MedId { get; set; }
+        public int MedicationId { get; set; }
         public Medication Medication { get; set; }
         public string UserId { get; set; }
-        [ForeignKey("UserId")]
         public ApplicationUser User { get; set; }
 
     }

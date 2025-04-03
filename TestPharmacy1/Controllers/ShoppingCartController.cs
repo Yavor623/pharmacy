@@ -14,8 +14,8 @@ namespace TestPharmacy1.Controllers
         }
         public IActionResult Index()
         {
-            var ownedMedication = _context.OwnedMedication.Include(a => a.Medication).Include(a => a.User).ToList();
-            return View(ownedMedication);
+            //var ownedMedication = _context.OwnedMedication.Include(a => a.Medication).Include(a => a.User).ToList();
+            return View();
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<OwnedMedication>
+﻿@* @model IEnumerable<OwnedMedication> *@
 <main>
     <h2>Shopping cart</h2>
     <div id="items" style="margin-left:3%">
@@ -14,7 +14,7 @@
                     </ul>
                 </div>
                 <div style="width:100%">
-                    <a asp-action="AddToCart" asp-route-id="@item.Id"></a>
+                    <a asp-action="AddToCart" asp-route-id="@item.MedId"></a>
                     <label class="three-dots">&#8230;<input type="checkbox" onclick="" name="toggle" id="toggle" /></label>
                     <div id="pic-frame">
                         <img src="data:image;base64,@(Convert.ToBase64String(@item.Medication.Image))" style="border-radius:1rem;" />

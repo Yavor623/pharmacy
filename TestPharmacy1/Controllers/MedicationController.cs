@@ -98,16 +98,16 @@ namespace TestPharmacy1.Controllers
             return View(model);
         }
         [HttpPost]
-        public  async Task<IActionResult> AddToCart(int medId)
+        public  async Task<IActionResult> AddToCart(int medId,string username)
         {
-            var ownedMedication = _context.OwnedMedication.ToList();
-            OwnedMedication ownedMedication1 = new OwnedMedication()
-            {
-                MedId = medId,
-                // Find the UserId
-                //UserId = 
-            };
-            ownedMedication.Add(ownedMedication1);
+            //var ownedMedication = _context.OwnedMedication.ToList();
+            //OwnedMedication ownedMedication1 = new OwnedMedication()
+            //{
+            //    //MedId = medId,
+            //    // Find the UserId
+            //    //UserId = 
+            //};
+            //ownedMedication.Add(ownedMedication1);
             return View();
         }
 

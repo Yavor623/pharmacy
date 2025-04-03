@@ -160,7 +160,7 @@ namespace TestPharmacy1.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    MedId = table.Column<int>(type: "int", nullable: false),
+                    MedicationId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
@@ -173,8 +173,8 @@ namespace TestPharmacy1.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_OwnedMedication_Medication_MedId",
-                        column: x => x.MedId,
+                        name: "FK_OwnedMedication_Medication_MedicationId",
+                        column: x => x.MedicationId,
                         principalTable: "Medication",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -259,16 +259,14 @@ namespace TestPharmacy1.Data.Migrations
                 column: "TypeOfMedicationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OwnedMedication_MedId",
+                name: "IX_OwnedMedication_MedicationId",
                 table: "OwnedMedication",
-                column: "MedId",
-                unique: true);
+                column: "MedicationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OwnedMedication_UserId",
                 table: "OwnedMedication",
-                column: "UserId",
-                unique: true);
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Prescription_UserId",

@@ -12,7 +12,7 @@ using TestPharmacy1.Data;
 namespace TestPharmacy1.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250401160446_Test")]
+    [Migration("20250403075739_Test")]
     partial class Test
     {
         /// <inheritdoc />
@@ -418,7 +418,7 @@ namespace TestPharmacy1.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("MedId")
+                    b.Property<int>("MedicationId")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
@@ -427,11 +427,9 @@ namespace TestPharmacy1.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MedId")
-                        .IsUnique();
+                    b.HasIndex("MedicationId");
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
+                    b.HasIndex("UserId");
 
                     b.ToTable("OwnedMedication");
                 });
@@ -729,14 +727,14 @@ namespace TestPharmacy1.Data.Migrations
             modelBuilder.Entity("TestPharmacy1.Models.OwnedMedication", b =>
                 {
                     b.HasOne("TestPharmacy1.Models.Medication", "Medication")
-                        .WithOne("OwnedMedication")
-                        .HasForeignKey("TestPharmacy1.Models.OwnedMedication", "MedId")
+                        .WithMany("OwnedMedications")
+                        .HasForeignKey("MedicationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("TestPharmacy1.Models.ApplicationUser", "User")
-                        .WithOne("OwnedMedication")
-                        .HasForeignKey("TestPharmacy1.Models.OwnedMedication", "UserId")
+                        .WithMany("OwnedMedications")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -758,8 +756,7 @@ namespace TestPharmacy1.Data.Migrations
 
             modelBuilder.Entity("TestPharmacy1.Models.ApplicationUser", b =>
                 {
-                    b.Navigation("OwnedMedication")
-                        .IsRequired();
+                    b.Navigation("OwnedMedications");
 
                     b.Navigation("Prescriptions");
                 });
@@ -771,8 +768,7 @@ namespace TestPharmacy1.Data.Migrations
 
             modelBuilder.Entity("TestPharmacy1.Models.Medication", b =>
                 {
-                    b.Navigation("OwnedMedication")
-                        .IsRequired();
+                    b.Navigation("OwnedMedications");
                 });
 
             modelBuilder.Entity("TestPharmacy1.Models.TypeOfMedication", b =>

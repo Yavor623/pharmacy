@@ -30,7 +30,8 @@ namespace TestPharmacy1.Models
         [ValidateNever]
         [ForeignKey("ConsistencyOfMedicationId")]
         public ConsistencyOfMedication ConsistencyOfMedication { get; set; }
-        public OwnedMedication OwnedMedication { get; set; }
+        //public ICollection<OwnedMedication> OwnedMedication { get; set; }
+        public ICollection<OwnedMedication> OwnedMedications { get; set; }
         [ForeignKey("ImageId")]
         public byte[] Image { get; set; }
         [DisplayFormat(DataFormatString = "{0:C0}")]
