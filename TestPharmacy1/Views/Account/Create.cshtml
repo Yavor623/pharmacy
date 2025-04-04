@@ -1,0 +1,95 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject RoleManager<IdentityRole> RoleManager
+@model CreateUserViewModel
+
+<form asp-action="Create" method="post" id="everything">
+    <h2>Регистрация</h2>
+    <div>
+        <label asp-for="FirstName">Име</label>
+        <input asp-for="FirstName" />
+        <span asp-validation-for="FirstName"></span>
+    </div>
+    <div>
+        <label asp-for="LastName">Фамилия</label>
+        <input asp-for="LastName" />
+        <span asp-validation-for="LastName"></span>
+    </div>
+    <div>
+        <label asp-for="Email">Имейл</label>
+        <input asp-for="Email" />
+        <span asp-validation-for="Email"></span>
+    </div>
+    <div>
+        <label asp-for="Password">Парола</label>
+        <input asp-for="Password" />
+        <span asp-validation-for="Password"></span>
+    </div>
+    <div>
+        <label asp-for="ConfirmPassword">Потвърди парола</label>
+        <input asp-for="ConfirmPassword" />
+        <span asp-validation-for="ConfirmPassword"></span>
+    </div>
+    <div>
+        <label asp-for="DateOfBirth">Дата на раждане</label>
+        <input asp-for="DateOfBirth" type="date" />
+        <span asp-validation-for="DateOfBirth"></span>
+    </div>
+    <div>
+        <select name="selectedRole">
+            @foreach (var role in RoleManager.Roles)
+            {
+                <option>@role.Name</option>
+            }
+        </select>
+    </div>
+    <br />
+    <div>
+        <button type="submit">Регистрация</button>
+    </div>
+</form>
+
+
+<style>
+    body {
+        overflow: hidden;
+    }
+
+    #everything {
+        justify-items: center;
+        overflow: hidden;
+        width: 100vw;
+        height: 100vh;
+        *
+
+    {
+        padding: 0.5vh;
+    }
+
+    div {
+        width: 50%;
+        *
+
+    {
+        width: 100%;
+    }
+
+    input {
+        border-radius: 5px;
+        border: 1px solid gray;
+    }
+
+    }
+
+    button {
+        width: 100%;
+        align-self: center;
+        justify-self: center;
+        border-radius: 10px;
+        border: 0.1px solid transparent;
+        color: white;
+        background-color: dodgerblue;
+    }
+
+    }
+</style>
+

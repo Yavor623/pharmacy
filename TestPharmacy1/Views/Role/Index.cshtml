@@ -1,0 +1,25 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model IEnumerable<IdentityRole>
+
+<h2>Roles</h2>
+<a>+</a>
+<table class="table-bordered">
+	<thead>
+		<th>Name</th>
+		<th>Actions</th>
+	</thead>
+	<tbody>
+		@foreach (var role in Model)
+		{
+			<tr>
+				<td>@role.Name</td>
+				<td>
+					<a>Delete</a>
+					<br>
+					<a>Edit</a>
+				</td>
+			</tr>
+
+		}
+	</tbody>
+</table>

@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - TestPharmacy1</title>
+    <script src="https://kit.fontawesome.com/a28800c3e2.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/TestPharmacy1.styles.css" asp-append-version="true" />
@@ -28,12 +29,45 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Medication" asp-action="Index">Medication</a>
                         </li>
+                        <li class="nav-item" id="li-dropdown">
+                            Admin
+                            <ul id="dropdown">
+                                <li> <a class="nav-link text-dark" asp-area="" asp-controller="Role" asp-action="Index">Role</a></li>
+                                <li> <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Index">User</a></li>
+                            </ul>
+                        </li>
                     </ul>
                     <partial name="_LoginPartial" />
+                    <div>
+                        <a asp-controller="ShoppingCart" asp-action="Index" style="text-decoration:none;color:black;">
+                            <i class="fa-solid fa-cart-shopping xl"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </nav>
     </header>
+    <style>
+        #li-dropdown{
+           
+        }
+        #li-dropdown:hover #dropdown{
+            display:block;
+        }
+        #dropdown{
+            position:absolute;
+            z-index:999;
+            display:none;
+            background-color: rgba(220,220,220,0,4);
+            li:hover{
+                background-color: rgba(220,220,220,0,8);
+            }
+            li{
+                list-style:none;
+            }
+            
+        }
+    </style>
     <div>
             @RenderBody()
     </div>

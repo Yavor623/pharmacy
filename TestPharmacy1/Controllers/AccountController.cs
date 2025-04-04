@@ -13,7 +13,8 @@ namespace TestPharmacy1.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         public IActionResult Index()
         {
-            return View();
+            var users = _userManager.Users.ToList();
+            return View(users);
         }
         public AccountController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
@@ -58,13 +59,14 @@ namespace TestPharmacy1.Controllers
                     Email = model.Email,
                     FirstName = model.FirstName,
                     LastName = model.LastName,
+                    DateOfBirth = model.DateOfBirth,
                     EmailConfirmed = true
                 };
                 var result = await _userManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)
                 {
-                    await _userManager.AddToRoleAsync(user, "Member");
+                    await _userManager.AddToRoleAsync(user, "Client");
                     await _signInManager.SignInAsync(user, isPersistent: false);
 
                     return RedirectToAction("Index", "Home");
@@ -81,6 +83,37 @@ namespace TestPharmacy1.Controllers
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
+        }
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateUserViewModel model,string selectedRole)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser
+                {
+                    UserName = model.Email,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    Email = model.Email,
+                    DateOfBirth = model.DateOfBirth,
+                    EmailConfirmed = true
+                };
+                var result = await _userManager.CreateAsync(user, model.Password);
+
+                if (result.Succeeded)
+                {
+                    await _userManager.AddToRoleAsync(user, selectedRole);
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+
+                    return RedirectToAction("Index");
+                }
+            }
+            return View(model);
         }
     }
 }
