@@ -1,5 +1,98 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using Microsoft.AspNetCore.Identity
+@inject RoleManager<IdentityRole> RoleManager
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@using System.Text
+@model EditUserViewModel
+
 @{
+    var currentUserRole = await UserManager.GetRolesAsync(Model.CurrentUser);
+    var decryptedPassword = Convert.FromBase64String(Model.CurrentUser.PasswordHash);
+    var nz = 5;
 }
+<form asp-action="Create" method="post" id="everything">
+    <h2>Регистрация</h2>
+    <div>
+        <label asp-for="FirstName">Име</label>
+        <input asp-for="FirstName" value="@Model.CurrentUser.FirstName"/>
+        <span asp-validation-for="FirstName"></span>
+    </div>
+    <div>
+        <label asp-for="LastName">Фамилия</label>
+        <input asp-for="LastName" value="@Model.CurrentUser.LastName"/>
+        <span asp-validation-for="LastName"></span>
+    </div>
+    <div>
+        <label asp-for="Email">Имейл</label>
+        <input asp-for="Email" value="@Model.CurrentUser.Email"/>
+        <span asp-validation-for="Email"></span>
+    </div>
+    <div>
+        <label asp-for="DateOfBirth">Дата на раждане</label>
+        <input asp-for="DateOfBirth" type="date" value="@Model.CurrentUser.DateOfBirth.ToShortDateString()"/>
+        <span asp-validation-for="DateOfBirth"></span>
+    </div>
+    <div>
+        <select name="selectedRole">
+            @foreach (var role in RoleManager.Roles)
+            {
+                @if(role.Name==currentUserRole[0]){
+                    <option selected>@role.Name</option>
+                }
+                else
+                {
+                    <option>@role.Name</option>
+                }
+            }
+        </select>
+    </div>
+    <br />
+    <div>
+        <button type="submit">Регистрация</button>
+    </div>
+</form>
+
+
+<style>
+    body {
+        overflow: hidden;
+    }
+
+    #everything {
+        justify-items: center;
+        overflow: hidden;
+        width: 100vw;
+        height: 100vh;
+        *
+
+    {
+        padding: 0.5vh;
+    }
+
+    div {
+        width: 50%;
+        *
+
+    {
+        width: 100%;
+    }
+
+    input {
+        border-radius: 5px;
+        border: 1px solid gray;
+    }
+
+    }
+
+    button {
+        width: 100%;
+        align-self: center;
+        justify-self: center;
+        border-radius: 10px;
+        border: 0.1px solid transparent;
+        color: white;
+        background-color: dodgerblue;
+    }
+
+    }
+</style>

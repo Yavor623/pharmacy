@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TestPharmacy1.Models.Accounts;
 using TestPharmacy1.Models;
+using System.Text;
 
 namespace TestPharmacy1.Controllers
 {
@@ -114,6 +115,31 @@ namespace TestPharmacy1.Controllers
                 }
             }
             return View(model);
+        }
+        [HttpGet]
+        public IActionResult Edit(string id)
+        {
+            var user = _userManager.Users.FirstOrDefault(model => model.Id == id);
+            var model = new EditUserViewModel
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                DateOfBirth = user.DateOfBirth, 
+                Password = ASCIIEncoding.ASCII.GetBytes(user.PasswordHash).ToString(),
+                ConfirmPassword = ASCIIEncoding.ASCII.GetBytes(user.PasswordHash).ToString(),
+                Email = user.Email,
+                CurrentUser = user
+            };
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit(string id, EditUserViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+
+            }
+            return View();
         }
     }
 }

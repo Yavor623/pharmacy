@@ -10,9 +10,9 @@ namespace TestPharmacy1.Models
         [StringLength(20)]
         public string LastName { get; set; }
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
         public DateOnly DateOfBirth { get; set; }
         public ICollection<Prescription> Prescriptions { get; set; }
-        //public ICollection<OwnedMedication> OwnedMedication { get; set; }
         public ICollection<OwnedMedication> OwnedMedications { get; set; }
     }
 }

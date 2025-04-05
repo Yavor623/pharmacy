@@ -2,7 +2,7 @@
 
 namespace TestPharmacy1.Models.Accounts
 {
-    public class CreateUserViewModel
+    public class EditUserViewModel
     {
         [Required]
         [Display(Name = "First Name")]
@@ -22,5 +22,6 @@ namespace TestPharmacy1.Models.Accounts
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
         public DateOnly DateOfBirth { get; set; }
+        public ApplicationUser CurrentUser { get; set; }
     }
 }

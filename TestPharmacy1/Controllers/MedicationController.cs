@@ -6,6 +6,7 @@ using TestPharmacy1.Models.Medications;
 using TestPharmacy1.Models;
 using static System.Net.Mime.MediaTypeNames;
 using System.IO;
+using System.Drawing;
 using System.Formats.Tar;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Identity;
@@ -125,6 +126,48 @@ namespace TestPharmacy1.Controllers
                 }
             }
             return RedirectToAction("Login","Account",new object { });
+        }
+        [HttpGet]
+        public  IActionResult Edit(int id)
+        {
+            var medication = _context.Medication.FirstOrDefault(a => a.Id == id);
+            var model = new EditMedicationViewModel
+            {
+                Name = medication.Name,
+                Manufacturer = medication.Manufacturer,
+                ExpirationDate = medication.ExpirationDate,
+                IsPrescriptionNeeded = medication.IsPrescriptionNeeded,
+                ConsistencyOfMedicationId = medication.ConsistencyOfMedicationId,
+                TypeOfMedicationId = medication.TypeOfMedicationId,
+                Amount = medication.Amount,
+                Description = medication.Description,
+                CurrentMedication = medication
+            };
+            if (medication.Image != null)
+            {
+                using (var ms = new MemoryStream(medication.Image))
+                {
+                    System.Drawing.Image image = System.Drawing.Image.FromStream(ms);
+                    //model.ImageFile = image;
+                }
+            }
+            return View(model);
+
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, EditMedicationViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var medication = _context.Medication.Find(id);
+                medication.Name = model.Name;
+                medication.ExpirationDate = model.ExpirationDate;
+                medication.Manufacturer = model.Manufacturer;
+                medication.IsPrescriptionNeeded = model.IsPrescriptionNeeded;
+                medication.ConsistencyOfMedicationId = model.ConsistencyOfMedicationId;
+                medication.TypeOfMedicationId = model.TypeOfMedicationId;
+            }
+            return View();
         }
 
     }

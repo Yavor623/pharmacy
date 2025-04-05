@@ -14,6 +14,7 @@ namespace TestPharmacy1.Models
         [StringLength(40)]
         public string Manufacturer { get; set; }
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
         public DateOnly ExpirationDate { get; set; }
         public bool IsPrescriptionNeeded { get; set; }
         public int Amount { get; set; }
@@ -30,7 +31,6 @@ namespace TestPharmacy1.Models
         [ValidateNever]
         [ForeignKey("ConsistencyOfMedicationId")]
         public ConsistencyOfMedication ConsistencyOfMedication { get; set; }
-        //public ICollection<OwnedMedication> OwnedMedication { get; set; }
         public ICollection<OwnedMedication> OwnedMedications { get; set; }
         [ForeignKey("ImageId")]
         public byte[] Image { get; set; }
