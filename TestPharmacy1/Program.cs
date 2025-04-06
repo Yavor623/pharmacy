@@ -39,13 +39,13 @@ using (var scope = app.Services.CreateScope())
     string adminPassword = "Yavor@123";
     string firstName = "Yavor";
     string lastName = "Markov";
-    DateOnly dateOfBirth = new DateOnly(2006,11,30);
+    int age = 18;
 
     var adminUser = await userManager.FindByEmailAsync(adminEmail);
 
     if (adminUser == null)
     {
-        adminUser = new ApplicationUser { UserName = adminEmail, Email = adminEmail, EmailConfirmed = true, FirstName = firstName, LastName = lastName,DateOfBirth = dateOfBirth };
+        adminUser = new ApplicationUser { UserName = adminEmail, Email = adminEmail, EmailConfirmed = true, FirstName = firstName, LastName = lastName,Age = age };
 
         var result = await userManager.CreateAsync(adminUser, adminPassword);
         if (result.Succeeded)

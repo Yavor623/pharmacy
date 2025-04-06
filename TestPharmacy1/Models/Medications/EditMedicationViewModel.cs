@@ -13,10 +13,9 @@ namespace TestPharmacy1.Models.Medications
         [Required]
         [StringLength(40)]
         public string Manufacturer { get; set; }
-        [Required]
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
-        public DateOnly ExpirationDate { get; set; }
+        [AllowNull]
+        [StringLength(300)]
+        public string? HowToUse { get; set; }
         [Required]
         public bool IsPrescriptionNeeded { get; set; }
         [Required]

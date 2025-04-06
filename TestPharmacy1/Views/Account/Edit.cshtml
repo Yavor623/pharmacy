@@ -28,9 +28,9 @@
         <span asp-validation-for="Email"></span>
     </div>
     <div>
-        <label asp-for="DateOfBirth">Дата на раждане</label>
-        <input asp-for="DateOfBirth" type="date" value="@Model.CurrentUser.DateOfBirth.ToShortDateString()"/>
-        <span asp-validation-for="DateOfBirth"></span>
+        <label asp-for="Age"></label>
+        <input asp-for="Age" type="number" min="0" />
+        <span asp-validation-for="Age"></span>
     </div>
     <div>
         <select name="selectedRole">

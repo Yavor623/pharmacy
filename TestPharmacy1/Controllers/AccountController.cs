@@ -60,7 +60,7 @@ namespace TestPharmacy1.Controllers
                     Email = model.Email,
                     FirstName = model.FirstName,
                     LastName = model.LastName,
-                    DateOfBirth = model.DateOfBirth,
+                    Age = model.Age,
                     EmailConfirmed = true
                 };
                 var result = await _userManager.CreateAsync(user, model.Password);
@@ -101,7 +101,7 @@ namespace TestPharmacy1.Controllers
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     Email = model.Email,
-                    DateOfBirth = model.DateOfBirth,
+                    Age = model.Age,
                     EmailConfirmed = true
                 };
                 var result = await _userManager.CreateAsync(user, model.Password);
@@ -124,7 +124,7 @@ namespace TestPharmacy1.Controllers
             {
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                DateOfBirth = user.DateOfBirth, 
+                Age = user.Age, 
                 Password = ASCIIEncoding.ASCII.GetBytes(user.PasswordHash).ToString(),
                 ConfirmPassword = ASCIIEncoding.ASCII.GetBytes(user.PasswordHash).ToString(),
                 Email = user.Email,

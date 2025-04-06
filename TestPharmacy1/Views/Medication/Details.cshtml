@@ -1,0 +1,30 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@model TestPharmacy1.Models.Medications.DetailsMedicationViewModel
+
+@{
+	var isPrescriptionNeeded = Model.IsPrescriptionNeeded == true ?  "yes" :  "no";
+}
+<div>
+	<h2>Details</h2>
+	<div>
+		<div>
+			<img src="data:image;base64,@(Convert.ToBase64String(Model.Image))" />
+		</div>
+		<div>
+			<h3>@Model.Name</h3>
+			<h4>@Model.Price</h4>
+			<form asp-action="AddToCart" method="post">
+				<input type="number" min="1" max="@Model.Amount" name="amount"/>
+				<input type="hidden" name="medId" value="@Model.Id" />
+				<input type="hidden" name="userId" value="@SignInManager.UserManager.GetUserId(User)" />
+				<input type="submit" value="Add" />
+			</form>
+			<div>
+				<p>@Model.Description</p>
+				<p>Is prescription needed - @isPrescriptionNeeded</p>
+			</div>
+		</div>
+	</div>
+</div>

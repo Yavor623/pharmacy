@@ -11,7 +11,7 @@ namespace TestPharmacy1.Models
         public string LastName { get; set; }
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
-        public DateOnly DateOfBirth { get; set; }
+        public int Age { get; set; }
         public ICollection<Prescription> Prescriptions { get; set; }
         public ICollection<OwnedMedication> OwnedMedications { get; set; }
     }

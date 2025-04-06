@@ -31,11 +31,11 @@
             <input asp-for="ConfirmPassword"  />
             <span asp-validation-for="ConfirmPassword"></span>
         </div>
-        <div >
-            <label asp-for="DateOfBirth">Дата на раждане</label>
-            <input asp-for="DateOfBirth"  type="date" />
-            <span asp-validation-for="DateOfBirth" ></span>
-        </div>
+    <div>
+        <label asp-for="Age"></label>
+        <input asp-for="Age" type="number" min="0" />
+        <span asp-validation-for="Age"></span>
+    </div>
         <br />
         <div>
              <button type="submit">Регистрация</button>

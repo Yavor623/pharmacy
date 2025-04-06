@@ -13,12 +13,12 @@ namespace TestPharmacy1.Models
         public string Name { get; set; }
         [StringLength(40)]
         public string Manufacturer { get; set; }
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
-        public DateOnly ExpirationDate { get; set; }
+        [StringLength(300)]
+        public string HowToUse { get; set; }
+        
         public bool IsPrescriptionNeeded { get; set; }
         public int Amount { get; set; }
-        [StringLength(150)]
+        [StringLength(300)]
         [AllowNull]
         public string Description { get; set; }
         public int TypeOfMedicationId { get; set; }

@@ -74,7 +74,7 @@ namespace TestPharmacy1.Controllers
                 {
                     Name = model.Name,
                     Manufacturer = model.Manufacturer,
-                    ExpirationDate = model.ExpirationDate,
+                    HowToUse = model.HowToUse,
                     IsPrescriptionNeeded = model.IsPrescriptionNeeded,
                     Amount = model.Amount,
                     Description = model.Description,
@@ -99,7 +99,7 @@ namespace TestPharmacy1.Controllers
             return View(model);
         }
         [HttpPost]
-        public  async Task<IActionResult> AddToCart(int medId,string userId)
+        public  async Task<IActionResult> AddToCart(int medId,string userId,int amount)
         {
             var look = _context.OwnedMedication.ToList();
             var filteredLook =
@@ -114,7 +114,8 @@ namespace TestPharmacy1.Controllers
                     OwnedMedication ownedMedication = new OwnedMedication()
                     {
                         MedicationId = medId,
-                        UserId = userId
+                        UserId = userId,
+                        Amount = amount
                     };
                     _context.OwnedMedication.Add(ownedMedication);
                     _context.SaveChanges();
@@ -135,7 +136,7 @@ namespace TestPharmacy1.Controllers
             {
                 Name = medication.Name,
                 Manufacturer = medication.Manufacturer,
-                ExpirationDate = medication.ExpirationDate,
+                HowToUse = medication.HowToUse,
                 IsPrescriptionNeeded = medication.IsPrescriptionNeeded,
                 ConsistencyOfMedicationId = medication.ConsistencyOfMedicationId,
                 TypeOfMedicationId = medication.TypeOfMedicationId,
@@ -161,7 +162,7 @@ namespace TestPharmacy1.Controllers
             {
                 var medication = _context.Medication.Find(id);
                 medication.Name = model.Name;
-                medication.ExpirationDate = model.ExpirationDate;
+                medication.HowToUse = model.HowToUse;
                 medication.Manufacturer = model.Manufacturer;
                 medication.IsPrescriptionNeeded = model.IsPrescriptionNeeded;
                 medication.ConsistencyOfMedicationId = model.ConsistencyOfMedicationId;
@@ -169,6 +170,37 @@ namespace TestPharmacy1.Controllers
             }
             return View();
         }
-
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var med = _context.Medication.Find(id);
+            var ownedMed =
+                from ownMed in _context.OwnedMedication
+                where ownMed.MedicationId == id
+                select ownMed;
+            ownedMed.ForEachAsync(a => _context.OwnedMedication.Remove(a));
+            _context.Medication.Remove(med);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+        [HttpGet]
+        public IActionResult Details(int id)
+        {
+            var currentMed = _context.Medication.Find(id);
+            var medication = new DetailsMedicationViewModel
+            {
+                Name = currentMed.Name,
+                Manufacturer = currentMed.Manufacturer,
+                HowToUse = currentMed.HowToUse,
+                IsPrescriptionNeeded = currentMed.IsPrescriptionNeeded,
+                Amount = currentMed.Amount,
+                Description = currentMed.Description,
+                TypeOfMedicationId = currentMed.TypeOfMedicationId,
+                ConsistencyOfMedicationId = currentMed.ConsistencyOfMedicationId,
+                Price = currentMed.Price,
+                Image = currentMed.Image
+            };
+            return View(medication);
+        }
     }
 }

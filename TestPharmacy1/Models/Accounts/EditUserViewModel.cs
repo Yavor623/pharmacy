@@ -19,9 +19,8 @@ namespace TestPharmacy1.Models.Accounts
         [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "Двете пароли не съвпадат!")]
         public string ConfirmPassword { get; set; }
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
-        public DateOnly DateOfBirth { get; set; }
+        [Required]
+        public int Age { get; set; }
         public ApplicationUser CurrentUser { get; set; }
     }
 }
