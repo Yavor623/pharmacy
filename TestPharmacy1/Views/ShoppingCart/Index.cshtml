@@ -1,9 +1,9 @@
 ﻿@model IEnumerable<OwnedMedication>
 
 @{
-    var sum = 0;
+    decimal sum = 0;
     foreach(var one in Model){
-        sum += one.Price;
+        sum += one.Amount*one.Medication.Price;
     }
 }
 
@@ -27,6 +27,9 @@
 </aside>
 <main>
     <h2>Shopping cart</h2>
+    <div>
+        The sum of it is: @sum
+    </div>
     <div id="items" style="margin-left:3%">
 
         @foreach (var item in Model)
@@ -45,12 +48,12 @@
                         <img src="data:image;base64,@(Convert.ToBase64String(@item.Medication.Image))" style="border-radius:1rem;" />
                     </div>
                     <div style="min-height:50px"><h5 style="font-weight:350">@item.Medication.Name @item.Medication.Description</h5></div>
-                    <div style="min-height:50px"><h5 style="font-weight:650;color:lawngreen">@item.Medication.Price лв.</h5></div>
+                    <div style="min-height:50px"><h5 style="font-weight:650;color:lawngreen">@item.Amount x @item.Medication.Price лв.</h5></div>
                 </div>
             </div>
         }
 
-    </div>
+    </div> 
 </main>
 
 <style>

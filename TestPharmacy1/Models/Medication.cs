@@ -15,7 +15,6 @@ namespace TestPharmacy1.Models
         public string Manufacturer { get; set; }
         [StringLength(300)]
         public string HowToUse { get; set; }
-        
         public bool IsPrescriptionNeeded { get; set; }
         public int Amount { get; set; }
         [StringLength(300)]

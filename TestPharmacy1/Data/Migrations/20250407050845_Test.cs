@@ -31,12 +31,12 @@ namespace TestPharmacy1.Data.Migrations
                 oldType: "nvarchar(128)",
                 oldMaxLength: 128);
 
-            migrationBuilder.AddColumn<DateOnly>(
-                name: "DateOfBirth",
+            migrationBuilder.AddColumn<int>(
+                name: "Age",
                 table: "AspNetUsers",
-                type: "date",
+                type: "int",
                 nullable: false,
-                defaultValue: new DateOnly(1, 1, 1));
+                defaultValue: 0);
 
             migrationBuilder.AddColumn<string>(
                 name: "FirstName",
@@ -128,10 +128,10 @@ namespace TestPharmacy1.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     Manufacturer = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
-                    ExpirationDate = table.Column<DateOnly>(type: "date", nullable: false),
+                    HowToUse = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
                     IsPrescriptionNeeded = table.Column<bool>(type: "bit", nullable: false),
                     Amount = table.Column<int>(type: "int", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
                     TypeOfMedicationId = table.Column<int>(type: "int", nullable: false),
                     ConsistencyOfMedicationId = table.Column<int>(type: "int", nullable: false),
                     Image = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
@@ -161,7 +161,8 @@ namespace TestPharmacy1.Data.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     MedicationId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Amount = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -293,7 +294,7 @@ namespace TestPharmacy1.Data.Migrations
                 name: "TypeOfMedication");
 
             migrationBuilder.DropColumn(
-                name: "DateOfBirth",
+                name: "Age",
                 table: "AspNetUsers");
 
             migrationBuilder.DropColumn(

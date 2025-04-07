@@ -108,9 +108,20 @@ namespace TestPharmacy1.Controllers
                 select med.MedicationId;
             if (!String.IsNullOrEmpty(userId))
             {
-                if (!filteredLook.Contains(medId))
+                if (filteredLook.Contains(medId))
                 {
-
+                    IEnumerable<OwnedMedication> change =
+                        from med in look
+                        where med.MedicationId == medId
+                        select med;
+                    var changedElement = change.FirstOrDefault();
+                    changedElement.Amount += amount;
+                    _context.OwnedMedication.Update(changedElement);
+                    _context.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                else
+                {
                     OwnedMedication ownedMedication = new OwnedMedication()
                     {
                         MedicationId = medId,
@@ -121,53 +132,49 @@ namespace TestPharmacy1.Controllers
                     _context.SaveChanges();
                     return RedirectToAction("Index");
                 }
-                else
-                {
-                    return RedirectToAction("Index");
-                }
             }
             return RedirectToAction("Login","Account",new object { });
         }
         [HttpGet]
         public  IActionResult Edit(int id)
         {
-            var medication = _context.Medication.FirstOrDefault(a => a.Id == id);
-            var model = new EditMedicationViewModel
-            {
-                Name = medication.Name,
-                Manufacturer = medication.Manufacturer,
-                HowToUse = medication.HowToUse,
-                IsPrescriptionNeeded = medication.IsPrescriptionNeeded,
-                ConsistencyOfMedicationId = medication.ConsistencyOfMedicationId,
-                TypeOfMedicationId = medication.TypeOfMedicationId,
-                Amount = medication.Amount,
-                Description = medication.Description,
-                CurrentMedication = medication
-            };
-            if (medication.Image != null)
-            {
-                using (var ms = new MemoryStream(medication.Image))
-                {
-                    System.Drawing.Image image = System.Drawing.Image.FromStream(ms);
-                    //model.ImageFile = image;
-                }
-            }
-            return View(model);
+            //var medication = _context.Medication.FirstOrDefault(a => a.Id == id);
+            //var model = new EditMedicationViewModel
+            //{
+            //    Name = medication.Name,
+            //    Manufacturer = medication.Manufacturer,
+            //    HowToUse = medication.HowToUse,
+            //    IsPrescriptionNeeded = medication.IsPrescriptionNeeded,
+            //    ConsistencyOfMedicationId = medication.ConsistencyOfMedicationId,
+            //    TypeOfMedicationId = medication.TypeOfMedicationId,
+            //    Amount = medication.Amount,
+            //    Description = medication.Description,
+            //    CurrentMedication = medication
+            //};
+            //if (medication.Image != null)
+            //{
+            //    using (var ms = new MemoryStream(medication.Image))
+            //    {
+            //        System.Drawing.Image image = System.Drawing.Image.FromStream(ms);
+            //        //model.ImageFile = image;
+            //    }
+            //}
+            return View();
 
         }
         [HttpPost]
         public async Task<IActionResult> Edit(int id, EditMedicationViewModel model)
         {
-            if (ModelState.IsValid)
-            {
-                var medication = _context.Medication.Find(id);
-                medication.Name = model.Name;
-                medication.HowToUse = model.HowToUse;
-                medication.Manufacturer = model.Manufacturer;
-                medication.IsPrescriptionNeeded = model.IsPrescriptionNeeded;
-                medication.ConsistencyOfMedicationId = model.ConsistencyOfMedicationId;
-                medication.TypeOfMedicationId = model.TypeOfMedicationId;
-            }
+            //if (ModelState.IsValid)
+            //{
+            //    var medication = _context.Medication.Find(id);
+            //    medication.Name = model.Name;
+            //    medication.HowToUse = model.HowToUse;
+            //    medication.Manufacturer = model.Manufacturer;
+            //    medication.IsPrescriptionNeeded = model.IsPrescriptionNeeded;
+            //    medication.ConsistencyOfMedicationId = model.ConsistencyOfMedicationId;
+            //    medication.TypeOfMedicationId = model.TypeOfMedicationId;
+            //}
             return View();
         }
         [HttpPost]
@@ -189,6 +196,7 @@ namespace TestPharmacy1.Controllers
             var currentMed = _context.Medication.Find(id);
             var medication = new DetailsMedicationViewModel
             {
+                Id = id,
                 Name = currentMed.Name,
                 Manufacturer = currentMed.Manufacturer,
                 HowToUse = currentMed.HowToUse,

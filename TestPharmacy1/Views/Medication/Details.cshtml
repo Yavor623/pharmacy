@@ -16,7 +16,7 @@
 			<h3>@Model.Name</h3>
 			<h4>@Model.Price</h4>
 			<form asp-action="AddToCart" method="post">
-				<input type="number" min="1" max="@Model.Amount" name="amount"/>
+				<input type="number" min="1" max="@Model.Amount" name="amount" value="1"/>
 				<input type="hidden" name="medId" value="@Model.Id" />
 				<input type="hidden" name="userId" value="@SignInManager.UserManager.GetUserId(User)" />
 				<input type="submit" value="Add" />

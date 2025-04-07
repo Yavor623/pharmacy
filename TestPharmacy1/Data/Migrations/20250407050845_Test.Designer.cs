@@ -12,7 +12,7 @@ using TestPharmacy1.Data;
 namespace TestPharmacy1.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250403075739_Test")]
+    [Migration("20250407050845_Test")]
     partial class Test
     {
         /// <inheritdoc />
@@ -166,12 +166,12 @@ namespace TestPharmacy1.Data.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<int>("Age")
+                        .HasColumnType("int");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateOnly>("DateOfBirth")
-                        .HasColumnType("date");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -372,11 +372,13 @@ namespace TestPharmacy1.Data.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
 
-                    b.Property<DateOnly>("ExpirationDate")
-                        .HasColumnType("date");
+                    b.Property<string>("HowToUse")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
 
                     b.Property<byte[]>("Image")
                         .IsRequired()
@@ -417,6 +419,9 @@ namespace TestPharmacy1.Data.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("int");
 
                     b.Property<int>("MedicationId")
                         .HasColumnType("int");
