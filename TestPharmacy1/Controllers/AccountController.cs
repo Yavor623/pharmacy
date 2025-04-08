@@ -150,14 +150,14 @@ namespace TestPharmacy1.Controllers
 				var result = await _userManager.DeleteAsync(user);
 				if (result.Succeeded)
 				{
-					return View(); 
+					return RedirectToAction("Index"); 
 				}
 			}
             else
             {
-                return View();
-            }
-            return View();
-        }
+				return RedirectToAction("Index");
+			}
+			return RedirectToAction("Index");
+		}
     }
 }

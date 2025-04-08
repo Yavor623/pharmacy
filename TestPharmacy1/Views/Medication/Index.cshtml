@@ -2,13 +2,28 @@
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
-
+@{
+    var isChecked = false;
+}
+@section Scripts{ 
+    <script type="text/javascript">
+        window.onload(() => {
+            $("ws").val = sessionStorage.getItem("Hey");
+        }
+        });
+        function func(){
+            sessionStorage.setItem("Hey", "hey");
+        </script>
+}
 <head>
     <link rel="stylesheet" href="~/css/Main.css"><link /> 
-    <script src="https://kit.fontawesome.com/a28800c3e2.js" crossorigin="anonymous"></script>    
+    <script src="https://kit.fontawesome.com/a28800c3e2.js" crossorigin="anonymous"></script>  
+    
 </head>
 
 <aside class="left-aside">
+    <input id="ws" type="text" />
+    <input type="button" onclick="func()"/>
     <h2>Страни</h2>
     <form asp-action="Index" method="get" class="searchId">
         <input name="searchString" value="" type="text" class="searchBar"/>
@@ -28,13 +43,14 @@
 </aside>
 <main>
         <h2 id="title">Продукти</h2>
+    <input type="button" onclick="func()" />
         <div class="medications" style="margin-left:3%">
 
             @foreach (var medication in Model)
             {
                 <div class="items">
-                    
-                    <div id="pop-up" style="display:none">
+
+                <div id="pop-up" style="display:none" visible='<%#("toggle").onclick ? true : false %>'>
                         <ul>
                             <li><a asp-action="Delete">Delete</a></li>
                             <li><a asp-action="Edit">Edit</a></li>
@@ -42,7 +58,7 @@
                     </div>
                     <div style="width:100%">
 
-                    <label class="three-dots" >&#8230;<input type="checkbox" onclick="" name="toggle" id="toggle" /></label>
+                        <label class="three-dots">&#8230;<input type="button"   id="toggle" style="display:block" /></label>
                         <div id="pic-frame">
                             <a asp-action="Details" asp-route-id="@medication.Id"><img src="data:image;base64,@(Convert.ToBase64String(@medication.Image))" style="border-radius:1rem;" /></a>
                         </div>
@@ -64,22 +80,13 @@
                     max-height: 140px;
                 }
             }
-            #toggle{
+            /* #toggle{
                 display:none;
             }
         #toggle:checked #pop-up {
             display: block;
-        }
+        } */
         </style>
-        <script type="text/javascript">
-            const checkBox = document.getElementById('toggle');
-            const popUp = document.getElementsByClassName('pop-up')[0];
-            function ShowMenu() {
-                if(checkBox.ariaChecked
-                    
-                
-            }
-        </script>
 </main>
 
 
