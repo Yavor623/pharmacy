@@ -10,6 +10,7 @@ using System.Drawing;
 using System.Formats.Tar;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.CodeAnalysis.Differencing;
 
 namespace TestPharmacy1.Controllers
 {
@@ -17,6 +18,7 @@ namespace TestPharmacy1.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private string viewBagMessage = "You need prescription for this medication!";
         public MedicationController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
@@ -64,7 +66,31 @@ namespace TestPharmacy1.Controllers
             ViewData["ConsistencyOfMedicationId"] = new SelectList(_context.ConsistencyOfMedication, "Id", "Name");
             return View();
         }
-       
+        public void CheckIfItHasMed(IEnumerable<int> fileteredOwnedMedications,int medId,List<OwnedMedication> ownedMedications,int amount,string userId)
+        {
+            if (fileteredOwnedMedications.Contains(medId))
+            {
+                IEnumerable<OwnedMedication> change =
+                from med in ownedMedications
+                    where med.MedicationId == medId
+                    select med;
+                var changedElement = change.FirstOrDefault();
+                changedElement.Amount += amount;
+                _context.OwnedMedication.Update(changedElement);
+                _context.SaveChanges();
+            }
+            else
+            {
+                OwnedMedication ownedMedication = new OwnedMedication()
+                {
+                    MedicationId = medId,
+                    UserId = userId,
+                    Amount = amount
+                };
+                _context.OwnedMedication.Add(ownedMedication);
+                _context.SaveChanges();
+            }
+        }
         [HttpPost]
         public async Task<IActionResult> Create(CreateMedicationViewModel model)
         {
@@ -101,40 +127,51 @@ namespace TestPharmacy1.Controllers
         [HttpPost]
         public  async Task<IActionResult> AddToCart(int medId,string userId,int amount)
         {
-            var look = _context.OwnedMedication.ToList();
-            var filteredLook =
-                from med in look
+
+			var ownedMedications = _context.OwnedMedication.ToList();
+            var medications = _context.Medication.ToList();
+            var prescriptions = _context.Prescription.ToList();
+            var fileteredOwnedMedications =
+                from med in ownedMedications
                 where med.UserId == userId
                 select med.MedicationId;
+            var filteredMedications =
+                from med in medications
+                where med.Id == medId
+                select med;
+            var filteredPrescription =
+                from med in prescriptions
+                where med.UserId == userId
+                select med.Medications;
             if (!String.IsNullOrEmpty(userId))
             {
-                if (filteredLook.Contains(medId))
+                if ((from c in filteredMedications select c.IsPrescriptionNeeded).First())
                 {
-                    IEnumerable<OwnedMedication> change =
-                        from med in look
-                        where med.MedicationId == medId
-                        select med;
-                    var changedElement = change.FirstOrDefault();
-                    changedElement.Amount += amount;
-                    _context.OwnedMedication.Update(changedElement);
-                    _context.SaveChanges();
-                    return RedirectToAction("Index");
+                    foreach (var i in filteredPrescription)
+                    {
+                        if(i.Contains((from c in filteredMedications select c.Name).First()))
+                        {
+							CheckIfItHasMed(fileteredOwnedMedications, medId, ownedMedications, amount, userId);
+							return RedirectToAction("Index");
+						}
+                        else
+                        {
+							return RedirectToAction("Details", new { id = medId });
+						}
+                    }
                 }
                 else
                 {
-                    OwnedMedication ownedMedication = new OwnedMedication()
-                    {
-                        MedicationId = medId,
-                        UserId = userId,
-                        Amount = amount
-                    };
-                    _context.OwnedMedication.Add(ownedMedication);
-                    _context.SaveChanges();
+                    CheckIfItHasMed(fileteredOwnedMedications, medId, ownedMedications, amount, userId);
                     return RedirectToAction("Index");
                 }
             }
-            return RedirectToAction("Login","Account",new object { });
-        }
+            else
+            {
+				return RedirectToAction("Login", "Account", new object { });
+			}
+            return RedirectToAction("Details",new { id=medId});
+		}
         [HttpGet]
         public  IActionResult Edit(int id)
         {
@@ -159,8 +196,8 @@ namespace TestPharmacy1.Controllers
             //        //model.ImageFile = image;
             //    }
             //}
-            return View();
 
+            return View();
         }
         [HttpPost]
         public async Task<IActionResult> Edit(int id, EditMedicationViewModel model)
@@ -180,6 +217,7 @@ namespace TestPharmacy1.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
+            
             var med = _context.Medication.Find(id);
             var ownedMed =
                 from ownMed in _context.OwnedMedication
@@ -193,7 +231,15 @@ namespace TestPharmacy1.Controllers
         [HttpGet]
         public IActionResult Details(int id)
         {
-            var currentMed = _context.Medication.Find(id);
+            if (viewBagMessage != null)
+            {
+			     viewBagMessage = null;
+			}
+            else
+            {
+                ViewBag.Prescritpion = viewBagMessage;
+            }
+			var currentMed = _context.Medication.Find(id);
             var medication = new DetailsMedicationViewModel
             {
                 Id = id,

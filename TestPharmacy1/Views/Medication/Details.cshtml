@@ -2,12 +2,20 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 @model TestPharmacy1.Models.Medications.DetailsMedicationViewModel
-
 @{
-	var isPrescriptionNeeded = Model.IsPrescriptionNeeded == true ?  "yes" :  "no";
+	var isPrescriptionNeeded = Model.IsPrescriptionNeeded == true ? "yes" : "no";
 }
+@section Scripts{
+	<script type="text/javascript">
+		
+	</script>
+}
+
 <div>
 	<h2>Details</h2>
+	
+		<h2>@ViewBag.Prescription</h2>
+	
 	<div>
 		<div>
 			<img src="data:image;base64,@(Convert.ToBase64String(Model.Image))" />

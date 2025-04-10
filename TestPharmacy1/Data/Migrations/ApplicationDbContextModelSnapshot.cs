@@ -446,11 +446,13 @@ namespace TestPharmacy1.Data.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
-                    b.Property<int>("MedId")
-                        .HasColumnType("int");
+                    b.Property<string>("Medications")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<DateOnly>("PrescribedDate")
                         .HasColumnType("date");

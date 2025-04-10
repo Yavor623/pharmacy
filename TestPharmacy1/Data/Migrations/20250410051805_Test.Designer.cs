@@ -12,7 +12,7 @@ using TestPharmacy1.Data;
 namespace TestPharmacy1.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250407050845_Test")]
+    [Migration("20250410051805_Test")]
     partial class Test
     {
         /// <inheritdoc />
@@ -449,11 +449,13 @@ namespace TestPharmacy1.Data.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
-                    b.Property<int>("MedId")
-                        .HasColumnType("int");
+                    b.Property<string>("Medications")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<DateOnly>("PrescribedDate")
                         .HasColumnType("date");
