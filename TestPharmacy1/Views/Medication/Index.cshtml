@@ -3,16 +3,15 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 @{
-    var isChecked = false;
+    int currentPage;
+    int lastPage;
+    var takenElements = Model.Take(10).ToList();
 }
 @section Scripts{ 
-    <script type="text/javascript">
-        window.onload(() => {
-            $("ws").val = sessionStorage.getItem("Hey");
-        }
-        });
-        function func(){
-            sessionStorage.setItem("Hey", "hey");
+    <script type="text/javascript" >
+            $("#toggle").click(function () {
+            $("#pop-up").toggle();
+            });
         </script>
 }
 <head>
@@ -22,8 +21,6 @@
 </head>
 
 <aside class="left-aside">
-    <input id="ws" type="text" />
-    <input type="button" onclick="func()"/>
     <h2>Страни</h2>
     <form asp-action="Index" method="get" class="searchId">
         <input name="searchString" value="" type="text" class="searchBar"/>
@@ -43,14 +40,13 @@
 </aside>
 <main>
         <h2 id="title">Продукти</h2>
-    <input type="button" onclick="func()" />
         <div class="medications" style="margin-left:3%">
 
-            @foreach (var medication in Model)
+        @foreach (var medication in takenElements)
             {
                 <div class="items">
 
-                <div id="pop-up" style="display:none" visible='<%#("toggle").onclick ? true : false %>'>
+                <div id="pop-up" style="display:none">
                         <ul>
                             <li><a asp-action="Delete">Delete</a></li>
                             <li><a asp-action="Edit">Edit</a></li>
@@ -58,7 +54,7 @@
                     </div>
                     <div style="width:100%">
 
-                        <label class="three-dots">&#8230;<input type="button"   id="toggle" style="display:block" /></label>
+                        <input id="toggle" style="display:block" value="why" type="button"/>
                         <div id="pic-frame">
                             <a asp-action="Details" asp-route-id="@medication.Id"><img src="data:image;base64,@(Convert.ToBase64String(@medication.Image))" style="border-radius:1rem;" /></a>
                         </div>
@@ -67,8 +63,16 @@
                     </div>
                 </div>
             }
-        
-        </div>
+        @if (Model.Count()==1)
+        {
+            <a>&lt;</a>
+            @for(int i = 1; i <= Model.Count(); i++)
+            {
+                <a style="border:1px solid black;height:40px;width:40px" >@i</a>
+            }
+            <a>&gt;</a>
+        }
+    </div>
         <style>
             #pic-frame{
                 width:100%;
