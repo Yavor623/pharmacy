@@ -3,15 +3,20 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 @{
-    int currentPage;
-    int lastPage;
-    var takenElements = Model.Take(10).ToList();
+    int currentPage = ViewBag.CurrentPage;
+    int lastPage = currentPage-1;
+    int nextPage = currentPage==0?currentPage+2:currentPage+1;
+    int elementsToTake = 8;
+    int amountOfPages = (int)Math.Ceiling(Convert.ToDouble(Model.Count()) / elementsToTake);
+    var takenElements = Model.Skip((currentPage-1)*elementsToTake).Take(elementsToTake).ToList();
 }
 @section Scripts{ 
     <script type="text/javascript" >
-            $("#toggle").click(function () {
-            $("#pop-up").toggle();
+        $(".items").each(function(){
+            $(this).children().$("#toggle").on('click', function () {
+                $(this).children().$("#pop-up").toggle();
             });
+        });
         </script>
 }
 <head>
@@ -44,9 +49,10 @@
 
         @foreach (var medication in takenElements)
             {
-                <div class="items">
+                
+                <div class="items" >
 
-                <div id="pop-up" style="display:none">
+                    <div id="pop-up" style="display:none;z-index:3">
                         <ul>
                             <li><a asp-action="Delete">Delete</a></li>
                             <li><a asp-action="Edit">Edit</a></li>
@@ -62,18 +68,41 @@
                         <div style="min-height:50px"><h5 style="font-weight:650;color:lawngreen">@medication.Price лв.</h5></div>
                     </div>
                 </div>
+               
             }
-        @if (Model.Count()==1)
+        
+        @if (amountOfPages > 1)
         {
-            <a>&lt;</a>
-            @for(int i = 1; i <= Model.Count(); i++)
-            {
-                <a style="border:1px solid black;height:40px;width:40px" >@i</a>
-            }
-            <a>&gt;</a>
+            <form id="list_form" asp-action="Index">
+                @if (ViewBag.CurrentPage > 1)
+                {
+                    <input type="hidden" value="@lastPage" name="id">
+                    <input type="submit"  value="&lt;">
+                }
+                @for (int i = 1; i <= amountOfPages; i++)
+                {
+                    <input type="submit" value="@i" name="id">
+                }
+                @if (ViewBag.CurrentPage < amountOfPages||ViewBag.CurrentPage == 1)
+                {
+                    <input type="hidden" value="@nextPage" name="id">
+                    <input type="submit" value="&gt;">
+                }        
+            </form>
         }
     </div>
         <style>
+            #list_form *{
+               height:40px;
+               width:40px;
+               border-radius:7px;
+               border:3px solid #5ed91c;
+               background-color:#66f21b;
+               color:white;
+               font-weight:600;
+               font-size:1.5em;
+               text-align:center;
+            }
             #pic-frame{
                 width:100%;
                 object-fit:cover;
@@ -83,6 +112,9 @@
                     min-height:140px;
                     max-height: 140px;
                 }
+            }
+            .active{
+                color:black;
             }
             /* #toggle{
                 display:none;
