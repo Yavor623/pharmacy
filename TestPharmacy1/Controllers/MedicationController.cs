@@ -24,8 +24,9 @@ namespace TestPharmacy1.Controllers
             _context = context;
             _userManager = userManager;
         }
-        public IActionResult Index(string searchString,string selectedOption,int id)
+        public IActionResult Index(string searchString,string selectedOption,int id,int submitValue)
         {
+            ViewBag.AmountOfItems = submitValue;
             ViewBag.CurrentPage = id;
             var medications = _context.Medication.Include(o => o.TypeOfMedication).Include(o => o.ConsistencyOfMedication).ToList();
             

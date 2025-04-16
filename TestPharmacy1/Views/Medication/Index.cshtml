@@ -6,18 +6,23 @@
     int currentPage = ViewBag.CurrentPage;
     int lastPage = currentPage-1;
     int nextPage = currentPage==0?currentPage+2:currentPage+1;
-    int elementsToTake = 8;
+    int elementsToTake = ViewBag.AmountOfItems;
     int amountOfPages = (int)Math.Ceiling(Convert.ToDouble(Model.Count()) / elementsToTake);
     var takenElements = Model.Skip((currentPage-1)*elementsToTake).Take(elementsToTake).ToList();
 }
 @section Scripts{ 
     <script type="text/javascript" >
         $(".items").each(function(){
-            $(this).children().$("#toggle").on('click', function () {
-                $(this).children().$("#pop-up").toggle();
+            $(this).children().$("input").on('click', function () {
+                $(this).children().$("div:first").toggle();
             });
         });
+        function func() {
+            $("#submitBtn").val() = $("#select").val();
+            $("#submitBtn").click();
+        }
         </script>
+        
 }
 <head>
     <link rel="stylesheet" href="~/css/Main.css"><link /> 
@@ -45,6 +50,18 @@
 </aside>
 <main>
         <h2 id="title">Продукти</h2>
+        <form asp-action="Index">
+        <select id="select" onchange="func()">
+                <option selected value="8">8</option>
+                <option value="12">12</option>
+                <option value="16">16</option>
+                <option value="20">20</option>
+                <option value="24">24</option>
+                <option value="@Model.Count()">All</option>
+            </select>
+            <input type="submit" value="" id="submitBtn" name="submitValue"/>
+        </form>
+        
         <div class="medications" style="margin-left:3%">
 
         @foreach (var medication in takenElements)
