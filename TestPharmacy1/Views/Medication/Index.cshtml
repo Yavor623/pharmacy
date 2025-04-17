@@ -12,13 +12,20 @@
 }
 @section Scripts{ 
     <script type="text/javascript" >
-        $(".items").each(function(){
-            $(this).children().$("input").on('click', function () {
-                $(this).children().$("div:first").toggle();
+        $(function () {
+            $(".items").each(function () {
+                $(this).$("input").on('click', function () {
+                    $(this).$("div:first").toggle();
+                });
             });
         });
-        function func() {
-            $("#submitBtn").val() = $("#select").val();
+        $(function () {
+            $("select#selects option[value=" + @elementsToTake + "]").prop("selected", true);
+        });
+
+        function func(){
+            $("#submitBtn").val($("#selects").find(":selected").val());
+            $("#radio").prop('checked', true);
             $("#submitBtn").click();
         }
         </script>
@@ -51,15 +58,16 @@
 <main>
         <h2 id="title">Продукти</h2>
         <form asp-action="Index">
-        <select id="select" onchange="func()">
-                <option selected value="8">8</option>
+            <select id="selects" onchange="func()">
+                <option value="8">8</option>
                 <option value="12">12</option>
                 <option value="16">16</option>
                 <option value="20">20</option>
                 <option value="24">24</option>
                 <option value="@Model.Count()">All</option>
             </select>
-            <input type="submit" value="" id="submitBtn" name="submitValue"/>
+        <input type="radio" name="isItChecked" id="radio" value="true" style="visibility:hidden" />
+        <input type="submit" value="" id="submitBtn" name="submitValue" style="visibility:hidden"/>
         </form>
         
         <div class="medications" style="margin-left:3%">
@@ -79,7 +87,7 @@
 
                         <input id="toggle" style="display:block" value="why" type="button"/>
                         <div id="pic-frame">
-                            <a asp-action="Details" asp-route-id="@medication.Id"><img src="data:image;base64,@(Convert.ToBase64String(@medication.Image))" style="border-radius:1rem;" /></a>
+                        <a asp-action="Details" asp-route-id="@medication.Id" asp-route-prescriptionMessage=""><img src="data:image;base64,@(Convert.ToBase64String(@medication.Image))" style="border-radius:1rem;" /></a>
                         </div>
                         <div style="min-height:50px"><h5 style="font-weight:350">@medication.Name @medication.Description</h5></div>
                         <div style="min-height:50px"><h5 style="font-weight:650;color:lawngreen">@medication.Price лв.</h5></div>

@@ -3,18 +3,21 @@
 @inject UserManager<ApplicationUser> UserManager
 @model TestPharmacy1.Models.Medications.DetailsMedicationViewModel
 @{
-	var isPrescriptionNeeded = Model.IsPrescriptionNeeded == true ? "yes" : "no";
+	var isPrescriptionNeeded = Model.IsPrescriptionNeeded == true ? "да" : "не";
+	var car = ViewBag.Prescription;
+	var s = 5;
 }
 @section Scripts{
 	<script type="text/javascript">
-		
+		$(function () {
+			if (@ViewBag.Prescription != null) {
+				alert(@ViewBag.Prescription);
+			}
+		});
 	</script>
 }
-
 <div>
-	<h2>Details</h2>
-	
-		<h2>@ViewBag.Prescription</h2>
+	<h2>Детайли</h2>
 	
 	<div>
 		<div>
@@ -22,7 +25,7 @@
 		</div>
 		<div>
 			<h3>@Model.Name</h3>
-			<h4>@Model.Price</h4>
+			<h4>@Model.Price лв.</h4>
 			<form asp-action="AddToCart" method="post">
 				<input type="number" min="1" max="@Model.Amount" name="amount" value="1"/>
 				<input type="hidden" name="medId" value="@Model.Id" />
@@ -30,8 +33,9 @@
 				<input type="submit" value="Add" />
 			</form>
 			<div>
+				<h4>Описание:</h4>
 				<p>@Model.Description</p>
-				<p>Is prescription needed - @isPrescriptionNeeded</p>
+				<p>Има ли нужда от предписание? - @isPrescriptionNeeded</p>
 			</div>
 		</div>
 	</div>

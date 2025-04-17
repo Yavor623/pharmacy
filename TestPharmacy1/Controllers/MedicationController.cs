@@ -11,6 +11,7 @@ using System.Formats.Tar;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.CodeAnalysis.Differencing;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace TestPharmacy1.Controllers
 {
@@ -24,9 +25,9 @@ namespace TestPharmacy1.Controllers
             _context = context;
             _userManager = userManager;
         }
-        public IActionResult Index(string searchString,string selectedOption,int id,int submitValue)
+        public IActionResult Index(string searchString,string selectedOption,int id,int submitValue,bool isItChecked)
         {
-            ViewBag.AmountOfItems = submitValue;
+            ViewBag.AmountOfItems = isItChecked == true? submitValue:8;
             ViewBag.CurrentPage = id;
             var medications = _context.Medication.Include(o => o.TypeOfMedication).Include(o => o.ConsistencyOfMedication).ToList();
             
@@ -158,7 +159,7 @@ namespace TestPharmacy1.Controllers
 						}
                         else
                         {
-							return RedirectToAction("Details", new { id = medId });
+                            return RedirectToAction("Details", "Medication", new { id = medId , prescriptionMessage = viewBagMessage});
 						}
                     }
                 }
@@ -172,48 +173,57 @@ namespace TestPharmacy1.Controllers
             {
 				return RedirectToAction("Login", "Account", new object { });
 			}
-            return RedirectToAction("Details",new { id=medId});
+            return RedirectToAction("Details","Medication",new { id=medId , prescriptionMessage = ""});
 		}
         [HttpGet]
         public  IActionResult Edit(int id)
         {
-            //var medication = _context.Medication.FirstOrDefault(a => a.Id == id);
-            //var model = new EditMedicationViewModel
-            //{
-            //    Name = medication.Name,
-            //    Manufacturer = medication.Manufacturer,
-            //    HowToUse = medication.HowToUse,
-            //    IsPrescriptionNeeded = medication.IsPrescriptionNeeded,
-            //    ConsistencyOfMedicationId = medication.ConsistencyOfMedicationId,
-            //    TypeOfMedicationId = medication.TypeOfMedicationId,
-            //    Amount = medication.Amount,
-            //    Description = medication.Description,
-            //    CurrentMedication = medication
-            //};
-            //if (medication.Image != null)
-            //{
-            //    using (var ms = new MemoryStream(medication.Image))
-            //    {
-            //        System.Drawing.Image image = System.Drawing.Image.FromStream(ms);
-            //        //model.ImageFile = image;
-            //    }
-            //}
-
-            return View();
+            var medication = _context.Medication.FirstOrDefault(a => a.Id == id);
+            var model = new EditMedicationViewModel
+            {
+                Name = medication.Name,
+                Manufacturer = medication.Manufacturer,
+                HowToUse = medication.HowToUse,
+                IsPrescriptionNeeded = medication.IsPrescriptionNeeded,
+                ConsistencyOfMedicationId = medication.ConsistencyOfMedicationId,
+                TypeOfMedicationId = medication.TypeOfMedicationId,
+                Amount = medication.Amount,
+                Description = medication.Description,
+                ByteImage = medication.Image,
+                Price = medication.Price,
+                CurrentMedication = medication
+            };
+            return View(model);
         }
         [HttpPost]
         public async Task<IActionResult> Edit(int id, EditMedicationViewModel model)
         {
-            //if (ModelState.IsValid)
-            //{
-            //    var medication = _context.Medication.Find(id);
-            //    medication.Name = model.Name;
-            //    medication.HowToUse = model.HowToUse;
-            //    medication.Manufacturer = model.Manufacturer;
-            //    medication.IsPrescriptionNeeded = model.IsPrescriptionNeeded;
-            //    medication.ConsistencyOfMedicationId = model.ConsistencyOfMedicationId;
-            //    medication.TypeOfMedicationId = model.TypeOfMedicationId;
-            //}
+            if (ModelState.IsValid)
+            {
+                var medication = _context.Medication.Find(id);
+                medication.Name = model.Name;
+                medication.HowToUse = model.HowToUse;
+                medication.Price = model.Price;
+                medication.Manufacturer = model.Manufacturer;
+                medication.Amount = model.Amount;
+                medication.Description = model.Description;
+                medication.IsPrescriptionNeeded = model.IsPrescriptionNeeded;
+                medication.ConsistencyOfMedicationId = model.ConsistencyOfMedicationId;
+                medication.TypeOfMedicationId = model.TypeOfMedicationId;
+                if (model.ImageFile != null)
+                {
+                    using (var ms = new MemoryStream())
+                    {
+                        await model.ImageFile.CopyToAsync(ms);
+                        medication.Image = ms.ToArray();
+                    }
+                }
+                else
+                {
+                    medication.Image = model.ByteImage;
+                }
+                return RedirectToAction("Index");
+            }
             return View();
         }
         [HttpPost]
@@ -231,16 +241,9 @@ namespace TestPharmacy1.Controllers
             return RedirectToAction("Index");
         }
         [HttpGet]
-        public IActionResult Details(int id)
+        public IActionResult Details(int id,string prescriptionMessage)
         {
-            if (viewBagMessage != null)
-            {
-			     viewBagMessage = null;
-			}
-            else
-            {
-                ViewBag.Prescritpion = viewBagMessage;
-            }
+            ViewBag.Prescription = prescriptionMessage;
 			var currentMed = _context.Medication.Find(id);
             var medication = new DetailsMedicationViewModel
             {

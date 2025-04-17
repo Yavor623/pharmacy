@@ -30,7 +30,8 @@ namespace TestPharmacy1.Models.Medications
         public int ConsistencyOfMedicationId { get; set; }
         [Required]
         [Display(Name = "Upload Image")]
-        public IFormFile ImageFile { get; set; }
+        public byte[] ByteImage { get; set; }
+        public IFormFile? ImageFile { get; set; }
         [DisplayFormat(DataFormatString = "{0:C0}")]
         [Required]
         public decimal Price { get; set; }
