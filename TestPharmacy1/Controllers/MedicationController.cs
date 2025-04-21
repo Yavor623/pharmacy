@@ -27,6 +27,8 @@ namespace TestPharmacy1.Controllers
         }
         public IActionResult Index(string searchString,string selectedOption,int id,int submitValue,bool isItChecked)
         {
+            ViewData["TypeOfMedication"] = _context.TypeOfMedication.Select(a => a.Name);
+            ViewData["ConsistencyOfMedicationId"] = new SelectList(_context.ConsistencyOfMedication, "Id", "Name");
             ViewBag.AmountOfItems = isItChecked == true? submitValue:8;
             ViewBag.CurrentPage = id;
             var medications = _context.Medication.Include(o => o.TypeOfMedication).Include(o => o.ConsistencyOfMedication).ToList();
@@ -58,6 +60,7 @@ namespace TestPharmacy1.Controllers
             }
             return View(medications);
         }
+
         public IActionResult FilteredIndex(List<Medication>medications)
         {
             return View(medications);

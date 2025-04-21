@@ -3,6 +3,7 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 @{
+    List<string> names = new List<string>() { "a", "b" };
     int currentPage = ViewBag.CurrentPage;
     int lastPage = currentPage-1;
     int nextPage = currentPage==0?currentPage+2:currentPage+1;
@@ -13,6 +14,7 @@
 @section Scripts{ 
     <script type="text/javascript" >
         $(function () {
+            $("select#selects option[value=" + @elementsToTake + "]").prop("selected", true);
             $(".items").each(function () {
                 $(this).$("input").on('click', function () {
                     $(this).$("div:first").toggle();
@@ -20,13 +22,22 @@
             });
         });
         $(function () {
-            $("select#selects option[value=" + @elementsToTake + "]").prop("selected", true);
+           
         });
 
         function func(){
             $("#submitBtn").val($("#selects").find(":selected").val());
             $("#radio").prop('checked', true);
             $("#submitBtn").click();
+        }
+        function FillOutSelect(){
+            var names = @Html.Raw(JsonContent.Create(@ViewBag.TypeOfMedication)));
+            if($("#filterSelect :selected").text() == "Type of medication"){
+                // $(names).each(function(){
+                //     $(".searchBar").val(this);
+                // });
+                $("main").css("background-color","black");
+            }
         }
         </script>
         
@@ -46,10 +57,16 @@
         <label>Sort by:</label>
         <select name="selectedOption">
             <option></option>
+            <option>Both</option>
             <option>Price</option>
             <option>Name</option>
         </select>
-        
+        <select id="filterSelect" name="filter" onchange="FillOutSelect()">
+            <option>Is prescription needed?</option>
+            <option>Type of medication</option>
+            <option>Is prescription needed?</option>
+        </select>
+        <select id="hiddenSelect" style="visibility:visible" name="additionalFilter"></select>
         <input type="submit" value="Order"  /> 
     </form>   
     <br />
