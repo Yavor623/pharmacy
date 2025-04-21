@@ -14,38 +14,37 @@
 @section Scripts{ 
     <script type="text/javascript" >
         $(function () {
-            $("select#selects option[value=" + @elementsToTake + "]").prop("selected", true);
-            $(".items").each(function () {
-                $(this).$("input").on('click', function () {
-                    $(this).$("div:first").toggle();
-                });
-            });
+        $("select#selects option[value=" + @elementsToTake + "]").prop("selected", true);
         });
-        $(function () {
-           
-        });
-
+        function ShouldItBeDeleted() {
+        if (confirm("Да се изтрие ли този медикамент?")) {
+        $("#confirm").val("Yes");
+        }
+        else {
+        $("#confirm").val("No");
+        }
+        }
         function func(){
-            $("#submitBtn").val($("#selects").find(":selected").val());
-            $("#radio").prop('checked', true);
-            $("#submitBtn").click();
+        $("#submitBtn").val($("#selects").find(":selected").val());
+        $("#radio").prop('checked', true);
+        $("#submitBtn").click();
         }
         function FillOutSelect(){
-            var names = @Html.Raw(JsonContent.Create(@ViewBag.TypeOfMedication)));
-            if($("#filterSelect :selected").text() == "Type of medication"){
-                // $(names).each(function(){
-                //     $(".searchBar").val(this);
-                // });
-                $("main").css("background-color","black");
-            }
+        var names = @Html.Raw(JsonContent.Create(@ViewBag.TypeOfMedication)));
+        if($("#filterSelect :selected").text() == "Type of medication"){
+        // $(names).each(function(){
+        //     $(".searchBar").val(this);
+        // });
+        $("main").css("background-color","black");
         }
-        </script>
-        
+        }
+    </script>
+
 }
 <head>
     <link rel="stylesheet" href="~/css/Main.css"><link /> 
     <script src="https://kit.fontawesome.com/a28800c3e2.js" crossorigin="anonymous"></script>  
-    
+
 </head>
 
 <aside class="left-aside">
@@ -64,7 +63,7 @@
         <select id="filterSelect" name="filter" onchange="FillOutSelect()">
             <option>Is prescription needed?</option>
             <option>Type of medication</option>
-            <option>Is prescription needed?</option>
+            <option>Consistency of medication</option>
         </select>
         <select id="hiddenSelect" style="visibility:visible" name="additionalFilter"></select>
         <input type="submit" value="Order"  /> 
@@ -73,45 +72,50 @@
     <a asp-action="Create" class="btn btn-primary">Create</a>
 </aside>
 <main>
-        <h2 id="title">Продукти</h2>
-        <form asp-action="Index">
-            <select id="selects" onchange="func()">
-                <option value="8">8</option>
-                <option value="12">12</option>
-                <option value="16">16</option>
-                <option value="20">20</option>
-                <option value="24">24</option>
-                <option value="@Model.Count()">All</option>
-            </select>
+    <h2 id="title">Продукти</h2>
+    <form asp-action="Index">
+        <select id="selects" onchange="func()">
+            <option value="8">8</option>
+            <option value="12">12</option>
+            <option value="16">16</option>
+            <option value="20">20</option>
+            <option value="24">24</option>
+            <option value="@Model.Count()">All</option>
+        </select>
         <input type="radio" name="isItChecked" id="radio" value="true" style="visibility:hidden" />
         <input type="submit" value="" id="submitBtn" name="submitValue" style="visibility:hidden"/>
-        </form>
-        
-        <div class="medications" style="margin-left:3%">
+    </form>
+
+    <div class="medications" style="margin-left:3%">
 
         @foreach (var medication in takenElements)
-            {
-                
-                <div class="items" >
+        {
 
-                    <div id="pop-up" style="display:none;z-index:3">
-                        <ul>
-                            <li><a asp-action="Delete">Delete</a></li>
-                            <li><a asp-action="Edit">Edit</a></li>
-                        </ul>
-                    </div>
-                    <div style="width:100%">
+            <div class="items" >
 
-                        <input id="toggle" style="display:block" value="why" type="button"/>
-                        <div id="pic-frame">
+
+                <div style="width:100%">
+
+                    <div id="pic-frame">
                         <a asp-action="Details" asp-route-id="@medication.Id" asp-route-prescriptionMessage=""><img src="data:image;base64,@(Convert.ToBase64String(@medication.Image))" style="border-radius:1rem;" /></a>
-                        </div>
-                        <div style="min-height:50px"><h5 style="font-weight:350">@medication.Name @medication.Description</h5></div>
-                        <div style="min-height:50px"><h5 style="font-weight:650;color:lawngreen">@medication.Price лв.</h5></div>
                     </div>
+                    <div style="min-height:50px"><h5 style="font-weight:350">@medication.Name @medication.Description</h5></div>
+                    <div style="min-height:50px"><h5 style="font-weight:650;color:lawngreen">@medication.Price лв.</h5></div>
+                    @if (SignInManager.IsSignedIn(User)&&User.IsInRole("Admin"))
+                    {
+                        <div id="pop-up">
+                            <ul>
+                                <form asp-action="Delete" method="post">
+                                    <input type="hidden" name="confirmed_value" id="confirm" />
+                                    <input type="submit" asp-route-id="@medication.Id" onclick="ShouldItBeDeleted()" asp-action="Delete" value="Delete" />
+                                </form>
+                                <li><a asp-action="Edit">Edit</a></li>
+                            </ul>
+                        </div>
+                    }
                 </div>
-               
-            }
+            </div>
+        }
         
         @if (amountOfPages > 1)
         {

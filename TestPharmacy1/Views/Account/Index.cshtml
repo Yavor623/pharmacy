@@ -3,8 +3,8 @@
 @model IEnumerable<ApplicationUser>
 @section Scripts{
 	<script type="text/javascript">
-		function func() {
-			if (confirm("Hi")) {
+		function ShouldItBeDeleted() {
+			if (confirm("Да се изтрие ли този акаунт?")) {
 				$("#confirm").val("Yes");
 			}
 			else {
@@ -36,7 +36,7 @@
 					{
 						<form asp-action="Delete" method="post">
 							<input type="hidden" name="confirmed_value" id="confirm" />
-							<input type="submit" asp-route-id="@user.Id" onclick="func()" asp-action="Delete"/>
+							<input type="submit" asp-route-id="@user.Id" onclick="ShouldItBeDeleted()" asp-action="Delete" value="Delete" />
 						</form>
 						<br>
 					}

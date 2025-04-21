@@ -230,17 +230,23 @@ namespace TestPharmacy1.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(string confirmed_value, int id)
         {
-            
-            var med = _context.Medication.Find(id);
-            var ownedMed =
-                from ownMed in _context.OwnedMedication
-                where ownMed.MedicationId == id
-                select ownMed;
-            ownedMed.ForEachAsync(a => _context.OwnedMedication.Remove(a));
-            _context.Medication.Remove(med);
-            _context.SaveChanges();
+            if (confirmed_value == "Yes")
+            {
+                var med = _context.Medication.Find(id);
+                var ownedMed =
+                    from ownMed in _context.OwnedMedication
+                    where ownMed.MedicationId == id
+                    select ownMed;
+                ownedMed.ForEachAsync(a => _context.OwnedMedication.Remove(a));
+                _context.Medication.Remove(med);
+                _context.SaveChanges();
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
             return RedirectToAction("Index");
         }
         [HttpGet]
