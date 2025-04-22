@@ -17,12 +17,12 @@
         $("select#selects option[value=" + @elementsToTake + "]").prop("selected", true);
         });
         function ShouldItBeDeleted() {
-        if (confirm("Да се изтрие ли този медикамент?")) {
-        $("#confirm").val("Yes");
-        }
-        else {
-        $("#confirm").val("No");
-        }
+            if (confirm("Да се изтрие ли този медикамент?")) {
+                $("#confirm").val("Yes");
+            }
+            else {
+                $("#confirm").val("No");
+            }
         }
         function func(){
         $("#submitBtn").val($("#selects").find(":selected").val());
@@ -30,13 +30,25 @@
         $("#submitBtn").click();
         }
         function FillOutSelect(){
-        var names = @Html.Raw(JsonContent.Create(@ViewBag.TypeOfMedication)));
-        if($("#filterSelect :selected").text() == "Type of medication"){
-        // $(names).each(function(){
-        //     $(".searchBar").val(this);
-        // });
-        $("main").css("background-color","black");
-        }
+            if($("#filterSelect :selected").text() == "Type of medication"){
+                $.ajax({
+                    type:'GET',
+                    dataType:'JSON',
+                    url: 'Medication/GetTypeOfMedication',
+                    data:,
+                    success:function(response){
+                        $.each(response.data, function () {
+                            alert(this.Name);
+                        });
+                        // alert(response);
+                    }
+                })
+            // $(names).each(function(){
+            //     $(".searchBar").val(this);
+            // });
+                // $("main").css("background-color","black");
+                // $("#hiddenSelect").val(@Html.DropDownList("TypeOfMedication",ViewBag.TypeOfMedication as List<SelectListItem>));
+            }
         }
     </script>
 

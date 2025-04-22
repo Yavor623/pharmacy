@@ -4,6 +4,8 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using TestPharmacy1.Models.Medications;
 using TestPharmacy1.Models;
+using Newtonsoft.Json.Serialization;
+using Newtonsoft.Json;
 using static System.Net.Mime.MediaTypeNames;
 using System.IO;
 using System.Drawing;
@@ -25,10 +27,16 @@ namespace TestPharmacy1.Controllers
             _context = context;
             _userManager = userManager;
         }
+        [HttpGet]
+        public JsonResult GetTypeOfMedication()
+        {
+            return Json(_context.TypeOfMedication.Select(a => a.Name));
+        }
         public IActionResult Index(string searchString,string selectedOption,int id,int submitValue,bool isItChecked)
         {
-            ViewData["TypeOfMedication"] = _context.TypeOfMedication.Select(a => a.Name);
-            ViewData["ConsistencyOfMedicationId"] = new SelectList(_context.ConsistencyOfMedication, "Id", "Name");
+			//ViewData["TypeOfMedication"] = _context.TypeOfMedication.Select(a => a.Name);
+			ViewData["TypeOfMedication"] = new SelectList(_context.TypeOfMedication, "Id", "Name");
+			ViewData["ConsistencyOfMedicationId"] = new SelectList(_context.ConsistencyOfMedication, "Id", "Name");
             ViewBag.AmountOfItems = isItChecked == true? submitValue:8;
             ViewBag.CurrentPage = id;
             var medications = _context.Medication.Include(o => o.TypeOfMedication).Include(o => o.ConsistencyOfMedication).ToList();
