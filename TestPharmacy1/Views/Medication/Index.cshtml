@@ -13,18 +13,24 @@
 @section Scripts{ 
     <script type="text/javascript" >
         function ClearValues() {
+            $("#hiddenSelect").hide();
             $("#searchBar").val(" ");
-            $("#sortDropdown option[value='Избери опция']").prop("selected", true);
+            $("#sortDropdown option[value=Избери опция]").prop("selected", true);
+            $("#filterSelect option[value=Избери опция]").prop("selected", true);
+            
             $("#sortDirection").val("desc");
             $('.sortDirectionBtn-wrap span').text('↓');
+
             sessionStorage.setItem("IsItAQuery", "false");
             sessionStorage.setItem("SearchValue", $("#searchBar").val());
             sessionStorage.setItem("SortValue", $("#sortDropdown").val());
             sessionStorage.setItem("SortDirection", $("#sortDirection").val());
+            sessionStorage.setItem("FilterValue", $("#filterSelect").val());
+            sessionStorage.setItem("IsThereAddFilter","false");
+            alert(sessionStorage.getItem("FilterValue"));
         }
         $(function () {
             
-            $("#searchBar").val(sessionStorage.getItem("SearchValue"));
             if(sessionStorage.getItem("IsItAQuery") == "true")
             {
                 $("#doneBtn input").prop('checked', true);
@@ -41,14 +47,15 @@
                 $("#doneBtn input").prop('checked', false);
                 sessionStorage.setItem("IsItAQuery", "false");
             }
-
+            $("#filterSelect").val(sessionStorage.getItem("FilterValue"));
+            $("#searchBar").val(sessionStorage.getItem("SearchValue"));
             $("#sortDropdown").val(sessionStorage.getItem("SortValue"));
-
-            
             $("#sortDirection").val(sessionStorage.getItem("SortDirection"));
             $('.sortDirectionBtn-wrap span').text(sessionStorage.getItem("SortDirection") == "desc" ? '↓' : '↑');
-
-
+            if(sessionStorage.getItem("IsThereAddFilter")=="true"){
+                FillOutSelect();
+                $("#hiddenSelect option[value="+sessionStorage.getItem("AdditionalFilter")+"]").prop("selected",true);
+            }
             $('.sortDirectionBtn-wrap').click(function () {
                  var checked = $("#sortDirectionBtn").is(':checked');
                 $('span', this).text(checked ? '↓' : '↑');
@@ -73,11 +80,16 @@
         }
         function SaveValues() 
         {
+            if($("#hiddenSelect").children().length==0){
+                sessionStorage.setItem("IsThereAddFilter","false");
+            }
             $("#doneBtn input").prop('checked',true);
             sessionStorage.setItem("IsItAQuery", "true");
             sessionStorage.setItem("SearchValue", $("#searchBar").val());
-            sessionStorage.setItem("SortValue", $("#sortDropdown").val());
+            sessionStorage.setItem("SortValue", $("#sortDropdown option:selected").val());
             sessionStorage.setItem("SortDirection", $("#sortDirection").val());
+            sessionStorage.setItem("FilterValue", $("#filterSelect option:selected").val());
+            sessionStorage.setItem("AdditionalFilter",$("#hiddenSelect option:selected").val());
         }
         
 
@@ -86,6 +98,7 @@
             $("#hiddenSelect").empty();
             if ($("#filterSelect :selected").text() == "Класификация") {
                 $("#hiddenSelect").show();
+                sessionStorage.setItem("IsThereAddFilter","true");
                 $.ajax({
                     type: 'GET',
                     dataType: 'JSON',
@@ -101,6 +114,7 @@
             }
             else if ($("#filterSelect :selected").text() == "Вид медикамент") {
                 $("#hiddenSelect").show();
+                sessionStorage.setItem("IsThereAddFilter","true");
                 $.ajax({
                     type: 'GET',
                     dataType: 'JSON',
@@ -160,7 +174,7 @@
         </div>
         <br />
         <div class="divWrapper">
-            <select id="hiddenSelect" style="visibility:visible" name="additionalFilter">
+            <select id="hiddenSelect" name="additionalFilter">
                 
             </select>
         </div>
