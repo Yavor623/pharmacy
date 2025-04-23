@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TestPharmacy1.Data;
 using System.Linq;
+using System.Web;
 using Microsoft.EntityFrameworkCore;
 using TestPharmacy1.Models.Medications;
 using TestPharmacy1.Models;
@@ -32,11 +33,14 @@ namespace TestPharmacy1.Controllers
         {
             return Json(_context.TypeOfMedication.Select(a => a.Name));
         }
-        public IActionResult Index(string searchString,string selectedOption,int id,int submitValue,bool isItChecked)
+        [HttpGet]
+        public JsonResult GetConsistencyOfMedication()
         {
-			//ViewData["TypeOfMedication"] = _context.TypeOfMedication.Select(a => a.Name);
-			ViewData["TypeOfMedication"] = new SelectList(_context.TypeOfMedication, "Id", "Name");
-			ViewData["ConsistencyOfMedicationId"] = new SelectList(_context.ConsistencyOfMedication, "Id", "Name");
+            return Json(_context.ConsistencyOfMedication.Select(a => a.Name));
+        }
+        public IActionResult Index(string? searchString,string? sortString,int id,int submitValue,bool isItChecked,string? filter,string? additionalFilter,string direction,bool IsItAQuery = false)
+        {
+            ViewBag.IsItAQuery = IsItAQuery;
             ViewBag.AmountOfItems = isItChecked == true? submitValue:8;
             ViewBag.CurrentPage = id;
             var medications = _context.Medication.Include(o => o.TypeOfMedication).Include(o => o.ConsistencyOfMedication).ToList();
@@ -49,17 +53,91 @@ namespace TestPharmacy1.Controllers
                  select med;
                 return View(queryLowNums);
             }
-            if (!String.IsNullOrEmpty(selectedOption))
+            if(filter!="Избери опция")
             {
-                switch (selectedOption) 
+                if (!String.IsNullOrEmpty(additionalFilter))
                 {
-                    case "Price":
-                        var queryPrice = medications.OrderByDescending(o => o.Price);
-                        return View(queryPrice);
+                    switch (filter) 
+                    {
+                        case "Класификация":
+                            var queryTypeOfMedication = 
+                                from med in medications
+                                where med.TypeOfMedication.Name == additionalFilter
+                                select med;
+                            return View(queryTypeOfMedication);
+                            break;
+                        case "Вид медикамент":
+                            var queryConsistencyOfMedication =
+                                from med in medications
+                                where med.ConsistencyOfMedication.Name == additionalFilter
+                                select med;
+                            return View(queryConsistencyOfMedication);
+                            break;
+                    }
+
+                }
+                else
+                {
+                    switch (filter)
+                    {
+                        case "Има нужда от предписание":
+                            var queryIsPrescriptionNeeded =
+                            from med in medications
+                            where med.IsPrescriptionNeeded == true
+                            select med;
+                            return View(queryIsPrescriptionNeeded);
+                            break;
+                        case "Няма нужда от предписание":
+                            var queryIsPrescriptionNotNeeded =
+                            from med in medications
+                            where med.IsPrescriptionNeeded == false
+                            select med;
+                            return View(queryIsPrescriptionNotNeeded);
+                            break;
+                    }
+                    
+                }
+            }
+            if (sortString != "Избери опция")
+            {
+                IEnumerable<Medication> query;
+                switch (sortString) 
+                {
+                    case "И двете":
+                        IEnumerable<Medication> secondQuery;
+                        if (direction == "desc")
+                        {
+                            query = medications.OrderByDescending(o => o.Price);
+                            secondQuery = query.OrderByDescending(o => o.Name);
+                        }
+                        else
+                        {
+                            query = medications.OrderBy(o => o.Price);
+                            secondQuery = query.OrderBy(o => o.Name);
+                        }
+                        return View(secondQuery);
                         break;
-                    case "Name":
-                        var queryName = medications.OrderBy(o => o.Name);
-                        return View(queryName);
+                    case "Цена":
+                         if(direction == "desc")
+                        {
+                            query = medications.OrderByDescending(o => o.Price);
+                        }
+                        else
+                        {
+                            query = medications.OrderBy(o => o.Price);
+                        }
+                        return View(query);
+                        break;
+                    case "Име":
+                        if (direction == "desc")
+                        {
+                            query = medications.OrderByDescending(o => o.Name);
+                        }
+                        else
+                        {
+                            query = medications.OrderBy(o => o.Name);
+                        }
+                        return View(query);
                         break;
                      default : return View(medications);
 

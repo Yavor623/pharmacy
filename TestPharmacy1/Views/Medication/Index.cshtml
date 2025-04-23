@@ -3,7 +3,6 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 @{
-    List<string> names = new List<string>() { "a", "b" };
     int currentPage = ViewBag.CurrentPage;
     int lastPage = currentPage-1;
     int nextPage = currentPage==0?currentPage+2:currentPage+1;
@@ -13,8 +12,51 @@
 }
 @section Scripts{ 
     <script type="text/javascript" >
+        function ClearValues() {
+            $("#searchBar").val(" ");
+            $("#sortDropdown option[value='Избери опция']").prop("selected", true);
+            $("#sortDirection").val("desc");
+            $('.sortDirectionBtn-wrap span').text('↓');
+            sessionStorage.setItem("IsItAQuery", "false");
+            sessionStorage.setItem("SearchValue", $("#searchBar").val());
+            sessionStorage.setItem("SortValue", $("#sortDropdown").val());
+            sessionStorage.setItem("SortDirection", $("#sortDirection").val());
+        }
         $(function () {
-        $("select#selects option[value=" + @elementsToTake + "]").prop("selected", true);
+            
+            $("#searchBar").val(sessionStorage.getItem("SearchValue"));
+            if(sessionStorage.getItem("IsItAQuery") == "true")
+            {
+                $("#doneBtn input").prop('checked', true);
+            }
+            else{
+                $("#doneBtn input").prop('checked', false);
+            }
+            let checked = $("#checkIf").is(':checked');
+            if (!checked) {
+                ClearValues();
+            }
+            else 
+            {
+                $("#doneBtn input").prop('checked', false);
+                sessionStorage.setItem("IsItAQuery", "false");
+            }
+
+            $("#sortDropdown").val(sessionStorage.getItem("SortValue"));
+
+            
+            $("#sortDirection").val(sessionStorage.getItem("SortDirection"));
+            $('.sortDirectionBtn-wrap span').text(sessionStorage.getItem("SortDirection") == "desc" ? '↓' : '↑');
+
+
+            $('.sortDirectionBtn-wrap').click(function () {
+                 var checked = $("#sortDirectionBtn").is(':checked');
+                $('span', this).text(checked ? '↓' : '↑');
+                $("#sortDirection").val(checked?"desc":"asc");
+            });
+            $("#hiddenSelect").hide();
+
+            $("select#selects option[value=" + elementsToTake + "]").prop("selected", true);
         });
         function ShouldItBeDeleted() {
             if (confirm("Да се изтрие ли този медикамент?")) {
@@ -24,32 +66,55 @@
                 $("#confirm").val("No");
             }
         }
-        function func(){
-        $("#submitBtn").val($("#selects").find(":selected").val());
-        $("#radio").prop('checked', true);
-        $("#submitBtn").click();
+        function AmountOfItems(){
+            $("#submitBtn").val($("#selects").find(":selected").val());
+            $("#radio").prop('checked', true);
+            $("#submitBtn").click();
         }
+        function SaveValues() 
+        {
+            $("#doneBtn input").prop('checked',true);
+            sessionStorage.setItem("IsItAQuery", "true");
+            sessionStorage.setItem("SearchValue", $("#searchBar").val());
+            sessionStorage.setItem("SortValue", $("#sortDropdown").val());
+            sessionStorage.setItem("SortDirection", $("#sortDirection").val());
+        }
+        
+
         function FillOutSelect(){
-            if($("#filterSelect :selected").text() == "Type of medication"){
+            $("#hiddenSelect").hide();
+            $("#hiddenSelect").empty();
+            if ($("#filterSelect :selected").text() == "Класификация") {
+                $("#hiddenSelect").show();
                 $.ajax({
-                    type:'GET',
-                    dataType:'JSON',
-                    url: 'Medication/GetTypeOfMedication',
-                    data:,
+                    type: 'GET',
+                    dataType: 'JSON',
+                    url: '/Medication/GetTypeOfMedication',
+                    contentType: 'application/json;charset=utf-8',
                     success:function(response){
-                        $.each(response.data, function () {
-                            alert(this.Name);
-                        });
-                        // alert(response);
+                        for (var i = 0; i < response.length; i++) {
+                            $("#hiddenSelect").append('<option value="'+response[i]+'">'+response[i]+'</option>');
+                        }
                     }
-                })
-            // $(names).each(function(){
-            //     $(".searchBar").val(this);
-            // });
-                // $("main").css("background-color","black");
-                // $("#hiddenSelect").val(@Html.DropDownList("TypeOfMedication",ViewBag.TypeOfMedication as List<SelectListItem>));
+                });
+               
             }
-        }
+            else if ($("#filterSelect :selected").text() == "Вид медикамент") {
+                $("#hiddenSelect").show();
+                $.ajax({
+                    type: 'GET',
+                    dataType: 'JSON',
+                    url: '/Medication/GetConsistencyOfMedication',
+                    contentType: 'application/json;charset=utf-8',
+                    success: function (response) {
+                        for (var i = 0; i < response.length; i++) {
+                            $("#hiddenSelect").append('<option value="' + response[i] + '" style="min-width:100px;max-width:200px">' + response[i] + '</option>');
+                        }
+                    }
+                });
+
+            }
+            }
     </script>
 
 }
@@ -60,33 +125,66 @@
 </head>
 
 <aside class="left-aside">
-    <h2>Страни</h2>
-    <form asp-action="Index" method="get" class="searchId">
-        <input name="searchString" value="" type="text" class="searchBar"/>
-        <input type="submit" value="Search" class="searchBtn"/>
+    <form asp-action="Index" method="get" id="optionsForm">
         <br />
-        <label>Sort by:</label>
-        <select name="selectedOption">
-            <option></option>
-            <option>Both</option>
-            <option>Price</option>
-            <option>Name</option>
-        </select>
-        <select id="filterSelect" name="filter" onchange="FillOutSelect()">
-            <option>Is prescription needed?</option>
-            <option>Type of medication</option>
-            <option>Consistency of medication</option>
-        </select>
-        <select id="hiddenSelect" style="visibility:visible" name="additionalFilter"></select>
-        <input type="submit" value="Order"  /> 
+        <div>
+            <label>Сортирай по:</label>
+            <br />
+            <div>
+                <select name="sortString" id="sortDropdown">
+                    <option value="Избери опция" disabled selected>Избери опция</option>
+                    <option>И двете</option>
+                    <option>Цена</option>
+                    <option>Име</option>
+                </select>
+            
+                <label class="sortDirectionBtn-wrap">
+                    <input type="checkbox" id="sortDirectionBtn" style="visibility:hidden" />
+                    <span style="font-size:1.3rem">↓</span>
+                </label>
+                <input type="hidden" value="desc" id="sortDirection" name="direction" />
+            </div>
+            
+        </div>
+        <br />
+        <div>
+            <label>Филтрирай по:</label>
+            <br />
+            <select id="filterSelect" name="filter" onchange="FillOutSelect()" >
+                <option value="" disabled selected>Избери опция</option>
+                <option>Има нужда от предписание</option>
+                <option>Няма нужда от предписание</option>
+                <option>Класификация</option>
+                <option>Вид медикамент</option>
+            </select>
+        </div>
+        <br />
+        <div class="divWrapper">
+            <select id="hiddenSelect" style="visibility:visible" name="additionalFilter">
+                
+            </select>
+        </div>
+        <br />
+        <button type="submit"  id="doneBtn" onclick="SaveValues()" asp-route-IsItAQuery="true">
+             Готово 
+            <input  type="checkbox"  style="visibility:hidden"  id="checkIf"/>
+        </button>
+        <input type="button" value="Изчисти" id="doneBtn" onclick="ClearValues()" />
     </form>   
     <br />
-    <a asp-action="Create" class="btn btn-primary">Create</a>
+    
 </aside>
 <main>
+    <form asp-action="Index" method="get" >
+        <input name="searchString" value="" type="text" id="searchBar" />
+        <button type="submit" id="searchBtn" onclick="SaveValues()">
+            <i class="fa-solid fa-magnifying-glass fa-xs"></i>
+        </button>
+    </form>
+    
     <h2 id="title">Продукти</h2>
     <form asp-action="Index">
-        <select id="selects" onchange="func()">
+        <select id="selects" onchange="AmountOfItems()">
             <option value="8">8</option>
             <option value="12">12</option>
             <option value="16">16</option>
@@ -97,15 +195,13 @@
         <input type="radio" name="isItChecked" id="radio" value="true" style="visibility:hidden" />
         <input type="submit" value="" id="submitBtn" name="submitValue" style="visibility:hidden"/>
     </form>
-
+    <a asp-action="Create" class="btn btn-primary">+</a>
     <div class="medications" style="margin-left:3%">
 
         @foreach (var medication in takenElements)
         {
 
             <div class="items" >
-
-
                 <div style="width:100%">
 
                     <div id="pic-frame">
@@ -150,6 +246,19 @@
         }
     </div>
         <style>
+        .sortDirectionBtn-wrap{
+            margin:0;
+            height:10%;
+            width:5%;
+            user-select:none;
+            span{
+                margin:0;
+            }
+            sele
+        }
+            .rotate{
+                transform:rotate(180deg);
+            }
             #list_form *{
                height:40px;
                width:40px;
@@ -174,12 +283,21 @@
             .active{
                 color:black;
             }
-            /* #toggle{
-                display:none;
+            #optionsForm *{
+                user-select:none;
             }
-        #toggle:checked #pop-up {
-            display: block;
-        } */
+        .divWrapper {
+            width: 95%;
+            overflow: hidden;
+        }
+
+        #hiddenSelect {
+            width: 100%;
+        }
+
+            #hiddenSelect:focus {
+                width: auto;
+            }
         </style>
 </main>
 
