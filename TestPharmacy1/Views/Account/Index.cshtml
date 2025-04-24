@@ -13,38 +13,44 @@
 		}
 	</script>
 }
-<h2>Users</h2>
-<a asp-action="Create">+</a>
-<table class="table-bordered">
-	<thead>
-		<th>Username</th>
-		<th>FirstName</th> 
-		<th>LastName</th>
-		<th>Age</th>
-		<th>Actions</th>
-	</thead>
-	<tbody> 
-		@foreach(var user in Model)
-		{
-			<tr>
-				<td>@user.UserName</td>
-				<td>@user.FirstName</td>
-				<td>@user.LastName</td>
-				<td>@user.Age</td>
-				<td>
-					@if (!await UserManager.IsInRoleAsync(user,"Admin"))
-					{
-						<form asp-action="Delete" method="post">
+<main>
+	<h2 style="justify-self:center">Потребители</h2>
+	<a asp-action="Create" class="btn btn-primary plus">+</a>
+	<table class="table">
+		<thead>
+		<th>Потреб. име</th>
+		<th>Име</th>
+		<th>Фамилия</th>
+		<th>Възраст</th>
+		</thead>
+		<tbody>
+			@foreach (var user in Model)
+			{
+				<tr>
+					<td>@user.UserName</td>
+					<td>@user.FirstName</td>
+					<td>@user.LastName</td>
+					<td>@user.Age</td>
+					<td>
+						
+						<form asp-action="Delete" method="post" style="width:fit-content">
 							<input type="hidden" name="confirmed_value" id="confirm" />
-							<input type="submit" asp-route-id="@user.Id" onclick="ShouldItBeDeleted()" asp-action="Delete" value="Delete" />
+							<input type="submit" asp-route-id="@user.Id" onclick="ShouldItBeDeleted()" asp-action="Delete" value="Delete" class="btn btn-danger" />
 						</form>
-						<br>
-					}
-					<a asp-action="Edit" asp-route-id="@user.Id">Edit</a>
-				</td>
-			</tr>
-			
-		}
-	</tbody>
-</table>
+						<a asp-action="Edit" asp-route-id="@user.Id" class="btn btn-primary">Edit</a>
+					</td>
+				</tr>
 
+			}
+		</tbody>
+	</table>
+</main>
+
+<style>
+	.plus{
+		justify-self: center;
+	}
+	main{
+		margin:0 5% 0 5%;
+	}
+</style>

@@ -310,6 +310,8 @@ namespace TestPharmacy1.Controllers
                 {
                     medication.Image = model.ByteImage;
                 }
+                _context.Medication.Update(medication);
+                _context.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View();

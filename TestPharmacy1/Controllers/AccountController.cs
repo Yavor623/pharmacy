@@ -91,7 +91,7 @@ namespace TestPharmacy1.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Create(CreateUserViewModel model,string selectedRole)
+        public async Task<IActionResult> Create(CreateUserViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -108,7 +108,7 @@ namespace TestPharmacy1.Controllers
 
                 if (result.Succeeded)
                 {
-                    await _userManager.AddToRoleAsync(user, selectedRole);
+                    await _userManager.AddToRoleAsync(user, "Client");
                     await _signInManager.SignInAsync(user, isPersistent: false);
 
                     return RedirectToAction("Index");

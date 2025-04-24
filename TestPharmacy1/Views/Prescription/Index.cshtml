@@ -2,24 +2,49 @@
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
-
-<h2>Users</h2>
-<a asp-action="Create">+</a>
-<table class="table-bordered">
-	<thead>
-	<th>Medications</th>
-	<th>Prescribed date</th>
-	<th>Description</th>
-	</thead>
-	<tbody>
-		@foreach (var user in Model)
-		{
-			<tr>
-				<td>@user.Medications</td>
-				<td>@user.PrescribedDate</td>
-				<td>@user.Description</td>
-			</tr>
-
+@section Scripts {
+	<script type="text/javascript">
+		function ShouldItBeDeleted() {
+			if (confirm("Да се изтрие ли тази роля?")) {
+				$("#confirm").val("Yes");
+			}
+			else {
+				$("#confirm").val("No");
+			}
 		}
-	</tbody>
-</table>
+	</script>
+}
+<main>
+	<h2 style="justify-self:center">Предписания</h2>
+	<a asp-action="Create" class="btn btn-primary">+</a>
+	<table class="table">
+		<thead>
+		<th>Медикаменти</th>
+		<th>Дата на предписване</th>
+		<th>Описание</th>
+		</thead>
+		<tbody>
+			@foreach (var prescription in Model)
+			{
+				<tr>
+					<td>@prescription.Medications</td>
+					<td>@prescription.PrescribedDate</td>
+					<td>@prescription.Description</td>
+					<td>
+						<form asp-action="Delete" method="post" style="width:fit-content">
+							<input type="hidden" name="confirmed_value" id="confirm" />
+							<input type="submit" asp-route-id="@prescription.PrescriptionId" onclick="ShouldItBeDeleted()" asp-action="Delete" value="Delete" class="btn btn-danger" />
+						</form>
+						<a asp-action="Edit" asp-route-id="@prescription.PrescriptionId" class="btn btn-primary">Edit</a>
+					</td>
+				</tr>
+
+			}
+		</tbody>
+	</table>
+</main>
+<style>
+	main {
+		margin: 0 5% 0 5%;
+	}
+</style>

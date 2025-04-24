@@ -1,25 +1,44 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @model IEnumerable<IdentityRole>
-
-<h2>Roles</h2>
-<a>+</a>
-<table class="table-bordered">
-	<thead>
-		<th>Name</th>
-		<th>Actions</th>
-	</thead>
-	<tbody>
-		@foreach (var role in Model)
-		{
-			<tr>
-				<td>@role.Name</td>
-				<td>
-					<a>Delete</a>
-					<br>
-					<a>Edit</a>
-				</td>
-			</tr>
-
+@section Scripts {
+	<script type="text/javascript">
+		function ShouldItBeDeleted() {
+			if (confirm("Да се изтрие ли тази роля?")) {
+				$("#confirm").val("Yes");
+			}
+			else {
+				$("#confirm").val("No");
+			}
 		}
-	</tbody>
-</table>
+	</script>
+}
+<main>
+    <h2 style="justify-self:center">Роли</h2>
+    <a asp-action="Create" class="btn btn-primary">+</a>
+    <table class="table">
+        <th>Име</th>
+        <th> </th>
+        <tbody>
+            @foreach (var role in Model)
+            {
+                <tr>
+                    <td>@role.Name</td>
+                    <td>
+                        <form asp-action="Delete" method="post" style="width:fit-content">
+                            <input type="hidden" name="confirmed_value" id="confirm" />
+                            <input type="submit" asp-route-id="@role.Id" onclick="ShouldItBeDeleted()" asp-action="Delete" value="Delete" class="btn btn-danger" />
+                        </form>
+                        <a asp-action="Edit" asp-route-id="@role.Id" class="btn btn-primary">Edit</a>
+                    </td>
+                </tr>
+
+            }
+        </tbody>
+    </table>
+
+</main>
+<style>
+    main {
+        margin: 0 5% 0 5%;
+    }
+</style>

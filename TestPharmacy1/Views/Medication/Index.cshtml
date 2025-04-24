@@ -38,11 +38,11 @@
             });
             if(sessionStorage.getItem("IsItAQuery") == "true")
             {
-                $("#doneBtn input").prop('checked', true);
+                $("#checkIf").prop('checked', true);
                 
             }
             else{
-                $("#doneBtn input").prop('checked', false);
+                $("#checkIf").prop('checked', false);
             }
             let checked = $("#checkIf").is(':checked');
             if (!checked) {
@@ -85,7 +85,7 @@
             if($("#hiddenSelect").children().length==0){
                 sessionStorage.setItem("IsThereAddFilter","false");
             }
-            $("#doneBtn input").prop('checked',true);
+            $("#checkIf").prop("checked", true);
             sessionStorage.setItem("IsItAQuery", "true");
             sessionStorage.setItem("SearchValue", $("#searchBar").val());
             sessionStorage.setItem("SortValue", $("#sortDropdown option:selected").val());
@@ -211,11 +211,12 @@
             </select>
         </div>
         <br />
-        <button type="submit"  id="doneBtn" onclick="SaveValues()" asp-route-IsItAQuery="true">
+        <button type="submit"  class="btn-primary" onclick="SaveValues()" asp-route-IsItAQuery="true">
              Готово 
-            <input  type="checkbox"  style="visibility:hidden"  id="checkIf"/>
+            
         </button>
-        <input type="button" value="Изчисти" id="doneBtn" onclick="ClearValues()" />
+        <input type="checkbox" style="visibility:hidden" id="checkIf" />
+        <input type="button" value="Изчисти" onclick="ClearValues()" class="btn-secondary"/>
     </form>   
     <br />
     
@@ -301,6 +302,9 @@
                 margin:0;
             }
             sele
+        }
+        body{
+            overflow:hidden
         }
             .rotate{
                 transform:rotate(180deg);

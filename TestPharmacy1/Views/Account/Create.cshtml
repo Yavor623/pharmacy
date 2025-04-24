@@ -34,14 +34,6 @@
         <input asp-for="Age" type="number" min="0"/>
         <span asp-validation-for="Age"></span>
     </div>
-    <div>
-        <select name="selectedRole">
-            @foreach (var role in RoleManager.Roles)
-            {
-                <option>@role.Name</option>
-            }
-        </select>
-    </div>
     <br />
     <div>
         <button type="submit">Регистрация</button>

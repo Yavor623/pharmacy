@@ -12,11 +12,11 @@
      </script>
 } *@
 
-<ul class="navbar-nav">
+<ul class="navbar-nav regLog">
 @if (SignInManager.IsSignedIn(User))
 {
         <form class="form-inline" asp-controller="Account" asp-action="Logout">
-            <span id="userIcon"><i class="fa-solid fa-circle-user fa-2xl"></i></span>
+            <i class="fa-solid fa-circle-user fa-2xl" id="userIcon"></i>
             <ul class="dropdown-menu" id="dropdown" style="display:none">
                 <li class="dropdown-item"><input type="submit" value="Log out"/></li>
                 <li class="dropdown-item">Prescription</li>
@@ -26,14 +26,18 @@
 else
 {
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-controller="Account" asp-action="Register">Register</a>
+        <button class="nav-link text-light btn-primary" asp-controller="Account" asp-action="Register">Register</button>
     </li>
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Login</a>
+        <a class="nav-link text-light btn btn-outline-danger" asp-controller="Account" asp-action="Login">Login</a>
     </li>
 }
 </ul>
 <style>
+    .regLog li a {
+        font-size:1.2rem;
+    }
+
     #userIcon:hover #dropdown {
         display:block;
     }
