@@ -98,51 +98,50 @@ namespace TestPharmacy1.Controllers
                     
                 }
             }
-            if (sortString != "Избери опция")
+            if (sortString != "Избери опция" && !String.IsNullOrEmpty(direction))
             {
-                IEnumerable<Medication> query;
-                switch (sortString) 
-                {
-                    case "И двете":
-                        IEnumerable<Medication> secondQuery;
-                        if (direction == "desc")
-                        {
-                            query = medications.OrderByDescending(o => o.Price);
-                            secondQuery = query.OrderByDescending(o => o.Name);
-                        }
-                        else
-                        {
-                            query = medications.OrderBy(o => o.Price);
-                            secondQuery = query.OrderBy(o => o.Name);
-                        }
-                        return View(secondQuery);
-                        break;
-                    case "Цена":
-                         if(direction == "desc")
-                        {
-                            query = medications.OrderByDescending(o => o.Price);
-                        }
-                        else
-                        {
-                            query = medications.OrderBy(o => o.Price);
-                        }
-                        return View(query);
-                        break;
-                    case "Име":
-                        if (direction == "desc")
-                        {
-                            query = medications.OrderByDescending(o => o.Name);
-                        }
-                        else
-                        {
-                            query = medications.OrderBy(o => o.Name);
-                        }
-                        return View(query);
-                        break;
-                     default : return View(medications);
+                    IEnumerable<Medication> query;
+                    switch (sortString)
+                    {
+                        case "И двете":
+                            IEnumerable<Medication> secondQuery;
+                            if (direction == "desc")
+                            {
+                                query = medications.OrderByDescending(o => o.Price);
+                                secondQuery = query.OrderByDescending(o => o.Name);
+                            }
+                            else
+                            {
+                                query = medications.OrderBy(o => o.Price);
+                                secondQuery = query.OrderBy(o => o.Name);
+                            }
+                            return View(secondQuery);
+                            break;
+                        case "Цена":
+                            if (direction == "desc")
+                            {
+                                query = medications.OrderByDescending(o => o.Price);
+                            }
+                            else
+                            {
+                                query = medications.OrderBy(o => o.Price);
+                            }
+                            return View(query);
+                            break;
+                        case "Име":
+                            if (direction == "desc")
+                            {
+                                query = medications.OrderByDescending(o => o.Name);
+                            }
+                            else
+                            {
+                                query = medications.OrderBy(o => o.Name);
+                            }
+                            return View(query);
+                            break;
+                        default: return View(medications);
 
                 }
-
             }
             return View(medications);
         }

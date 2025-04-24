@@ -1,12 +1,26 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
+@* @section Scripts{
+    <script type="text/javascript">
+        $(function () {
+            $("#dropdown").toggle();
+            $("#userIcon").click(function () {
+                $("#dropdown").show();
+            });
+        });
+     </script>
+} *@
 
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
         <form class="form-inline" asp-controller="Account" asp-action="Logout">
-            <button type="submit" class="nav-link btn btn-link text-dark"><i class="fa-solid fa-circle-user fa-2xl"></i></button>
+            <span id="userIcon"><i class="fa-solid fa-circle-user fa-2xl"></i></span>
+            <ul class="dropdown-menu" id="dropdown" style="display:none">
+                <li class="dropdown-item"><input type="submit" value="Log out"/></li>
+                <li class="dropdown-item">Prescription</li>
+            </ul>
         </form>
 }
 else
@@ -19,3 +33,8 @@ else
     </li>
 }
 </ul>
+<style>
+    #userIcon:hover #dropdown {
+        display:block;
+    }
+</style>

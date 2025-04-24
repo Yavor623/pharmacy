@@ -13,27 +13,33 @@
 @section Scripts{ 
     <script type="text/javascript" >
         function ClearValues() {
+            $("#filterSelect").prop("disabled", false);
+            $("#searchBar").prop("disabled", false);
+            $("#sortDropdown").prop("disabled", false);
+            sessionStorage.setItem("FilterValue", "Избери опция");
+            sessionStorage.setItem("SortValue", "Избери опция");
             $("#hiddenSelect").hide();
             $("#searchBar").val(" ");
-            $("#sortDropdown option[value=Избери опция]").prop("selected", true);
-            $("#filterSelect option[value=Избери опция]").prop("selected", true);
-            
+            sessionStorage.setItem("IsThereAddFilter", "false");
+            $("#sortDropdown").val("Избери опция");
+            $("#filterSelect").val("Избери опция");
             $("#sortDirection").val("desc");
             $('.sortDirectionBtn-wrap span').text('↓');
-
             sessionStorage.setItem("IsItAQuery", "false");
-            sessionStorage.setItem("SearchValue", $("#searchBar").val());
-            sessionStorage.setItem("SortValue", $("#sortDropdown").val());
+            sessionStorage.setItem("SearchValue", $("#searchBar").val());  
             sessionStorage.setItem("SortDirection", $("#sortDirection").val());
-            sessionStorage.setItem("FilterValue", $("#filterSelect").val());
-            sessionStorage.setItem("IsThereAddFilter","false");
-            alert(sessionStorage.getItem("FilterValue"));
+            
         }
         $(function () {
-            
+            $('.sortDirectionBtn-wrap').click(function () {
+                var checked = $("#sortDirectionBtn").is(':checked');
+                $('span', this).text(checked ? '↓' : '↑');
+                $("#sortDirection").val(checked ? "desc" : "asc");
+            });
             if(sessionStorage.getItem("IsItAQuery") == "true")
             {
                 $("#doneBtn input").prop('checked', true);
+                
             }
             else{
                 $("#doneBtn input").prop('checked', false);
@@ -52,15 +58,11 @@
             $("#sortDropdown").val(sessionStorage.getItem("SortValue"));
             $("#sortDirection").val(sessionStorage.getItem("SortDirection"));
             $('.sortDirectionBtn-wrap span').text(sessionStorage.getItem("SortDirection") == "desc" ? '↓' : '↑');
-            if(sessionStorage.getItem("IsThereAddFilter")=="true"){
+            if (sessionStorage.getItem("IsThereAddFilter") == "true") {
                 FillOutSelect();
-                $("#hiddenSelect option[value="+sessionStorage.getItem("AdditionalFilter")+"]").prop("selected",true);
+                $("#hiddenSelect option[value=" + sessionStorage.getItem("AdditionalFilter") + "]").prop("selected", true);
             }
-            $('.sortDirectionBtn-wrap').click(function () {
-                 var checked = $("#sortDirectionBtn").is(':checked');
-                $('span', this).text(checked ? '↓' : '↑');
-                $("#sortDirection").val(checked?"desc":"asc");
-            });
+            
             $("#hiddenSelect").hide();
 
             $("select#selects option[value=" + elementsToTake + "]").prop("selected", true);
@@ -91,9 +93,39 @@
             sessionStorage.setItem("FilterValue", $("#filterSelect option:selected").val());
             sessionStorage.setItem("AdditionalFilter",$("#hiddenSelect option:selected").val());
         }
-        
+        function CheckIfSortIsSelected(){
+            if($("#sortDropdown :selected").text()!="Избери опция"){
+                $("#filterSelect").prop("disabled", true);
+                $("#searchBar").prop("disabled", true);
+            }
+            else{
+                $("#filterSelect").prop("disabled", false);
+                $("#searchBar").prop("disabled", false);
+            }
+        }
+        function CheckIfFilterIsSelected() {
+            if ($("#filterSelect :selected").text() != "Избери опция") {
+                $("#sortDropdown").prop("disabled", true);
+                $("#searchBar").prop("disabled", true);
+            }
+                    else {
+                $("#sortDropdown").prop("disabled", false);
+                $("#searchBar").prop("disabled", false);
+            }
+        }
+        function CheckIfThereIsSearch() {
+            if ($("#searchBar").val() != "") {
+                $("#filterSelect").prop("disabled", true);
+                $("#sortDropdown").prop("disabled", true);
+            }
+                    else {
+                $("#filterSelect").prop("disabled", false);
+                $("#sortDropdown").prop("disabled", false);
+            }
+        }
 
         function FillOutSelect(){
+            CheckIfFilterIsSelected();
             $("#hiddenSelect").hide();
             $("#hiddenSelect").empty();
             if ($("#filterSelect :selected").text() == "Класификация") {
@@ -145,7 +177,7 @@
             <label>Сортирай по:</label>
             <br />
             <div>
-                <select name="sortString" id="sortDropdown">
+                <select name="sortString" id="sortDropdown" onchange="CheckIfSortIsSelected()">
                     <option value="Избери опция" disabled selected>Избери опция</option>
                     <option>И двете</option>
                     <option>Цена</option>
@@ -165,7 +197,7 @@
             <label>Филтрирай по:</label>
             <br />
             <select id="filterSelect" name="filter" onchange="FillOutSelect()" >
-                <option value="" disabled selected>Избери опция</option>
+                <option value="Избери опция" disabled selected>Избери опция</option>
                 <option>Има нужда от предписание</option>
                 <option>Няма нужда от предписание</option>
                 <option>Класификация</option>
@@ -190,7 +222,7 @@
 </aside>
 <main>
     <form asp-action="Index" method="get" >
-        <input name="searchString" value="" type="text" id="searchBar" />
+        <input name="searchString" value="" type="text" id="searchBar" onchange="CheckIfThereIsSearch()" />
         <button type="submit" id="searchBtn" onclick="SaveValues()">
             <i class="fa-solid fa-magnifying-glass fa-xs"></i>
         </button>
