@@ -125,8 +125,6 @@ namespace TestPharmacy1.Controllers
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Age = user.Age, 
-                Password = ASCIIEncoding.ASCII.GetBytes(user.PasswordHash).ToString(),
-                ConfirmPassword = ASCIIEncoding.ASCII.GetBytes(user.PasswordHash).ToString(),
                 Email = user.Email,
                 CurrentUser = user
             };
@@ -137,25 +135,38 @@ namespace TestPharmacy1.Controllers
         {
             if (ModelState.IsValid)
             {
-
+                var user = _userManager.Users.FirstOrDefault(model => model.Id == id);
+                user.FirstName = model.FirstName;
+                user.LastName = model.LastName;
+                user.Age = model.Age;
+                user.Email = user.Email;
+                var result = await _userManager.UpdateAsync(user);
+                return RedirectToAction("Index");
             }
-            return View();
+            return View(model);
+        }
+        [HttpGet]
+        public IActionResult Delete(string id)
+        {
+            var user = _userManager.Users.FirstOrDefault(a => a.Id == id);
+            var model = new DeleteUserViewModel
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                Age = user.Age
+            };
+            return View(model);
         }
         [HttpPost]
-        public async Task<IActionResult> Delete(string confirmed_value,string id)
+        public async Task<IActionResult> Delete(string id,DeleteUserViewModel model)
         {
-            if(confirmed_value == "Yes")
-            {
-				var user = _userManager.Users.FirstOrDefault(a => a.Id == id);
-				var result = await _userManager.DeleteAsync(user);
-				if (result.Succeeded)
-				{
-					return RedirectToAction("Index"); 
-				}
-			}
-            else
-            {
-				return RedirectToAction("Index");
+			var user = _userManager.Users.FirstOrDefault(a => a.Id == id);
+			var result = await _userManager.DeleteAsync(user);
+			if (result.Succeeded)
+			{
+				return RedirectToAction("Index"); 
 			}
 			return RedirectToAction("Index");
 		}

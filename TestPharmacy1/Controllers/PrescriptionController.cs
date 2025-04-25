@@ -2,8 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using TestPharmacy1.Data;
 using TestPharmacy1.Models;
+using TestPharmacy1.Models.Accounts;
 using TestPharmacy1.Models.Precsription;
-using TestPharmacy1.Models.Roles;
+using TestPharmacy1.Models.Precsriptions;
 
 namespace TestPharmacy1.Controllers
 {
@@ -82,20 +83,28 @@ namespace TestPharmacy1.Controllers
 			}
 			return RedirectToAction("Index");
 		}
-		[HttpPost]
-		public async Task<IActionResult> Delete(string confirmed_value, int id)
-		{
-			if (confirmed_value == "Yes")
-			{
-				var prescription = _context.Prescription.Find(id);
-				_context.Prescription.Remove(prescription);
-				_context.SaveChanges();
-			}
-			else
-			{
-				return RedirectToAction("Index");
-			}
-			return RedirectToAction("Index");
-		}
-	}
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            var userPrescriptions = _context.Prescription.Where(a => a.UserId == _userManager.GetUserId(User));
+            var prescription = userPrescriptions.FirstOrDefault(a => a.PrescriptionId == id);
+            var model = new DeletePrescriptionViewModel
+            {
+                PrescriptionId = prescription.PrescriptionId,
+                PrescribedDate = prescription.PrescribedDate,
+                Medications = prescription.Medications,
+                Description = prescription.Description
+            };
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id, DeletePrescriptionViewModel model)
+        {
+            var userPrescriptions = _context.Prescription.Where(a => a.UserId == _userManager.GetUserId(User));
+            var prescription = userPrescriptions.FirstOrDefault(a => a.PrescriptionId == id);
+            _context.Prescription.Remove(prescription);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+    }
 }

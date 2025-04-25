@@ -1,9 +1,8 @@
 ﻿@model TestPharmacy1.Models.Medications.EditMedicationViewModel
-
 <form asp-action="Edit" method="post" enctype="multipart/form-data">
 	<div class="form-group">
-		<label asp-for="Name" class=""></label>
-		<input asp-for="Name" class="form-control" />
+		<label asp-for="Name" class="" ></label>
+		<input asp-for="Name" class="form-control" value="@Model"/>
 		<span asp-validation-for="Name" class="text-danger"></span>
 	</div>
 	<div class="form-group">
@@ -33,13 +32,13 @@
 	</div>
 	<div class="form-group">
 		<label asp-for="TypeOfMedicationId" class=""></label>
-		<select asp-for="TypeOfMedicationId" class="form-select" asp-items="ViewBag.TypeOfMedicationId">
+		<select asp-for="TypeOfMedicationId" class="form-select" asp-items="ViewBag.TypeOfMedicationId" id="typeOfMed">
 			<option value="">Please select a type of med</option>
 		</select>
 	</div>
 	<div class="form-group">
 		<label asp-for="ConsistencyOfMedicationId" class=""></label>
-		<select asp-for="ConsistencyOfMedicationId" class="form-select" asp-items="ViewBag.ConsistencyOfMedicationId">
+		<select asp-for="ConsistencyOfMedicationId" class="form-select" asp-items="ViewBag.ConsistencyOfMedicationId" id="consOfMed">
 			<option value="">Please select a consistency of the med</option>
 		</select>
 	</div>

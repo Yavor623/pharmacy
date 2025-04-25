@@ -2,8 +2,10 @@
 
 namespace TestPharmacy1.Models.Accounts
 {
-    public class EditUserViewModel
+    public class DeleteUserViewModel
     {
+        [Required]
+        public string Id { get; set; }
         [Required]
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
@@ -15,6 +17,5 @@ namespace TestPharmacy1.Models.Accounts
         public string Email { get; set; }
         [Required]
         public int Age { get; set; }
-        public ApplicationUser CurrentUser { get; set; }
     }
 }

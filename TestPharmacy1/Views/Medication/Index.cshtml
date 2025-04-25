@@ -211,12 +211,12 @@
             </select>
         </div>
         <br />
-        <button type="submit"  class="btn-primary" onclick="SaveValues()" asp-route-IsItAQuery="true">
+        <button type="submit"  class="btn btn-primary" onclick="SaveValues()" asp-route-IsItAQuery="true">
              Готово 
             
         </button>
         <input type="checkbox" style="visibility:hidden" id="checkIf" />
-        <input type="button" value="Изчисти" onclick="ClearValues()" class="btn-secondary"/>
+        <input type="button" value="Изчисти" onclick="ClearValues()" class="btn btn-secondary"/>
     </form>   
     <br />
     
@@ -224,7 +224,7 @@
 <main>
     <form asp-action="Index" method="get" >
         <input name="searchString" value="" type="text" id="searchBar" onchange="CheckIfThereIsSearch()" />
-        <button type="submit" id="searchBtn" onclick="SaveValues()">
+        <button type="submit" id="searchBtn" onclick="SaveValues()" style="height:10%;border:none;border-radius:4px">
             <i class="fa-solid fa-magnifying-glass fa-xs"></i>
         </button>
     </form>
@@ -240,16 +240,17 @@
             <option value="@Model.Count()">All</option>
         </select>
         <input type="radio" name="isItChecked" id="radio" value="true" style="visibility:hidden" />
-        <input type="submit" value="" id="submitBtn" name="submitValue" style="visibility:hidden"/>
+        <input type="submit" value="" id="submitBtn" class="btn btn-primary" name="submitValue" style="visibility:hidden"/>
     </form>
-    <a asp-action="Create" class="btn btn-primary">+</a>
+     @if (SignInManager.IsSignedIn(User)&&User.IsInRole("Admin"))
+    {<a asp-action="Create" class="btn btn-primary">+</a>}
     <div class="medications" style="margin-left:3%">
 
         @foreach (var medication in takenElements)
         {
 
             <div class="items" >
-                <div style="width:100%">
+                <div style="width:100%;height:50%">
 
                     <div id="pic-frame">
                         <a asp-action="Details" asp-route-id="@medication.Id" asp-route-prescriptionMessage=""><img src="data:image;base64,@(Convert.ToBase64String(@medication.Image))" style="border-radius:1rem;" /></a>
@@ -258,14 +259,12 @@
                     <div style="min-height:50px"><h5 style="font-weight:650;color:lawngreen">@medication.Price лв.</h5></div>
                     @if (SignInManager.IsSignedIn(User)&&User.IsInRole("Admin"))
                     {
-                        <div id="pop-up">
-                            <ul>
-                                <form asp-action="Delete" method="post">
-                                    <input type="hidden" name="confirmed_value" id="confirm" />
-                                    <input type="submit" asp-route-id="@medication.Id" onclick="ShouldItBeDeleted()" asp-action="Delete" value="Delete" />
-                                </form>
-                                <li><a asp-action="Edit">Edit</a></li>
-                            </ul>
+                        <div id="pop-up" style="justify-self:center" >
+                            <form asp-action="Delete" method="post">
+                                <input type="hidden" name="confirmed_value" id="confirm" />
+                                <input type="submit" asp-route-id="@medication.Id" onclick="ShouldItBeDeleted()" asp-action="Delete" value="Delete" class="btn btn-danger"/>
+                            </form>
+                            <a asp-action="Edit" asp-route-id="@medication.Id" class="btn btn-secondary">Edit</a>
                         </div>
                     }
                 </div>
@@ -293,6 +292,120 @@
         }
     </div>
         <style>
+        body {
+            overflow-x: hidden;
+        }
+
+        :root {
+            --margin-left-main: 25vw;
+            --margin-left-aside: 1vw;
+            --main-width: 70vw;
+            --height: 80vh;
+        }
+
+        #optionsForm {
+            width: 100%;
+            margin: 0;
+            height: 40%;
+            * :not(.sortDirectionBtn-wrap)
+
+        {
+            margin: 5% 5% 5% 0;
+            min-width: 80%;
+            max-width: 95%;
+            font-size: 1.3rem;
+        }
+
+        }
+        @@ media only screen and (max-width:1100px){
+            .medications{
+                grid-template-columns:1fr 1fr 1fr;
+            }
+        }
+         @@ media only screen and (max-width:800px){
+            .medications{
+                grid-template-columns:1fr 1fr;
+            }
+        }
+
+        @@ media only screen and (max-width:500px) {
+            .medications {
+                grid-template-columns: 1fr;
+            }
+        }
+        a {
+            text-decoration: none;
+        }
+
+        #pic-frame {
+            width: 100%;
+            object-fit: cover;
+            margin-bottom: 3%;
+        }
+
+        #searchBar {
+            border-radius: 7px;
+            border: 1px solid gray;
+            margin: 0;
+            width: 70%;
+            padding: 1%;
+            font-size: 1.3em;
+        }
+
+
+        .left-aside {
+            position: relative;
+            float: left;
+            margin-left: var(--margin-left-aside);
+            width: calc(var( --margin-left-main) - calc(2* var(--margin-left-aside)));
+            z-index: 1;
+            height: var(--height);
+            border: 1px solid black;
+            border-radius:4px;
+            padding: 1%;
+        }
+
+        main {
+            margin-top: 5vh;
+            width: var(--main-width);
+            height: var(--height);
+            padding: 3%;
+            margin: 0;
+            margin: 0 0 0 var( --margin-left-main);
+            padding: 0;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            overflow-y: scroll;
+            *
+
+        {
+            margin: 0;
+            padding: 0;
+        }
+
+        }
+
+        #title {
+            margin: 10vh 0 5vh 20vw;
+        }
+
+        .medications {
+            width: 95%;
+            height: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+        }
+
+        .items {
+            height: 100%;
+            width: 85%;
+            padding: 5%;
+        }
+
+            .items:hover {
+                border: 1px solid black;
+                border-radius: 7px;
+            }
         .sortDirectionBtn-wrap{
             margin:0;
             height:10%;
@@ -306,9 +419,6 @@
         body{
             overflow:hidden
         }
-            .rotate{
-                transform:rotate(180deg);
-            }
             #list_form *{
                height:40px;
                width:40px;
@@ -348,6 +458,7 @@
             #hiddenSelect:focus {
                 width: auto;
             }
+        
         </style>
 </main>
 

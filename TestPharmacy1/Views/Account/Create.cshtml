@@ -2,86 +2,51 @@
 @inject RoleManager<IdentityRole> RoleManager
 @model CreateUserViewModel
 
-<form asp-action="Create" method="post" id="everything">
-    <h2>Регистрация</h2>
-    <div>
+<main>
+    <form asp-action="Create" method="post">
+    <h2>Създаване на потребител</h2>
+    <div class="form-group">
         <label asp-for="FirstName">Име</label>
-        <input asp-for="FirstName" />
+        <input asp-for="FirstName" class="form-control"/>
         <span asp-validation-for="FirstName"></span>
-    </div>
-    <div>
+    </div class="form-group">
+    <div class="form-group">
         <label asp-for="LastName">Фамилия</label>
-        <input asp-for="LastName" />
+        <input asp-for="LastName"class="form-control" />
         <span asp-validation-for="LastName"></span>
     </div>
-    <div>
+    <div class="form-group">
         <label asp-for="Email">Имейл</label>
-        <input asp-for="Email" />
-        <span asp-validation-for="Email"></span>
+        <input asp-for="Email" class="form-control"/>
+        <span asp-validation-for="Email" class="text-danger"></span>
     </div>
-    <div>
+    <div class="form-group">
         <label asp-for="Password">Парола</label>
-        <input asp-for="Password" />
-        <span asp-validation-for="Password"></span>
+        <input asp-for="Password" class="form-control" />
+        <span asp-validation-for="Password" class="text-danger"></span>
     </div>
-    <div>
+    <div class="form-group">
         <label asp-for="ConfirmPassword">Потвърди парола</label>
-        <input asp-for="ConfirmPassword" />
-        <span asp-validation-for="ConfirmPassword"></span>
+        <input asp-for="ConfirmPassword"class="form-control" />
+        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
     </div>
-    <div>
+    <div class="form-group">
         <label asp-for="Age"></label>
-        <input asp-for="Age" type="number" min="0"/>
-        <span asp-validation-for="Age"></span>
+        <input asp-for="Age" type="number" min="0" class="form-control"/>
+        <span asp-validation-for="Age" class="text-danger"></span>
     </div>
     <br />
     <div>
-        <button type="submit">Регистрация</button>
+        <button type="submit" class="btn btn-primary">Създай</button>
     </div>
 </form>
+</main>
+
 
 
 <style>
-    body {
-        overflow: hidden;
-    }
-
-    #everything {
-        justify-items: center;
-        overflow: hidden;
-        width: 100vw;
-        height: 100vh;
-        *
-
-    {
-        padding: 0.5vh;
-    }
-
-    div {
-        width: 50%;
-        *
-
-    {
-        width: 100%;
-    }
-
-    input {
-        border-radius: 5px;
-        border: 1px solid gray;
-    }
-
-    }
-
-    button {
-        width: 100%;
-        align-self: center;
-        justify-self: center;
-        border-radius: 10px;
-        border: 0.1px solid transparent;
-        color: white;
-        background-color: dodgerblue;
-    }
-
+    main {
+        margin:3% 10% 0 10%;
     }
 </style>
 

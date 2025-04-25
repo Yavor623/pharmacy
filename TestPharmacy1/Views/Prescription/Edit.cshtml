@@ -3,25 +3,32 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 @model TestPharmacy1.Models.Precsription.EditPrescriptionViewModel
-<form asp-action="Edit" method="post" >
-    <h2>Редакция на предписание</h2>
-    <div>
-        <label asp-for="Medications">Медикаменти:</label>
-        <input asp-for="Medications" value="@Model.Prescription.Medications" />
-        <span asp-validation-for="Medications"></span>
-    </div>
-    <div>
-        <label asp-for="PrescribedDate">Дата на предписване:</label>
-        <input asp-for="PrescribedDate" value="@Model.Prescription.PrescribedDate" />
-        <span asp-validation-for="PrescribedDate"></span>
-    </div>
-    <div>
-        <label asp-for="Description">Описание:</label>
-        <input asp-for="Description" value="@Model.Prescription.Description" />
-        <span asp-validation-for="Description"></span>
-    </div>
-    <br />
-    <div>
-        <button type="submit" class="btn btn-primary">Готово</button>
-    </div>
-</form>
+<main>
+    <form asp-action="Edit" method="post">
+        <h2>Редакция на предписание</h2>
+        <div>
+            <label asp-for="Medications">Медикаменти:</label>
+            <input asp-for="Medications" value="@Model.Prescription.Medications" />
+            <span asp-validation-for="Medications"></span>
+        </div>
+        <div>
+            <label asp-for="PrescribedDate">Дата на предписване:</label>
+            <input asp-for="PrescribedDate" value="@Model.Prescription.PrescribedDate" />
+            <span asp-validation-for="PrescribedDate"></span>
+        </div>
+        <div>
+            <label asp-for="Description">Описание:</label>
+            <input asp-for="Description" value="@Model.Prescription.Description" />
+            <span asp-validation-for="Description"></span>
+        </div>
+        <br />
+        <div>
+            <button type="submit" class="btn btn-primary">Готово</button>
+        </div>
+    </form>
+</main>
+<script>
+    main{
+        margin:3% 5% 0 5%;
+    }
+</script>

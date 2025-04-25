@@ -29,18 +29,14 @@ namespace TestPharmacy1.Data
                 .HasOne(o => o.ConsistencyOfMedication)
                 .WithMany(o => o.Medication)
                 .HasForeignKey(o => o.ConsistencyOfMedicationId);
-            builder.Entity<OwnedMedication>()
-                .HasOne(o => o.User)
-                .WithMany(o => o.OwnedMedications);
-            builder.Entity<OwnedMedication>()
-                .HasOne(o => o.Medication)
-                .WithMany(o => o.OwnedMedications);
-            //builder.Entity<OwnedMedication>()
-            //    .HasOne(o => o.Medication)
-            //    .WithMany(o => o.OwnedMedication);
-            //builder.Entity<OwnedMedication>()
-            //    .HasOne(o => o.User)
-            //    .WithMany(o => o.OwnedMedication);
+
+            builder.Entity<OwnedMedication>()       //
+                .HasOne(o => o.User)                //
+                .WithMany(o => o.OwnedMedications); // 1
+            builder.Entity<OwnedMedication>()       //
+                .HasOne(o => o.Medication)          //
+                .WithMany(o => o.OwnedMedications); //
+
             builder.Entity<Prescription>()
                 .HasOne(o => o.User)
                 .WithMany(o => o.Prescriptions)

@@ -2,18 +2,6 @@
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
-@section Scripts {
-	<script type="text/javascript">
-		function ShouldItBeDeleted() {
-			if (confirm("Да се изтрие ли тази роля?")) {
-				$("#confirm").val("Yes");
-			}
-			else {
-				$("#confirm").val("No");
-			}
-		}
-	</script>
-}
 <main>
 	<h2 style="justify-self:center">Предписания</h2>
 	<a asp-action="Create" class="btn btn-primary">+</a>
@@ -31,10 +19,7 @@
 					<td>@prescription.PrescribedDate</td>
 					<td>@prescription.Description</td>
 					<td>
-						<form asp-action="Delete" method="post" style="width:fit-content">
-							<input type="hidden" name="confirmed_value" id="confirm" />
-							<input type="submit" asp-route-id="@prescription.PrescriptionId" onclick="ShouldItBeDeleted()" asp-action="Delete" value="Delete" class="btn btn-danger" />
-						</form>
+						<a asp-action="Delete" asp-route-id="@prescription.PrescriptionId" class="btn btn-danger">Delete</a>
 						<a asp-action="Edit" asp-route-id="@prescription.PrescriptionId" class="btn btn-primary">Edit</a>
 					</td>
 				</tr>

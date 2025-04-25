@@ -1,27 +1,17 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject UserManager<ApplicationUser> UserManager
 @model IEnumerable<ApplicationUser>
-@section Scripts{
-	<script type="text/javascript">
-		function ShouldItBeDeleted() {
-			if (confirm("Да се изтрие ли този акаунт?")) {
-				$("#confirm").val("Yes");
-			}
-			else {
-				$("#confirm").val("No");
-			}
-		}
-	</script>
-}
+
 <main>
 	<h2 style="justify-self:center">Потребители</h2>
 	<a asp-action="Create" class="btn btn-primary plus">+</a>
 	<table class="table">
 		<thead>
-		<th>Потреб. име</th>
-		<th>Име</th>
-		<th>Фамилия</th>
-		<th>Възраст</th>
+			<th>Потреб. име</th>
+			<th>Име</th>
+			<th>Фамилия</th>
+			<th>Възраст</th>
+			<th></th>
 		</thead>
 		<tbody>
 			@foreach (var user in Model)
@@ -30,14 +20,10 @@
 					<td>@user.UserName</td>
 					<td>@user.FirstName</td>
 					<td>@user.LastName</td>
-					<td>@user.Age</td>
+					<td>@user.Age години</td>
 					<td>
-						
-						<form asp-action="Delete" method="post" style="width:fit-content">
-							<input type="hidden" name="confirmed_value" id="confirm" />
-							<input type="submit" asp-route-id="@user.Id" onclick="ShouldItBeDeleted()" asp-action="Delete" value="Delete" class="btn btn-danger" />
-						</form>
-						<a asp-action="Edit" asp-route-id="@user.Id" class="btn btn-primary">Edit</a>
+							<a asp-action="Delete" asp-route-id="@user.Id" class="btn btn-danger">Delete</a>
+							<a asp-action="Edit" asp-route-id="@user.Id" class="btn btn-primary">Edit</a>
 					</td>
 				</tr>
 

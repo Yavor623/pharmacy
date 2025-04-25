@@ -12,5 +12,6 @@ namespace TestPharmacy1.Models
         public int Age { get; set; }
         public ICollection<Prescription> Prescriptions { get; set; }
         public ICollection<OwnedMedication> OwnedMedications { get; set; }
+
     }
 }

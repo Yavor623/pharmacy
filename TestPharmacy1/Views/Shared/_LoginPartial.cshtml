@@ -1,26 +1,13 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
-@* @section Scripts{
-    <script type="text/javascript">
-        $(function () {
-            $("#dropdown").toggle();
-            $("#userIcon").click(function () {
-                $("#dropdown").show();
-            });
-        });
-     </script>
-} *@
+
 
 <ul class="navbar-nav regLog">
 @if (SignInManager.IsSignedIn(User))
 {
         <form class="form-inline" asp-controller="Account" asp-action="Logout">
-            <i class="fa-solid fa-circle-user fa-2xl" id="userIcon"></i>
-            <ul class="dropdown-menu" id="dropdown" style="display:none">
-                <li class="dropdown-item"><input type="submit" value="Log out"/></li>
-                <li class="dropdown-item">Prescription</li>
-            </ul>
+            <button type="submit" class="nav-link btn btn-danger">Logout</button>
         </form>
 }
 else
@@ -29,7 +16,7 @@ else
         <button class="nav-link text-light btn-primary" asp-controller="Account" asp-action="Register">Register</button>
     </li>
     <li class="nav-item">
-        <a class="nav-link text-light btn btn-outline-danger" asp-controller="Account" asp-action="Login">Login</a>
+        <a class="nav-link text-light btn btn-danger" asp-controller="Account" asp-action="Login">Login</a>
     </li>
 }
 </ul>

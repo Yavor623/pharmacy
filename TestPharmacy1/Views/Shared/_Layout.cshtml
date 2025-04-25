@@ -15,27 +15,36 @@
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index" style="max-width:10%;text-decoration:none;color:white"><img src="~/icon/bg,f8f8f8-flat,750x,075,f-pad,750x1000,f8f8f8[1].png" style="max-width:35%;max-height:35%"/>Fastmacy</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1 navUL">
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Начало</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Prescription" asp-action="Index">Prescripiton</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="AboutUs" asp-action="Index">За_нас</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Medication" asp-action="Index">Medication</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Contacts" asp-action="Index">Контакти</a>
                         </li>
-                        <li class="nav-link text-light" id="li-dropdown">
-                            Admin
-                            <ul class="dropdown-menu">
-                                <li> <a class="nav-link text-dark" asp-area="" asp-controller="Role" asp-action="Index">Role</a></li>
-                                <li> <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Index">User</a></li>
-                            </ul>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-area="" asp-controller="Prescription" asp-action="Index">Предписание</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-area="" asp-controller="Medication" asp-action="Index">Медикамент</a>
+                        </li>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-link text-light" id="li-dropdown">
+                                Администратор
+                                <ul class="dropdown-menu">
+                                    <li> <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Index">Потребители</a></li>
+                                </ul>
+                            </li>
+                        }
+
                     </ul>
                         <div>
                             <a asp-controller="ShoppingCart" asp-action="Index" style="text-decoration:none;color:black;">
@@ -51,7 +60,7 @@
     </header>
     <style>
         .navUL li{
-            font-size:1.2rem;
+            font-size:1.1rem;
             
         }
         .navUL{

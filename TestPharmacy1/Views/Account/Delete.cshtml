@@ -1,0 +1,17 @@
+﻿@model DeleteUserViewModel
+<form asp-action="Delete" typeof="post">
+	<h3>Сигурни ли сте че искате да изтриете този потребител?</h3>
+
+	<h4>Име: @Model.FirstName</h4>
+	<h4>Фамилия: @Model.LastName</h4>
+	<h4>Имейл: @Model.Email</h4>
+	<h4>Възраст: @Model.Age</h4>
+
+	<button type="submit" asp-route-id="@Model.Id" class="btn btn-success" type="post">Да</button>
+	<a asp-action="Index" class="btn btn-danger">Не</a>
+</form>
+<style>
+	form{
+		margin:3% 10% 0 10%;
+	}
+</style>

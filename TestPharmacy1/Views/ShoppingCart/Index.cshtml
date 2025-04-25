@@ -1,33 +1,90 @@
 ﻿@model IEnumerable<OwnedMedication>
 
 @{
+    int currentPage = ViewBag.CurrentPage;
+    int lastPage = currentPage - 1;
+    int nextPage = currentPage == 0 ? currentPage + 2 : currentPage + 1;
+    int elementsToTake = ViewBag.AmountOfItems;
+    int amountOfPages = (int)Math.Ceiling(Convert.ToDouble(Model.Count()) / elementsToTake);
+    var takenElements = Model.Skip((currentPage - 1) * elementsToTake).Take(elementsToTake).ToList();
     decimal sum = 0;
     foreach(var one in Model){
         sum += one.Amount*one.Medication.Price;
     }
 }
+@section Scripts{
+    <script type="text/javascript">
+        function ShouldItBeDeleted() {
+            if (confirm("Да се премахне ли този медикамент?")) {
+                $("#confirm").val("Yes");
+            }
+            else {
+                $("#confirm").val("No");
+            }
+        }
+        function AmountOfItems(){
+            $("#submitBtn").val($("#selects").find(":selected").val());
+            $("#radio").prop('checked', true);
+            $("#submitBtn").click();
+        }
+    </script>
+}
 <main>
-    <h2>Shopping cart</h2>
-    <div>
-        The sum of it is: @sum
-    </div>
+    <h2 style="justify-self:center">
+        Сумата е: @sum лв.
+    </h2>
+    <h2 style="justify-self:center">Кошница</h2>
+    <form asp-action="Index">
+        <select id="selects" onchange="AmountOfItems()">
+            <option value="8">8</option>
+            <option value="12">12</option>
+            <option value="16">16</option>
+            <option value="20">20</option>
+            <option value="24">24</option>
+            <option value="@Model.Count()">All</option>
+        </select>
+        <input type="radio" name="isItChecked" id="radio" value="true" style="visibility:hidden" />
+        <input type="submit" value="" id="submitBtn" class="btn btn-primary" name="submitValue" style="visibility:hidden" />
+    </form>
     <div id="items" style="margin-left:3%">
 
         @foreach (var item in Model)
         {
             <div class="items-inner">
                 <div style="width:100%">
-                    <a asp-action="Delete">Delete</a>
+                    <form asp-action="Delete" method="post">
+                        <input type="hidden" name="confirmed_value" id="confirm" />
+                        <input type="submit" asp-route-id="@item.Id" onclick="ShouldItBeDeleted()" asp-action="Delete" value="Delete" class="btn btn-danger" />
+                    </form>
                     <div id="pic-frame">
-                        <a asp-action="Details" asp-route-id="@item.Medication.Id" asp-route-prescriptionMessage=""><img src="data:image;base64,@(Convert.ToBase64String(@item.Medication.Image))" style="border-radius:1rem;" /></a>
+                        <a asp-action="Details" asp-route-id="@item.Medication.Id" asp-route-prescriptionMessage="" asp-controller="Medication"><img src="data:image;base64,@(Convert.ToBase64String(@item.Medication.Image))" style="border-radius:1rem;" /></a>
                     </div>
                     <div style="min-height:50px"><h5 style="font-weight:350">@item.Medication.Name @item.Medication.Description</h5></div>
                     <div style="min-height:50px"><h5 style="font-weight:650;color:lawngreen">@item.Amount x @item.Medication.Price лв.</h5></div>
                 </div>
             </div>
         }
-
-    </div> 
+        @if (amountOfPages > 1)
+        {
+            <form id="list_form" asp-action="Index">
+                @if (ViewBag.CurrentPage > 1)
+                {
+                    <input type="hidden" value="@lastPage" name="id">
+                    <input type="submit" value="&lt;">
+                }
+                @for (int i = 1; i <= amountOfPages; i++)
+                {
+                    <input type="submit" value="@i" name="id">
+                }
+                @if (ViewBag.CurrentPage < amountOfPages || ViewBag.CurrentPage == 1)
+                {
+                    <input type="hidden" value="@nextPage" name="id">
+                    <input type="submit" value="&gt;">
+                }
+            </form>
+        }
+    </div>
+    
 </main>
 
 <style>
@@ -38,7 +95,7 @@
     }
 
     main {
-        margin-top: 5vh;
+        margin:0 5vw 0 5vw;
         width: var(--main-width);
         height: var(--height);
         padding: 3%;

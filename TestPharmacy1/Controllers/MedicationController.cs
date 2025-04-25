@@ -145,11 +145,6 @@ namespace TestPharmacy1.Controllers
             }
             return View(medications);
         }
-
-        public IActionResult FilteredIndex(List<Medication>medications)
-        {
-            return View(medications);
-        }
         [HttpGet]
         public IActionResult Create()
         {
@@ -266,6 +261,8 @@ namespace TestPharmacy1.Controllers
         [HttpGet]
         public  IActionResult Edit(int id)
         {
+            ViewData["TypeOfMedicationId"] = new SelectList(_context.TypeOfMedication, "Id", "Name");
+            ViewData["ConsistencyOfMedicationId"] = new SelectList(_context.ConsistencyOfMedication, "Id", "Name"); 
             var medication = _context.Medication.FirstOrDefault(a => a.Id == id);
             var model = new EditMedicationViewModel
             {

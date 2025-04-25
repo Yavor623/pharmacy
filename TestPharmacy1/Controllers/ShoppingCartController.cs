@@ -17,8 +17,10 @@ namespace TestPharmacy1.Controllers
             _context = context;
             _signInManager = signInManager;
         }
-        public IActionResult Index()
+        public IActionResult Index(bool isItChecked,int id,int submitValue)
         {
+            ViewBag.AmountOfItems = isItChecked == true ? submitValue : 8;
+            ViewBag.CurrentPage = id;
             var ownedMedication = _context.OwnedMedication.Include(a => a.Medication).Include(a => a.User).ToList();
             var filteredOwnedMedication =
                 from med in ownedMedication

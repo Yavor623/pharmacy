@@ -7,36 +7,47 @@
 	var car = ViewBag.Prescription;
 	var s = 5;
 }
-@section Scripts{
-	<script type="text/javascript">
-		$(function () {
-			if (@ViewBag.Prescription != null) {
-				alert(@ViewBag.Prescription);
-			}
-		});
-	</script>
-}
-<div>
-	<h2>Детайли</h2>
-	
-	<div>
+<div id="everything">
+	<h2style ="justify-self:center">@ViewBag.Prescription</h2style>
+	<h2 style="justify-self:center">Детайли</h2>
+	<br />
+	<div style="display:grid;grid-template-columns:1fr 1fr">
 		<div>
-			<img src="data:image;base64,@(Convert.ToBase64String(Model.Image))" />
+			<img src="data:image;base64,@(Convert.ToBase64String(Model.Image))" style="width:80%;height:80%;"/>
 		</div>
-		<div>
-			<h3>@Model.Name</h3>
-			<h4>@Model.Price лв.</h4>
-			<form asp-action="AddToCart" method="post">
-				<input type="number" min="1" max="@Model.Amount" name="amount" value="1"/>
-				<input type="hidden" name="medId" value="@Model.Id" />
-				<input type="hidden" name="userId" value="@SignInManager.UserManager.GetUserId(User)" />
-				<input type="submit" value="Add" />
-			</form>
-			<div>
+		<div id="info">
+			<div style="width:10%;" >
+				<h3>@Model.Name</h3>
+				<h4 style="font-weight:650;color:lawngreen">@Model.Price лв.</h4>
+				<div style="width:100%">
+					<form asp-action="AddToCart" method="post">
+						<input type="number" min="1" max="@Model.Amount" name="amount" value="1" />
+						<input type="hidden" name="medId" value="@Model.Id" />
+						<input type="hidden" name="userId" value="@SignInManager.UserManager.GetUserId(User)" />
+						<input type="submit" value="Добави в кошницата" class="btn btn-primary" />
+					</form>
+				</div>
+			</div>
+			<div style="width:100%;grid-column:2/ span 1" id="addInfo">
 				<h4>Описание:</h4>
 				<p>@Model.Description</p>
-				<p>Има ли нужда от предписание? - @isPrescriptionNeeded</p>
+				<br />
+				<h5>Има ли нужда от предписание? - @isPrescriptionNeeded</h5>
 			</div>
 		</div>
 	</div>
 </div>
+<style>
+	#info div{
+		padding:3%;
+		margin-bottom:5%;
+	}
+
+	#everything{
+		margin:0 10% 0 10%;
+	}
+	img:hover{
+		border: 1px solid black;
+		border-radius: 7px;
+	}
+</style>
