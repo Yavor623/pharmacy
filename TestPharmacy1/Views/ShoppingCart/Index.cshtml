@@ -57,7 +57,7 @@
                         <input type="submit" asp-route-id="@item.Id" onclick="ShouldItBeDeleted()" asp-action="Delete" value="Delete" class="btn btn-danger" />
                     </form>
                     <div id="pic-frame">
-                        <a asp-action="Details" asp-route-id="@item.Medication.Id" asp-route-prescriptionMessage="" asp-controller="Medication"><img src="data:image;base64,@(Convert.ToBase64String(@item.Medication.Image))" style="border-radius:1rem;" /></a>
+                        <a asp-action="Details" asp-route-id="@item.Medication.Id" asp-route-prescriptionMessage="" asp-controller="Medication" id="pic-frame"><img src="data:image;base64,@(Convert.ToBase64String(@item.Medication.Image))" style="border-radius:1rem;" /></a>
                     </div>
                     <div style="min-height:50px"><h5 style="font-weight:350">@item.Medication.Name @item.Medication.Description</h5></div>
                     <div style="min-height:50px"><h5 style="font-weight:650;color:lawngreen">@item.Amount x @item.Medication.Price лв.</h5></div>
@@ -130,6 +130,19 @@
         padding: 5%;
     }
 
+    #pic-frame {
+        width: 100%;
+        object-fit: cover;
+        margin-bottom: 3%;
+        img
+
+    {
+        width: 100%;
+        min-height: 140px;
+        max-height: 140px;
+    }
+
+    }
         .items-inner:hover {
             border: 1px solid black;
             border-radius: 7px;
