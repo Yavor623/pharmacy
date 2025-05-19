@@ -29,10 +29,15 @@
 				</div>
 			</div>
 			<div style="width:100%;grid-column:2/ span 1" id="addInfo">
+				<h4>Вид: <p>@ViewBag.ConsistencyOfMedication</p></h4>
+				<h4>Класификация: <p>@ViewBag.TypeOfMedication</p></h4>
+				<h4>Начин на употреба:</h4>
+				<p>@Model.HowToUse</p>
+				<br />
 				<h4>Описание:</h4>
 				<p>@Model.Description</p>
 				<br />
-				<h5>Има ли нужда от предписание? - @isPrescriptionNeeded</h5>
+				<h5>Има ли нужда от предписание? - <p>@isPrescriptionNeeded</p></h5>
 			</div>
 		</div>
 	</div>

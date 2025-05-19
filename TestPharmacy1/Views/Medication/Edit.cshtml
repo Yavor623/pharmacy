@@ -1,55 +1,55 @@
 ﻿@model TestPharmacy1.Models.Medications.EditMedicationViewModel
 <form asp-action="Edit" method="post" enctype="multipart/form-data">
 	<div class="form-group">
-		<label asp-for="Name" class="" ></label>
-		<input asp-for="Name" class="form-control" value="@Model"/>
+		<label asp-for="Name" class="" >Име</label>
+		<input asp-for="Name" class="form-control"/>
 		<span asp-validation-for="Name" class="text-danger"></span>
 	</div>
 	<div class="form-group">
-		<label asp-for="Manufacturer" class=""></label>
+		<label asp-for="Manufacturer" class="">Производител</label>
 		<input asp-for="Manufacturer" class="form-control" />
 		<span asp-validation-for="Manufacturer" class="text-danger"></span>
 	</div>
 	<div class="form-group">
-		<label asp-for="HowToUse" class=""></label>
+		<label asp-for="HowToUse" class="">Начин на употреба</label>
 		<input asp-for="HowToUse" class="form-control" />
 		<span asp-validation-for="HowToUse" class="text-danger"></span>
 	</div>
 	<div class="form-group">
-		<label asp-for="IsPrescriptionNeeded" class=""></label>
+		<label asp-for="IsPrescriptionNeeded" class="">Има ли нужда от предписание?</label>
 		<input asp-for="IsPrescriptionNeeded" class="form-check" type="checkbox" />
 		<span asp-validation-for="IsPrescriptionNeeded" class="text-danger"></span>
 	</div>
 	<div class="form-group">
-		<label asp-for="Amount" class=""></label>
+		<label asp-for="Amount" class="">Брой</label>
 		<input asp-for="Amount" class="form-control" type="number" min="0" />
 		<span asp-validation-for="Amount" class="text-danger"></span>
 	</div>
 	<div class="form-group">
-		<label asp-for="Description" class=""></label>
+		<label asp-for="Description" class="">Описание</label>
 		<input asp-for="Description" class="form-control" />
 		<span asp-validation-for="Description" class="text-danger"></span>
 	</div>
 	<div class="form-group">
-		<label asp-for="TypeOfMedicationId" class=""></label>
+		<label asp-for="TypeOfMedicationId" class="">Класификация</label>
 		<select asp-for="TypeOfMedicationId" class="form-select" asp-items="ViewBag.TypeOfMedicationId" id="typeOfMed">
-			<option value="">Please select a type of med</option>
+			<option value="">Моля изберете класификация</option>
 		</select>
 	</div>
 	<div class="form-group">
-		<label asp-for="ConsistencyOfMedicationId" class=""></label>
+		<label asp-for="ConsistencyOfMedicationId" class="">Вид</label>
 		<select asp-for="ConsistencyOfMedicationId" class="form-select" asp-items="ViewBag.ConsistencyOfMedicationId" id="consOfMed">
-			<option value="">Please select a consistency of the med</option>
+			<option value="">Моля изберете вид</option>
 		</select>
 	</div>
+	<input type="hidden" asp-for="ByteImage"/>
 	<div class="form-group">
 		<img src="data:image;base64,@(Convert.ToBase64String(Model.ByteImage))" style="border-radius:1rem;" />
-		<label asp-for="ImageFile" class=""></label>
 		<input asp-for="ImageFile" class="form-control" accept="image/*" type="file" />
 	</div>
 	<div class="form-group">
-		<label asp-for="Price" class=""></label>
-		<input asp-for="Price" class="form-control" type="number" min="0" />
+		<label asp-for="Price" class="">Цена</label>
+		<input asp-for="Price" class="form-control" type="number" min="0.01" step="0.01" pattern="^\d+(?:\.\d{1,2})?$" value="0" />
 		<span asp-validation-for="Price" class="text-danger"></span>
 	</div>
 	<button type="submit" class="btn btn-success">Запази</button>

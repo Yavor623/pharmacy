@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.CodeAnalysis.Differencing;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TestPharmacy1.Controllers
 {
@@ -145,6 +146,7 @@ namespace TestPharmacy1.Controllers
             }
             return View(medications);
         }
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult Create()
         {
@@ -177,6 +179,7 @@ namespace TestPharmacy1.Controllers
                 _context.SaveChanges();
             }
         }
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Create(CreateMedicationViewModel model)
         {
@@ -210,6 +213,7 @@ namespace TestPharmacy1.Controllers
             ViewBag.ConsistencyOfMedication = new SelectList(_context.ConsistencyOfMedication, "Id", "Name", model.ConsistencyOfMedicationId);
             return View(model);
         }
+        [Authorize]
         [HttpPost]
         public  async Task<IActionResult> AddToCart(int medId,string userId,int amount)
         {
@@ -258,6 +262,7 @@ namespace TestPharmacy1.Controllers
 			}
             return RedirectToAction("Details","Medication",new { id=medId , prescriptionMessage = ""});
 		}
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public  IActionResult Edit(int id)
         {
@@ -266,6 +271,7 @@ namespace TestPharmacy1.Controllers
             var medication = _context.Medication.FirstOrDefault(a => a.Id == id);
             var model = new EditMedicationViewModel
             {
+                Id = medication.Id,
                 Name = medication.Name,
                 Manufacturer = medication.Manufacturer,
                 HowToUse = medication.HowToUse,
@@ -280,6 +286,7 @@ namespace TestPharmacy1.Controllers
             };
             return View(model);
         }
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Edit(int id, EditMedicationViewModel model)
         {
@@ -313,6 +320,7 @@ namespace TestPharmacy1.Controllers
             }
             return View();
         }
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Delete(string confirmed_value, int id)
         {
@@ -333,11 +341,20 @@ namespace TestPharmacy1.Controllers
             }
             return RedirectToAction("Index");
         }
+        [Authorize]
         [HttpGet]
         public IActionResult Details(int id,string prescriptionMessage)
         {
+            var currentMed = _context.Medication.Find(id);
             ViewBag.Prescription = prescriptionMessage;
-			var currentMed = _context.Medication.Find(id);
+            ViewBag.TypeOfMedication =
+                from type in _context.TypeOfMedication
+                where type.Id == currentMed.TypeOfMedicationId
+                select type.Name;
+            ViewBag.ConsistencyOfMedication = 
+                from type in _context.ConsistencyOfMedication
+                where type.Id == currentMed.ConsistencyOfMedicationId
+                select type.Name;
             var medication = new DetailsMedicationViewModel
             {
                 Id = id,

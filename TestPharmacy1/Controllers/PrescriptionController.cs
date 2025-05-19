@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TestPharmacy1.Data;
 using TestPharmacy1.Models;
@@ -17,6 +18,7 @@ namespace TestPharmacy1.Controllers
             _context = context;
             _userManager = userManager;
         }
+        [Authorize]
         public IActionResult Index()
         {
             var prescripions = _context.Prescription.ToList();
@@ -26,11 +28,13 @@ namespace TestPharmacy1.Controllers
                 select prescription;
             return View(userPrescriptions);
         }
+        [Authorize]
         [HttpGet]
         public IActionResult Create() 
         {
             return View();
         }
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create(CreatePrescriptionViewModel model)
         {
@@ -49,7 +53,8 @@ namespace TestPharmacy1.Controllers
             }
             return RedirectToAction("Index");
         }
-		[HttpGet]
+        [Authorize]
+        [HttpGet]
 		public IActionResult Edit(int id)
 		{
 			var userPrescriptions = _context.Prescription.Where(a => a.UserId == _userManager.GetUserId(User));
@@ -65,7 +70,8 @@ namespace TestPharmacy1.Controllers
 			};
 			return View(model);
 		}
-		[HttpPost]
+        [Authorize]
+        [HttpPost]
 		public async Task<IActionResult> Edit(int id, EditPrescriptionViewModel model)
 		{
 			if (ModelState.IsValid)
@@ -83,6 +89,7 @@ namespace TestPharmacy1.Controllers
 			}
 			return RedirectToAction("Index");
 		}
+        [Authorize]
         [HttpGet]
         public IActionResult Delete(int id)
         {
@@ -97,6 +104,7 @@ namespace TestPharmacy1.Controllers
             };
             return View(model);
         }
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Delete(int id, DeletePrescriptionViewModel model)
         {

@@ -31,7 +31,6 @@ namespace TestPharmacy1.Models
         [ForeignKey("ConsistencyOfMedicationId")]
         public ConsistencyOfMedication ConsistencyOfMedication { get; set; }
         public ICollection<OwnedMedication> OwnedMedications { get; set; }
-        [ForeignKey("ImageId")]
         public byte[] Image { get; set; }
         [DisplayFormat(DataFormatString = "{0:C0}")]
         public decimal Price { get; set; }

@@ -12,6 +12,7 @@ namespace TestPharmacy1.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
             var users = _userManager.Users.ToList();
@@ -85,11 +86,13 @@ namespace TestPharmacy1.Controllers
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult Create()
         {
             return View();
         }
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Create(CreateUserViewModel model)
         {
@@ -116,6 +119,7 @@ namespace TestPharmacy1.Controllers
             }
             return View(model);
         }
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult Edit(string id)
         {
@@ -130,6 +134,7 @@ namespace TestPharmacy1.Controllers
             };
             return View(model);
         }
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Edit(string id, EditUserViewModel model)
         {
@@ -145,6 +150,7 @@ namespace TestPharmacy1.Controllers
             }
             return View(model);
         }
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult Delete(string id)
         {
@@ -159,6 +165,7 @@ namespace TestPharmacy1.Controllers
             };
             return View(model);
         }
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Delete(string id,DeleteUserViewModel model)
         {

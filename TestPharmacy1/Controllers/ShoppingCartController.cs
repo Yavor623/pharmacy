@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using TestPharmacy1.Models;
 using TestPharmacy1.Models.ShoppingCart;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TestPharmacy1.Controllers
 {
@@ -28,6 +29,8 @@ namespace TestPharmacy1.Controllers
                 select med;
             return View(filteredOwnedMedication);
         }
+        [Authorize]
+        [HttpPost]
         public async Task<IActionResult> Delete(string confirmed_value, int id)
         {
             if (confirmed_value == "Yes")
@@ -44,6 +47,7 @@ namespace TestPharmacy1.Controllers
             }
             return RedirectToAction("Index");
         }
+        [Authorize]
         [HttpGet]
         public IActionResult Details(int id, string prescriptionMessage)
         {

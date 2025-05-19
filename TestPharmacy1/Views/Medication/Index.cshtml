@@ -165,7 +165,7 @@
 
 }
 <head>
-    <link rel="stylesheet" href="~/css/Main.css"><link /> 
+    <link rel="stylesheet" href="~/css/Site.css"><link /> 
     <script src="https://kit.fontawesome.com/a28800c3e2.js" crossorigin="anonymous"></script>  
 
 </head>
@@ -255,7 +255,7 @@
                     <div id="pic-frame">
                         <a asp-action="Details" asp-route-id="@medication.Id" asp-route-prescriptionMessage=""><img src="data:image;base64,@(Convert.ToBase64String(@medication.Image))" style="border-radius:1rem;" /></a>
                     </div>
-                    <div style="min-height:50px"><h5 style="font-weight:350">@medication.Name @medication.Description</h5></div>
+                    <div style="min-height:50px"><h5 style="font-weight:350">@medication.Name</h5></div>
                     <div style="min-height:50px"><h5 style="font-weight:650;color:lawngreen">@medication.Price лв.</h5></div>
                     @if (SignInManager.IsSignedIn(User)&&User.IsInRole("Admin"))
                     {
@@ -291,6 +291,28 @@
             </form>
         }
     </div>
+
+        <style media="screen and (max-width:1200px)" type="text/css">
+            .medications {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+        </style>
+        <style media="screen and (max-width:1500px)" type="text/css">
+            .medications {
+                grid-template-columns: 1fr 1fr 1fr 1fr;
+            }
+        </style>
+        <style media="screen and (max-width:700px)" type="text/css">
+            .medications {
+                grid-template-columns: 1fr;
+            }
+        </style>
+        <style media="screen and (max-width:400px)" type="text/css">
+            .medications {
+                grid-template-columns: 1fr;
+            }
+        </style>
+    
         <style>
         body {
             overflow-x: hidden;

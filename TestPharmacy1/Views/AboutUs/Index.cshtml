@@ -1,6 +1,27 @@
-﻿<main>
+﻿@section Scripts{
+	<script type="text/javascript">
+		function Edit(){
+			$.ajax({
+					type: 'GET',
+					dataType: 'JSON',
+					url: '/AboutUs/Edit',
+					contentType: 'application/json;charset=utf-8',
+					data: $("#message").val()
+					// success:function(response){
+					// 	for (var i = 0; i < response.length; i++) {
+					// 		$("#hiddenSelect").append('<option value="'+response[i]+'">'+response[i]+'</option>');
+					// 	}
+					// }
+				});
+		}
+	</script>
+	
+}
+
+<main>
+	<button onclick="Edit">Edit</button>
 	<h2>За нас</h2>
-	<p>¨Fastmacy¨ уебсайт разработен ученик с цел улесняване достъпа, търесенето и покупката на медикаменти</p>
+	<p id="message">¨Fastmacy¨ уебсайт разработен ученик с цел улесняване достъпа, търесенето и покупката на медикаменти</p>
 </main>
 <style>
 	main{
