@@ -12,7 +12,7 @@ using TestPharmacy1.Data;
 namespace TestPharmacy1.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250410051805_Test")]
+    [Migration("20250520091536_Test")]
     partial class Test
     {
         /// <inheritdoc />
