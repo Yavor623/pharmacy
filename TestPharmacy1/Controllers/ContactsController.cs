@@ -5,6 +5,7 @@ using Microsoft.VisualBasic;
 using System.Diagnostics.Contracts;
 using TestPharmacy1.Data;
 using TestPharmacy1.Models;
+using TestPharmacy1.Models.Contacts;
 
 namespace TestPharmacy1.Controllers
 {
@@ -18,23 +19,24 @@ namespace TestPharmacy1.Controllers
             _userManager = userManager;
         }
         public IActionResult Index()
-        {         
-            var contacts = _context.Information.ToList();
-            if (contacts.Count!=0)
+        {
+            var contacts = _context.Contacts.ToList();
+            if (contacts.Count != 0)
             {
-                var newContacts = _context.Information.First();
+                var newContacts = _context.Contacts.First();
                 return View(newContacts);
             }
+            ViewBag.IsThereAny = false;
             return View();
         }
         [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult Edit()
         {
-            if (_context.Information.Count() != 0)
+            if (_context.Contacts.Count() != 0)
             {
-                var information = _context.Information.First();
-                var model = new EditInformationViewModel
+                var information = _context.Contacts.First();
+                var model = new EditContactsViewModel
                 {
                     Id = information.Id,
                     Phone = information.Phone,
@@ -50,25 +52,27 @@ namespace TestPharmacy1.Controllers
         }
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<IActionResult> Edit(EditInformationViewModel model)
+        public async Task<IActionResult> Edit(EditContactsViewModel model)
         {
             if (ModelState.IsValid)
             {
-                if (_context.Information.Count() != 0)
+                if (_context.Contacts.Count() != 0)
                 {
-                    var information = _context.Information.First();
+                    var information = _context.Contacts.First();
                     information.Phone = model.Phone;
                     information.Email = model.Email;
-                    _context.Information.Update(information);
+                    _context.Contacts.Update(information);
                     _context.SaveChanges();
                     return RedirectToAction("Index");
                 }
                 else
                 {
-                    var information = _context.Information.First();
-                    information.Phone = model.Phone;
-                    information.Email = model.Email;
-                    _context.Information.Add(information);
+                    var info = new Contact
+                    {
+                        Email = model.Email,
+                        Phone = model.Phone,
+                    };
+                    _context.Contacts.Add(info);
                     _context.SaveChanges();
                     return RedirectToAction("Index");
                 }

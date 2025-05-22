@@ -2,17 +2,15 @@
 @inject RoleManager<IdentityRole> RoleManager
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
-@model TestPharmacy1.Models.EditInformationViewModel
+@model TestPharmacy1.Models.Information.EditAboutUsViewModel
 <main>
     <form asp-action="Edit" method="post">
         <h2>Редакция на за нас</h2>
         <div>
-            <label asp-for="AboutUs">За нас:</label>
-            <input asp-for="AboutUs"  class="form-control"/>
-            <span asp-validation-for="AboutUs"></span>
+            <label asp-for="Info">За нас:</label>
+            <input asp-for="Info" class="form-control" />
+            <span asp-validation-for="Info"></span>
         </div>
-        <input type="hidden" asp-for="Phone"/>
-        <input type="hidden" asp-for="Email" />
         <br />
         <div>
             <button type="submit" class="btn btn-primary">Готово</button>

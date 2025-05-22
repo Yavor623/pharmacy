@@ -297,6 +297,167 @@
     body {
         overflow: hidden
     }
+
+    #optionsForm {
+        width: 100%;
+        margin: 0;
+        height: 40%;
+        * :not(.sortDirectionBtn-wrap)
+
+    {
+        margin: 5% 5% 5% 0;
+        min-width: 80%;
+        max-width: 95%;
+        font-size: 1.3rem;
+    }
+
+    }
+
+
+    a {
+        text-decoration: none;
+    }
+
+    #pic-frame {
+        width: 100%;
+        
+        margin-bottom: 3%;
+        img{
+        object-fit: cover;
+        max-width:175px;
+        min-width: 175px;
+        max-height: 175px;
+        min-height: 175px;
+        }
+
+    }
+
+    #searchBar {
+        border-radius: 7px;
+        border: 1px solid gray;
+        margin: 0;
+        width: 70%;
+        padding: 1%;
+        font-size: 1.3em;
+    }
+
+
+    .left-aside {
+        position: relative;
+        float: left;
+        margin-left: var(--margin-left-aside);
+        width: calc(var( --margin-left-main) - calc(2* var(--margin-left-aside)));
+        z-index: 1;
+        height: var(--height);
+        border: 1px solid black;
+        border-radius: 4px;
+        padding: 1%;
+    }
+
+    main {
+        margin-top: 5vh;
+        width: var(--main-width);
+        height: var(--height);
+        padding: 3%;
+        margin: 0;
+        margin: 0 0 0 var( --margin-left-main);
+        padding: 0;
+        overflow-x: hidden;
+        scroll-behavior: smooth;
+        overflow-y: scroll;
+        *
+
+    {
+        margin: 0;
+        padding: 0;
+    }
+
+    }
+
+    #title {
+        margin: 10vh 0 5vh 20vw;
+    }
+
+    .medications {
+        width: 95%;
+        height: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-template-rows: 1fr 1fr;
+    }
+
+    .items {
+        height: 100%;
+        width: 85%;
+        padding: 5%;
+    }
+
+        .items:hover {
+            border: 1px solid black;
+            border-radius: 7px;
+        }
+
+    .sortDirectionBtn-wrap {
+        margin: 0;
+        height: 10%;
+        width: 5%;
+        user-select: none;
+        span
+
+    {
+        margin: 0;
+    }
+
+
+    #list_form * {
+        height: 40px;
+        width: 40px;
+        border-radius: 7px;
+        border: 3px solid #5ed91c;
+        background-color: #66f21b;
+        color: white;
+        font-weight: 600;
+        font-size: 1.5em;
+        text-align: center;
+    }
+
+    #pic-frame {
+        width: 100%;
+        object-fit: cover;
+        margin-bottom: 3%;
+        img
+    {
+        width: 100%;
+        min-height: 140px;
+        max-height: 140px;
+    }
+
+    }
+
+    .active {
+        color: black;
+    }
+
+    #optionsForm * {
+        user-select: none;
+    }
+
+    .divWrapper {
+        width: 95%;
+        overflow: hidden;
+    }
+
+    #hiddenSelect {
+        width: 100%;
+    }
+
+        #hiddenSelect:focus {
+            width: auto;
+        }
+
+    .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+        box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    }
 </style>
 
 

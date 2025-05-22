@@ -21,7 +21,7 @@
 					<td>@user.FirstName</td>
 					<td>@user.LastName</td>
 					<td>@user.Age години</td>
-					@if (await UserManager.IsInRoleAsync(user, "Admin"))
+					@if (await UserManager.IsInRoleAsync(user, "Admin") == false)
 					{
 						<td>
 							<a asp-action="Delete" asp-route-id="@user.Id" class="btn btn-danger">Delete</a>

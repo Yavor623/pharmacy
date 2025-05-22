@@ -16,7 +16,8 @@ namespace TestPharmacy1.Data
         public DbSet<TypeOfMedication> TypeOfMedication { get; set; }
 
         public DbSet<OwnedMedication> OwnedMedication { get; set; }
-        public DbSet<Information> Information { get; set; }
+        public DbSet<AboutUs> AboutUs { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

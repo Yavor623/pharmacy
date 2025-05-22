@@ -12,8 +12,8 @@ using TestPharmacy1.Data;
 namespace TestPharmacy1.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250521215611_Test")]
-    partial class Test
+    [Migration("20250522093038_Final")]
+    partial class Final
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -156,6 +156,23 @@ namespace TestPharmacy1.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("TestPharmacy1.Models.AboutUs", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Info")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AboutUs");
                 });
 
             modelBuilder.Entity("TestPharmacy1.Models.ApplicationUser", b =>
@@ -356,17 +373,13 @@ namespace TestPharmacy1.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("TestPharmacy1.Models.Information", b =>
+            modelBuilder.Entity("TestPharmacy1.Models.Contacts", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AboutUs")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -378,7 +391,7 @@ namespace TestPharmacy1.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Information");
+                    b.ToTable("Contacts");
                 });
 
             modelBuilder.Entity("TestPharmacy1.Models.Medication", b =>
