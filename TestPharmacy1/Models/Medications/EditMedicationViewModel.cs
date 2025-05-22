@@ -35,6 +35,5 @@ namespace TestPharmacy1.Models.Medications
         [DisplayFormat(DataFormatString = "{0:C0}")]
         [Required]
         public decimal Price { get; set; }
-        public Medication CurrentMedication { get; set; }
     }
 }

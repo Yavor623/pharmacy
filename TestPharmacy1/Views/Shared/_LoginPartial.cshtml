@@ -4,19 +4,25 @@
 
 
 <ul class="navbar-nav regLog">
+    <li style="margin:2% 3% 0 0">
+        <a asp-controller="ShoppingCart" asp-action="Index" style="text-decoration:none;color:black;">
+            <i class="fa-solid fa-cart-shopping fa-xl"></i>
+        </a>
+    </li>
 @if (SignInManager.IsSignedIn(User))
 {
+    
         <li class="nav-item">
-            <a class="nav-link text-light btn-danger" asp-controller="Account" asp-action="Logout">Logout</a>
+            <a class="btn btn-danger" asp-controller="Account" asp-action="Logout">Logout</a>
         </li>
 }
 else
 {
     <li class="nav-item">
-        <a class="nav-link text-light btn-primary" asp-controller="Account" asp-action="Register">Register</a>
+        <a class="btn btn-primary" asp-controller="Account" asp-action="Register">Register</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link text-light btn btn-danger" asp-controller="Account" asp-action="Login">Login</a>
+        <a class="btn btn-danger" asp-controller="Account" asp-action="Login">Login</a>
     </li>
 }
 </ul>

@@ -16,6 +16,7 @@ namespace TestPharmacy1.Data
         public DbSet<TypeOfMedication> TypeOfMedication { get; set; }
 
         public DbSet<OwnedMedication> OwnedMedication { get; set; }
+        public DbSet<Information> Information { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -41,8 +42,7 @@ namespace TestPharmacy1.Data
                 .HasOne(o => o.User)
                 .WithMany(o => o.Prescriptions)
                 .HasForeignKey(o => o.UserId);
-
-            builder.Entity<TypeOfMedication>().HasData(
+           builder.Entity<TypeOfMedication>().HasData(
                new TypeOfMedication { Id=1,Name = "Адренокортикоактивни средства" },
                new TypeOfMedication { Id = 2, Name = "Адренолитици" },
                new TypeOfMedication { Id = 3, Name = "Адреномиметици" },

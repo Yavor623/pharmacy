@@ -1,27 +1,17 @@
-﻿@section Scripts{
-	<script type="text/javascript">
-		function Edit(){
-			$.ajax({
-					type: 'GET',
-					dataType: 'JSON',
-					url: '/AboutUs/Edit',
-					contentType: 'application/json;charset=utf-8',
-					data: $("#message").val()
-					// success:function(response){
-					// 	for (var i = 0; i < response.length; i++) {
-					// 		$("#hiddenSelect").append('<option value="'+response[i]+'">'+response[i]+'</option>');
-					// 	}
-					// }
-				});
-		}
-	</script>
-	
-}
+﻿@model Information
 
 <main>
-	<button onclick="Edit">Edit</button>
+	<a class="btn btn-primary" asp-action="Edit">Edit</a>
 	<h2>За нас</h2>
-	<p id="message">¨Fastmacy¨ уебсайт разработен ученик с цел улесняване достъпа, търесенето и покупката на медикаменти</p>
+	@if (ViewBag.IsThereAny == false)
+	{
+		<p id="message"></p>
+	}
+	else
+	{
+		<p id="message">@Model.AboutUs</p>
+	}
+	
 </main>
 <style>
 	main{

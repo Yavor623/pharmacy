@@ -5,6 +5,8 @@
 @{
 	var isPrescriptionNeeded = Model.IsPrescriptionNeeded == true ? "да" : "не";
 	var car = ViewBag.Prescription;
+	var type = ViewBag.TypeOfMedication;
+	var consistency = ViewBag.ConsistencyOfMedication;
 	var s = 5;
 }
 <div id="everything">
@@ -13,7 +15,7 @@
 	<br />
 	<div style="display:grid;grid-template-columns:1fr 1fr">
 		<div>
-			<img src="data:image;base64,@(Convert.ToBase64String(Model.Image))" style="width:80%;height:80%;"/>
+			<img src="data:image;base64,@(Convert.ToBase64String(Model.Image))" style="max-width:95%;min-width:75%;max-height:95%;min-height:75%;border-radius:1rem" />
 		</div>
 		<div id="info">
 			<div style="width:10%;" >
@@ -29,8 +31,10 @@
 				</div>
 			</div>
 			<div style="width:100%;grid-column:2/ span 1" id="addInfo">
-				<h4>Вид: <p>@ViewBag.ConsistencyOfMedication</p></h4>
-				<h4>Класификация: <p>@ViewBag.TypeOfMedication</p></h4>
+				<h4>Вид: </h4>
+				<p>@consistency.Name</p>
+				<h4>Класификация: </h4>
+				<p>@type.Name</p>
 				<h4>Начин на употреба:</h4>
 				<p>@Model.HowToUse</p>
 				<br />
@@ -50,9 +54,5 @@
 
 	#everything{
 		margin:0 10% 0 10%;
-	}
-	img:hover{
-		border: 1px solid black;
-		border-radius: 7px;
 	}
 </style>

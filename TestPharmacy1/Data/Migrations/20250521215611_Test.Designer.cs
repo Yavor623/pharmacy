@@ -12,7 +12,7 @@ using TestPharmacy1.Data;
 namespace TestPharmacy1.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250410051805_Test")]
+    [Migration("20250521215611_Test")]
     partial class Test
     {
         /// <inheritdoc />
@@ -354,6 +354,31 @@ namespace TestPharmacy1.Data.Migrations
                             Id = 20,
                             Name = "спрей"
                         });
+                });
+
+            modelBuilder.Entity("TestPharmacy1.Models.Information", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AboutUs")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Information");
                 });
 
             modelBuilder.Entity("TestPharmacy1.Models.Medication", b =>

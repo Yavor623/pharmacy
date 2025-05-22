@@ -1,7 +1,10 @@
-﻿<main>
+﻿@model Information
+
+<main>
+	<a class="btn btn-primary" asp-action="Edit">Edit</a>
 	<h2>Контакти</h2>
-	<p>Телефон:</p>
-	<p>Имейл:</p>
+	<p>Телефон: @Model.Phone</p>
+	<p>Имейл: @Model.Email</p>
 </main>
 <style>
 	main {

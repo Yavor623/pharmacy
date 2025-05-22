@@ -353,6 +353,31 @@ namespace TestPharmacy1.Data.Migrations
                         });
                 });
 
+            modelBuilder.Entity("TestPharmacy1.Models.Information", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AboutUs")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Information");
+                });
+
             modelBuilder.Entity("TestPharmacy1.Models.Medication", b =>
                 {
                     b.Property<int>("Id")

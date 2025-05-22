@@ -41,6 +41,7 @@ namespace TestPharmacy1.Controllers
         }
         public IActionResult Index(string? searchString,string? sortString,int id,int submitValue,bool isItChecked,string? filter,string? additionalFilter,string direction,bool IsItAQuery = false)
         {
+
             ViewBag.IsItAQuery = IsItAQuery;
             ViewBag.AmountOfItems = isItChecked == true? submitValue:8;
             ViewBag.CurrentPage = id;
@@ -281,8 +282,7 @@ namespace TestPharmacy1.Controllers
                 Amount = medication.Amount,
                 Description = medication.Description,
                 ByteImage = medication.Image,
-                Price = medication.Price,
-                CurrentMedication = medication
+                Price = medication.Price
             };
             return View(model);
         }
@@ -293,6 +293,7 @@ namespace TestPharmacy1.Controllers
             if (ModelState.IsValid)
             {
                 var medication = _context.Medication.Find(id);
+                medication.Id = model.Id;
                 medication.Name = model.Name;
                 medication.HowToUse = model.HowToUse;
                 medication.Price = model.Price;
@@ -347,14 +348,8 @@ namespace TestPharmacy1.Controllers
         {
             var currentMed = _context.Medication.Find(id);
             ViewBag.Prescription = prescriptionMessage;
-            ViewBag.TypeOfMedication =
-                from type in _context.TypeOfMedication
-                where type.Id == currentMed.TypeOfMedicationId
-                select type.Name;
-            ViewBag.ConsistencyOfMedication = 
-                from type in _context.ConsistencyOfMedication
-                where type.Id == currentMed.ConsistencyOfMedicationId
-                select type.Name;
+            ViewBag.TypeOfMedication = _context.TypeOfMedication.FirstOrDefault(a => a.Id == currentMed.TypeOfMedicationId); 
+            ViewBag.ConsistencyOfMedication = _context.ConsistencyOfMedication.FirstOrDefault(a => a.Id == currentMed.ConsistencyOfMedicationId);
             var medication = new DetailsMedicationViewModel
             {
                 Id = id,

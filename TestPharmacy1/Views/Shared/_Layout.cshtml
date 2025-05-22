@@ -14,7 +14,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar theme-navbar navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3 design">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index" style="max-width:10%;text-decoration:none;color:white"><img src="~/icon/bg,f8f8f8-flat,750x,075,f-pad,750x1000,f8f8f8[1].png" style="max-width:35%;max-height:35%"/>Fastmacy</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -24,26 +24,26 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1 navUL">
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Начало</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Начало</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="AboutUs" asp-action="Index">За_нас</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="AboutUs" asp-action="Index">За нас</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Contacts" asp-action="Index">Контакти</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Contacts" asp-action="Index">Контакти</a>
                         </li>
                         @if (SignInManager.IsSignedIn(User))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-light" asp-area="" asp-controller="Prescription" asp-action="Index">Предписание</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Prescription" asp-action="Index">Предписание</a>
                             </li>
                         }
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Medication" asp-action="Index">Медикамент</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Medication" asp-action="Index">Медикамент</a>
                         </li>
                         @if (User.IsInRole("Admin"))
                         {
-                            <li class="nav-link text-light" id="li-dropdown">
+                            <li class="nav-item" id="li-dropdown">
                                 Администратор
                                 <ul class="dropdown-menu">
                                     <li> <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Index">Потребители</a></li>
@@ -52,11 +52,6 @@
                         }
 
                     </ul>
-                        <div>
-                            <a asp-controller="ShoppingCart" asp-action="Index" style="text-decoration:none;color:black;">
-                                <i class="fa-solid fa-cart-shopping fa-xl"></i>
-                            </a>
-                        </div>
                         <partial name="_LoginPartial" />
                     
                     
@@ -64,42 +59,18 @@
             </div>
         </nav>
     </header>
+    <div>
+            @RenderBody()
+    </div>
     <style>
-        .navUL{
-            text-align:center;
-        }
-        .theme-navbar{
-            background-color: #45AC19;
-            text-align: center;
-            *:not(.dropdown-menu){
-                margin:0.5% 4% 0.5% 0;
-            }
-        }
-        #li-dropdown ul li:hover{
-           background-color:darkgray;
-           color:darkslategray;
+        #li-dropdown ul li :hover {
+            background-color:darkgray;
+            color:darkslategray;
         }
         #li-dropdown:hover ul{
             display:block;
         }
-        #dropdown{
-            position:absolute;
-            z-index:999;
-            display:none;
-            background-color: rgba(220,220,220,0,4);
-            li:hover{
-                background-color: rgba(220,220,220,0,8);
-            }
-            li{
-                list-style:none;
-            }
-            
-        }
     </style>
-    <div>
-            @RenderBody()
-    </div>
-
     <footer class="border-top footer text-muted">
         <div class="container">
             
